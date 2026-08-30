@@ -1,0 +1,26 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "visual-verification-gate",
+  "type": "skill",
+  "domain": "testing",
+  "description": "Inspects the visual media a run produces — screenshots, GIFs, videos — and confirms each artifact shows what was claimed before any completion is declared. It opens every image and recording, checking for blank screens, stack traces, 404 pages, broken layouts, frozen interactions, and error toasts that contradict the claim. You reach for it whenever a run produces visual proof artifacts and a completion claim is about to be made. It produces a single pass-or-fail gate verdict and a report with per-artifact findings.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "visual-verify",
+      "visual-verification-gate"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "visual-verification-gate.docx"
+  ],
+  "wordCount": 697,
+  "score": 41,
+  "tier": "production",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-27",
+  "generatedBy": "kamini gen-json v1"
+}

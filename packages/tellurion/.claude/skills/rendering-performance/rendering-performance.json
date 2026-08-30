@@ -1,0 +1,28 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "rendering-performance",
+  "type": "skill",
+  "domain": "devops",
+  "description": "Diagnoses and fixes slow rendering, jank, and excessive re-renders in React and vanilla JavaScript by profiling with Chrome DevTools and the React Profiler. Identifies root causes — React re-renders, layout thrash, long tasks, forced reflows, main-thread blocking — then applies targeted fixes like memoization, virtualization, state colocation, CSS containment, and GPU-accelerated transforms. Produces a before/after comparison with FPS and render-time metrics. Reach for it when an app feels sluggish, animations stutter, or scrolling is laggy.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "slow rendering",
+      "jank",
+      "janky animations",
+      "why does everything re-render"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "rendering-performance.docx"
+  ],
+  "wordCount": 1493,
+  "score": 48,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

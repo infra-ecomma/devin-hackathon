@@ -1,0 +1,31 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-intent-extraction",
+  "type": "skill",
+  "domain": "product",
+  "description": "Extract design principles from reference images, templates, and examples — capturing the spirit, not the pixels. Produces a Design Intent Document that maps extracted principles to the current project's classification and tokens. Triggers on: reference image, design reference, template, example UI, inspiration, based on this design, like this, similar to",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "design reference",
+      "template",
+      "example UI",
+      "inspiration",
+      "based on this design",
+      "like this",
+      "similar to"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "design-intent-extraction.docx"
+  ],
+  "wordCount": 2227,
+  "score": 44,
+  "tier": "curated",
+  "version": "2.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

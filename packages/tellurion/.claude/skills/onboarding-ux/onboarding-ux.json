@@ -1,0 +1,29 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "onboarding-ux",
+  "type": "skill",
+  "domain": "product",
+  "description": "Design first-run experiences — empty states, welcome flows, guided tours, contextual tooltips, progressive disclosure, aha-moment targeting. Use when building onboarding, improving activation rates, or designing empty states. Triggers on \"onboarding\", \"first-run\", \"empty state\", \"welcome flow\", \"activation\", \"getting started\".",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "first-run",
+      "empty state",
+      "welcome flow",
+      "activation",
+      "getting started"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "onboarding-ux.docx"
+  ],
+  "wordCount": 1168,
+  "score": 40,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

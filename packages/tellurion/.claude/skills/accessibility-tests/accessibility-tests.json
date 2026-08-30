@@ -1,0 +1,31 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "accessibility-tests",
+  "type": "skill",
+  "domain": "testing",
+  "description": "Use when a feature has a UI, takes user input, or is user-facing and you need to prove it works for people with disabilities. Lays out a layered a11y testing strategy — jest-axe at the unit level, @axe-core/playwright at the page level, eslint-plugin-jsx-a11y at dev time, plus manual keyboard, screen-reader, and contrast checks — with copy-paste templates, common-pitfall fixes, and the WCAG 2.1 AA proof artifacts (scan results, keyboard tests, pages-scanned table, screen-reader log) a suite must produce. Triggers on: accessibility testing, a11y, axe-core, jest-axe, WCAG, keyboard navigation test, screen reader test, focus management, color contrast, /accessibility-tests.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "accessibility tests",
+      "a11y testing",
+      "jest-axe",
+      "axe-core playwright",
+      "WCAG 2.2 AA",
+      "keyboard navigation tests",
+      "screen reader testing"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "accessibility-tests.docx"
+  ],
+  "wordCount": 1057,
+  "score": 46,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-18",
+  "generatedBy": "kamini gen-json v1"
+}

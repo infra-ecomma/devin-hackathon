@@ -1,0 +1,25 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-prototype",
+  "type": "skill",
+  "domain": "product",
+  "description": "Generates interactive HTML prototypes from design system and IA specifications. Produces single-file HTML/CSS/JS prototypes of key pages with working navigation, interactive states, realistic mock data, variant generation for A/B decisions, and multi-viewport responsive verification.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "prototype"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "design-prototype.docx"
+  ],
+  "wordCount": 1745,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

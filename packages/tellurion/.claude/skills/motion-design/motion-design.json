@@ -1,0 +1,32 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "motion-design",
+  "type": "skill",
+  "domain": "product",
+  "description": "Add purposeful animations and micro-interactions — entrance effects, state transitions, hover states, scroll-driven motion. Enforces proper easing (ease-out-quart/quint, bans bounce/elastic), prefers-reduced-motion compliance, and performance-first approach. Triggers on \"animation\", \"transitions\", \"micro-interactions\", \"motion\", \"hover effects\", \"make it feel alive\".",
+  "triggers": {
+    "commands": [
+      "/quint",
+      "/elastic"
+    ],
+    "keywords": [
+      "transitions",
+      "micro-interactions",
+      "motion",
+      "hover effects",
+      "make it feel alive"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "motion-design.docx"
+  ],
+  "wordCount": 712,
+  "score": 42,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

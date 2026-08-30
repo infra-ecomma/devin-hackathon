@@ -837,3 +837,39 @@ html[data-embed] .dossier {
   width: auto; max-height: 45%;
 }
 a.mode { text-decoration: none; display: inline-flex; align-items: center; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Reduced motion — added 2026-08-30 (motion-design skill).
+
+   public/orrery.js already honours the preference on the canvas plate: it reads
+   REDUCED at four animated terms so the plate settles on its resting frame. The
+   CSS layer had no guard at all, so the eight keyframe animations and the SVG
+   spine's pulses (.vb-halo, .gem-prog-pulse, .mbeads) kept running regardless.
+   This closes that half.
+
+   Blanket rather than per-selector on purpose: motion is still being added
+   before the demo, and a blanket guard covers an animation written tomorrow.
+   Every keyframe here was checked to end in a safe resting state before
+   collapsing its duration — srise ends opacity:1/transform:none via `both`, so
+   content still APPEARS; the decorative pulses (livepulse, vbhalo, gempulse)
+   end transparent, which is the correct resting state for a halo.
+
+   animation-delay is zeroed separately: the canonical blanket guard does not
+   touch it, and the spine staggers 69 vertebrae at 26ms and the milestone rows
+   at 30ms, so without this the column would still assemble sequentially over
+   roughly 1.8s with each step merely instant.
+
+   The four !important declarations are required — a universal selector loses on
+   specificity to .live i, .vb.progress .vb-halo and friends. This is a
+   deliberate, sanctioned use; design-qa's ">3 !important" warning is expected
+   here and is not a defect to chase.
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

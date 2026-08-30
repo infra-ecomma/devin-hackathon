@@ -1,0 +1,29 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "ui-redesign",
+  "type": "workflow",
+  "domain": "product",
+  "description": "Chains six skills in sequence: classification → intent extraction → pattern selection → interface design → code generation → critique. Each phase constrains the next. Classification Card is the source of truth for all downstream decisions. Three branches: full redesign (all 6 ste.",
+  "triggers": {
+    "commands": [
+      "/ui-redesign"
+    ],
+    "keywords": [
+      "redesign this page"
+    ]
+  },
+  "bundle": [
+    "GENERATION_CONTRACT.md",
+    "INSTALL.md",
+    "README.md",
+    "WORKFLOW.md",
+    "ui-redesign.docx"
+  ],
+  "wordCount": 2400,
+  "score": 48,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-04-26",
+  "generatedBy": "kamini gen-json v1"
+}

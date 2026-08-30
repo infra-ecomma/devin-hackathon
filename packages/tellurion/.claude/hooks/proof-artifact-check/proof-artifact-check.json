@@ -1,0 +1,23 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "proof-artifact-check",
+  "type": "hook",
+  "domain": "testing",
+  "description": "PreToolUse Bash hook that warns when a git-commit references a task with a Test Requirements Card but no proof manifest in test-results/.",
+  "triggers": {
+    "commands": [],
+    "keywords": []
+  },
+  "bundle": [
+    "README.md",
+    "hook.sh",
+    "proof-artifact-check.docx"
+  ],
+  "wordCount": 213,
+  "score": 37,
+  "tier": "production",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-04-26",
+  "generatedBy": "kamini gen-json v1"
+}

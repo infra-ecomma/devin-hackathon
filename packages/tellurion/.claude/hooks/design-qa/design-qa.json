@@ -1,0 +1,23 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-qa",
+  "type": "hook",
+  "domain": "testing",
+  "description": "PostToolUse hook on Write/Edit of image (`.png`/`.svg`/`.jpg`/`.jpeg`) and CSS (`.css`/`.scss`/`.module.css`) files. **Image checks: emptiness, SVG XML validity + hardcoded colors + viewBox + title, PNG/JPG dimensions + 4M-pixel threshold + logo blurry warning. CSS checks: hardcoded colors vs tokens, hardcoded pixels, `!important` abuse, missing `prefers-reduced-motion`, no responsive breakpoints.**",
+  "triggers": {
+    "commands": [],
+    "keywords": []
+  },
+  "bundle": [
+    "README.md",
+    "design-qa.docx",
+    "hook.sh"
+  ],
+  "wordCount": 821,
+  "score": 40,
+  "tier": "production",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-02",
+  "generatedBy": "kamini gen-json v1"
+}

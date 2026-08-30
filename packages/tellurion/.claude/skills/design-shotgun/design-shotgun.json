@@ -1,0 +1,28 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-shotgun",
+  "type": "skill",
+  "domain": "product",
+  "description": "Generate 3-5 fundamentally different design directions with structured decision data (pros/cons/tradeoffs/effort/risk). Compare via mandatory comparison tables and tradeoff analysis, then converge on the winning direction through data-driven selection.",
+  "triggers": {
+    "commands": [
+      "/cons",
+      "/tradeoffs",
+      "/effort",
+      "/risk"
+    ],
+    "keywords": []
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "design-shotgun.docx"
+  ],
+  "wordCount": 975,
+  "score": 42,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

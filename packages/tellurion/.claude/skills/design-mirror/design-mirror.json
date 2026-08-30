@@ -1,0 +1,25 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-mirror",
+  "type": "skill",
+  "domain": "code",
+  "description": "Replicate the visual style of any website and apply it to your existing codebase. Use this skill whenever the user wants to match a site's design, mirror a UI aesthetic, make their app look like another site, or replicate a specific visual style from a URL. Trigger on phrases like 'make it look like', 'match the design of', 'copy the style from', 'I want my app to look like X', 'mirror this design', 'inspired by [url]', or any time the user points at a website and says they want their frontend to match it.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "make it look like, match the design of, mirror this design, copy the style from, inspired by [url], replicate site aesthetic"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "design-mirror.docx"
+  ],
+  "wordCount": 1122,
+  "score": 43,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-18",
+  "generatedBy": "kamini gen-json v1"
+}

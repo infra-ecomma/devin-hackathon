@@ -1,0 +1,31 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "typeset",
+  "type": "skill",
+  "domain": "product",
+  "description": "Typography audit and improvement — font choices, hierarchy, sizing/scale, readability, consistency. Turns generic type into intentional, crafted typography. Use when fonts feel default, hierarchy is unclear, or text is hard to read. Triggers on \"typography\", \"fonts\", \"type hierarchy\", \"readability\", \"text sizing\", \"font pairing\".",
+  "triggers": {
+    "commands": [
+      "/scale"
+    ],
+    "keywords": [
+      "fonts",
+      "type hierarchy",
+      "readability",
+      "text sizing",
+      "font pairing"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "typeset.docx"
+  ],
+  "wordCount": 902,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

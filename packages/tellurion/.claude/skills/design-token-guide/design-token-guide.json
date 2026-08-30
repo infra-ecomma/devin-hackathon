@@ -1,0 +1,34 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-token-guide",
+  "type": "skill",
+  "domain": "product",
+  "description": "Use when setting up or fixing a project design-token system — turning hardcoded hex, shadows, and spacing into one source of truth (a primary color scale, a chosen neutral system, semantic colors, and shadow/radius/spacing/type scales) shipped as CSS custom properties or a Tailwind 4 @theme with a token-to-component map. Triggers on: design tokens, token system, CSS custom properties, Tailwind theme, semantic colors, shadow scale, radius scale, spacing scale, design-token-guide.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "design tokens",
+      "color system primary scale",
+      "Tailwind shade 600",
+      "neutral gray slate zinc neutral stone",
+      "semantic success warning error",
+      "OKLCH perceptually uniform",
+      "--color-primary CSS custom property",
+      "shadow elevation sm md lg",
+      "border radius scale",
+      "4px spacing base"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "design-token-guide.docx"
+  ],
+  "wordCount": 633,
+  "score": 46,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "color-strategy",
+  "type": "skill",
+  "domain": "product",
+  "description": "Strategic color application — semantic assignment, accent placement, OKLCH color space, 60/30/10 rule, WCAG contrast compliance. Use when adding color to monochromatic designs, fixing color issues, or establishing a color system. Bans purple-blue gradients and gray-on-color. Triggers on \"color\", \"palette\", \"color system\", \"contrast\", \"dark mode colors\".",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "palette",
+      "color system",
+      "contrast",
+      "dark mode colors"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "color-strategy.docx"
+  ],
+  "wordCount": 777,
+  "score": 42,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

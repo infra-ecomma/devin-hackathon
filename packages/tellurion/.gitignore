@@ -1,0 +1,9 @@
+# Claude Code machine-local settings — carries the TBK Relay auth token. Never commit.
+.claude/settings.local.json
+.claude/.tbk-relay-control.lock
+
+# local safety copies taken before an edit — not part of the repo
+*.bak-*
+
+# local MemSearch index — machine-local, not part of the repo
+.memsearch/
