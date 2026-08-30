@@ -71,6 +71,25 @@ const KEY = resolveKey();
 const GUARDED = /^\/(api\/(projects|instances|watch|plan|accept|world|work)(\/|$)|events)$/;
 const MUTATING = /^\/api\/(watch|plan|accept)(\/|$)/;
 
+// --public: a PUBLISHED instrument. One project, no writes, nothing to enumerate.
+//
+// The guard above exists because /api/world and /events carry his work — the
+// project he is following, the prompt ticker, what he last typed. That is the
+// right default and it stays. A published demo is the opposite situation: the
+// only thing it can show is an invented fixture, and the visitor has no key and
+// never will, so the guard would serve empty chrome that says "connecting"
+// forever.
+//
+// This does NOT loosen the key. It replaces it with a stricter rule on the half
+// that matters: every mutating route is refused OUTRIGHT, for every method, key
+// or no key, same-site or not — there is no write path into a public instrument
+// at all, which is a stronger position than "a write needs the key". Only the
+// read doors open, and only because a published fixture is what is behind them.
+// The doors that ENUMERATE other work (/api/projects, /api/instances) stay shut,
+// because a public page must not be able to list what else is on the machine.
+const PUBLIC = has('public');
+const PUBLIC_READ = /^\/(api\/(world|work)(\/|$)|events)$/;
+
 // A browser will send a simple cross-site POST with no preflight, so any page he
 // visits could write to a loopback instrument that trusts loopback. A write must
 // come from this instrument's own page, or carry the key.
@@ -134,7 +153,7 @@ const stat = GENESIS
   // scratch and keeps only the bench, which silently dropped the flag that says
   // this graph is invented — so the demo plate looked exactly like a real one on
   // every project except the one it was authored on.
-  ? { genesis: true, demo: baked.demo === true, planets: [], features: [], milestones: [], tools: baked.tools, processes: baked.processes, workflows: baked.workflows, attribution: [] }
+  ? { genesis: true, demo: baked.demo === true, planets: [], features: [], milestones: [], tools: baked.tools, processes: baked.processes, workflows: baked.workflows, services: baked.services || [], attribution: [] }
   : baked;
 let world = W.createWorld(NAME, ROOT, stat);
 world.project.startedAt = Date.now();
@@ -234,6 +253,9 @@ const relOf = (abs) => {
 // the acceptance walk asserts against stays deterministic.
 const DEMO = has('demo');
 world.project.demo = DEMO;
+// The client hides every write affordance when this is set. A button that can
+// only ever return 403 is worse than no button.
+world.project.public = PUBLIC;
 
 // Every live feed for the current target, held so the whole set can be torn
 // down and rebuilt when you point this at a different editor window.
@@ -525,11 +547,18 @@ const server = http.createServer((req, res) => {
   // NOT excused by authed(): on loopback there is no key, so authed() answers
   // true for everyone and the check never fired. Only a request carrying a REAL
   // key may skip the origin test.
+  // Refused for every method, ahead of every other check: a published instrument
+  // has no write path, so there is nothing here for a key or an origin to argue
+  // about.
+  if (PUBLIC && MUTATING.test(p)) {
+    res.writeHead(403, { 'content-type': 'application/json' });
+    return res.end(JSON.stringify({ ok: false, error: 'this instrument is published read-only' }));
+  }
   if (MUTATING.test(p) && req.method === 'POST' && !sameSite(req) && !(KEY && authed(req, url))) {
     res.writeHead(403, { 'content-type': 'application/json' });
     return res.end(JSON.stringify({ ok: false, error: 'a write has to come from this instrument\'s own page' }));
   }
-  if (GUARDED.test(p) && !authed(req, url)) {
+  if (GUARDED.test(p) && !(PUBLIC && PUBLIC_READ.test(p)) && !authed(req, url)) {
     res.writeHead(401, { 'content-type': 'application/json' });
     return res.end(JSON.stringify({ ok: false, error: 'this instrument is on the network, so writing to it needs its key. Open the link the server printed at boot, once.' }));
   }

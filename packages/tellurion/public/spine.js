@@ -477,6 +477,9 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
     // Browser link already withdraws itself here for the same reason, on the
     // same reasoning: a control that cannot do anything is worse than no control.
     if (window.__EMBEDDED_WORLD__) return;
+    // Same reasoning on a published instrument: every write route answers 403
+    // there by construction, so the editor could only ever fail.
+    if (world.project && world.project.public) return;
     const bar = div('splan-edit', host);
     const b = document.createElement('button');
     b.textContent = 'Edit plan';

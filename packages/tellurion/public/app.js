@@ -285,6 +285,14 @@ function buildKey() {
     // reducer while this row went on describing it.
     row(g(`<circle cx="13" cy="9" r="2" fill="currentColor"/><circle cx="13" cy="9" r="5.6" ${c} stroke-width=".7" opacity=".55"/>`), 'moon &middot; a feature of that product', n.features, 'k-pink') +
     row(g(`<path d="M13 3.4 L17.4 9 L13 14.6 L8.6 9 Z" ${c} stroke-width="1.1"/>`), 'chevron &middot; an agent at work now', nAgents, 'k-purple') +
+    // Neither a product nor a part of one, and it can never climb the ladder,
+    // because there is nothing of ours in it to sign off. Hollow on a dotted
+    // shell so it cannot be read as a planet.
+    row(g(`<circle cx="13" cy="9" r="6.6" ${c} stroke-width=".6" stroke-dasharray="1.5 2.5"/><circle cx="13" cy="9" r="3.6" ${c} stroke-width="1.2"/><circle cx="13" cy="9" r="1.1" fill="currentColor"/>`),
+        'outside service &middot; something this product leans on and does not own', (s.services || []).length) +
+    ((s.services || []).length
+      ? `<div class="key-sub">Its thread runs to the product that DEPENDS on it, which is the only question anyone asks about a dependency: what of ours stops if theirs does.</div>`
+      : '') +
     benchRow(g(`<rect x="10.8" y="6.8" width="4.4" height="4.4" transform="rotate(45 13 9)" ${c} stroke-width="1"/>`), 'belt diamond &middot; a standing tool', s.tools, 'k-bench') +
     familyLine() +
     // THE RING CARRIES A READING NOW. This row said "detection not built" and sat
@@ -719,6 +727,9 @@ const VIEW_KINDS = [
   ['processes', 'Processes', (s) => usedOf(s.processes)],
   ['workflows', 'Workflows', (s) => usedOf(s.workflows)],
   ['agents', 'Agents', () => ''],
+  // Only offered where the graph has any, so the menu never lists a control for
+  // a class this plate cannot draw.
+  ['services', 'Outside services', (s) => String((s.services || []).length)],
 ];
 let hiddenKinds = new Set();
 try { hiddenKinds = new Set(JSON.parse(localStorage.getItem('tellurion-hidden') || '[]')); } catch {}
@@ -730,7 +741,7 @@ function applyHidden() {
 function buildViewMenu() {
   if (!world) return;
   const m = $('viewMenu');
-  const rows = VIEW_KINDS.map(([k, label, count]) => {
+  const rows = VIEW_KINDS.filter(([k]) => k !== 'services' || (world.stat.services || []).length).map(([k, label, count]) => {
     const n = count(world.stat);
     return `<div class="vm-row ${hiddenKinds.has(k) ? '' : 'on'}" data-kind="${k}">
       <span class="vm-box"></span><span>${label}</span><span class="vm-n">${n === '' ? '' : n}</span></div>`;

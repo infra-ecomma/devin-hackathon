@@ -15,7 +15,11 @@ import { fingerprint } from '../lib/tiers.mjs';
 import { normalisePlan } from '../lib/plan.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const PROJ = path.join(HERE, 'project');
+// Which project directory to write the sign-off into. Defaults to demo/project/,
+// which is what the story plays in. build-landing.mjs points it at a scratch copy
+// instead: the story rewrites demo/project/ as it runs, so a build that reads or
+// writes there races whatever a colleague happens to be recording.
+const PROJ = process.argv[2] ? path.resolve(process.argv[2]) : path.join(HERE, 'project');
 const TEL = path.join(PROJ, '.tellurion');
 
 const plan = normalisePlan(JSON.parse(fs.readFileSync(path.join(TEL, 'plan.json'), 'utf8')), 'Lantern');

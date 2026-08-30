@@ -505,6 +505,9 @@ export function initOrrery(canvas) {
       else if (p.tier === 'flagship') drawPlanet(p, dynIx++, t, T, dim, true);
       else drawPlanet(p, minorIx++, t, T, dim, false);
     }
+    // After the planets, so a tether can find its host in `pos`; before the belt,
+    // so an outside service never draws over a standing tool.
+    if (shows('services')) drawServices(t, dim);
     if (shows('tools')) drawBelt(t, dim);
     if (shows('processes')) drawProcessRing(t, dim);
     if (shows('agents')) drawAgents(t, dim);
@@ -996,6 +999,90 @@ export function initOrrery(canvas) {
     ctx.restore();
   }
 
+  // Outside services: what this product LEANS ON and does not own.
+  //
+  // A third thing on the plate that is neither a product nor a part of one. A
+  // card processor, a map provider and a warehouse system are load-bearing —
+  // the product stops working without them — but nobody here builds them, they
+  // carry no features, and they can never climb the custody ladder because
+  // there is nothing of ours to sign off. Drawing one as a planet would put it
+  // in a queue it can never join.
+  //
+  // So it is drawn as the negative of a planet: hollow where a planet is
+  // engraved, on a dashed orbit rather than a ruled one, tethered to the
+  // product that depends on it. The tether is the point — it says which part of
+  // OUR work stops if theirs does, which is the only question anyone asks about
+  // a dependency.
+  function drawServices(t, dim) {
+    const svcs = (world.stat.services || []);
+    if (!svcs.length) return;
+    const band = (MINOR_BAND[0] + 0.028) * R * PLATE_SCALE;
+    circle(CX, CY, band, { stroke: css.lineFaint, w: 0.6, dash: [1, 5] });
+    svcs.forEach((sv, i) => {
+      const per = 520 + (i % 3) * 90;   // slower than any product; a dependency is not in flight
+      const a = rad(-90 + (360 / svcs.length) * i + 18) + (REDUCED ? 0 : (t / 1000 / per) * TAU);
+      const x = CX + Math.cos(a) * band;
+      const y = CY + Math.sin(a) * band;
+      const alpha = (dim(sv.id) ? 0.3 : 1) * Math.max(0.001, entrance(sv.id, 700 + i * 70, 420));
+      const pulse = world.pulses[sv.id];
+      const fresh = pulse && (Date.now() - pulse.lastAt) < 5000;
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      // the tether to the product that depends on it
+      const host = sv.usedBy ? pos.get('plan:' + sv.usedBy) : null;
+      if (host) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        const mx = (x + host.x) / 2, my = (y + host.y) / 2;
+        const vx = mx - CX, vy = my - CY, vl = Math.hypot(vx, vy) || 1;
+        ctx.quadraticCurveTo(mx - (vx / vl) * 22, my - (vy / vl) * 22, host.x, host.y);
+        ctx.strokeStyle = fresh ? css.blue : css.ink28;
+        ctx.lineWidth = 0.9;
+        ctx.globalAlpha = alpha * (fresh ? 0.75 : 0.42);
+        ctx.setLineDash([1, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = alpha;
+      }
+
+      // the body: a hollow ring on a dotted shell, deliberately unlike a planet
+      const r = 7.5;
+      circle(x, y, r + 3.4, { stroke: css.ink28, w: 0.7, dash: [1.5, 2.5], alpha: alpha * 0.8 });
+      circle(x, y, r, { stroke: fresh ? css.blue : css.ink45, w: 1.3, fill: css.paper });
+      circle(x, y, 1.6, { fill: fresh ? css.blue : css.ink45 });
+      pos.set(sv.id, { x, y, r: r + 3, kind: 'service', label: sv.name });
+      bodiesDrawn++;
+      ctx.restore();
+
+      ctx.font = '8.5px "JetBrains Mono"';
+      const wpx = ctx.measureText(sv.name).width;
+      const cands = [0, 0.6, -0.6, 1.2, -1.2].map((dA) => {
+        const la = a + dA;
+        const lx = x + Math.cos(la) * (r + 9);
+        const ly = y + Math.sin(la) * (r + 9);
+        const right = Math.cos(la) >= 0;
+        const bx = right ? lx + 2 : lx - 2 - wpx;
+        return {
+          box: { x: bx, y: ly - 6, w: wpx, h: 12 },
+          draw: () => {
+            ctx.save();
+            ctx.globalAlpha = alpha * LBLI;
+            ctx.fillStyle = css.halo;
+            ctx.fillRect(bx - 2, ly - 6, wpx + 4, 12);
+            text(sv.name, right ? lx + 2 : lx - 2, ly + 3, {
+              font: '8.5px "JetBrains Mono"', fill: fresh ? css.blue : css.ink45,
+              align: right ? 'left' : 'right',
+            });
+            ctx.restore();
+          },
+        };
+      });
+      queueLabel(3, cands, sv.id);
+    });
+  }
+
   // Agents: angular, featureless, and threaded to whatever they are touching.
   // Deliberately built unlike a planet: no body, no moons, no size that means
   // anything. Presence, activity and target, and nothing else.
@@ -1010,8 +1097,10 @@ export function initOrrery(canvas) {
     if (!list.length) return;
     // Their own band, outside every planet belt. An agent that lands among the
     // bodies reads as one of them, which is the whole thing this class exists
-    // to avoid.
-    const band = RING_FRACS[RING_FRACS.length - 1] * R + 0.055 * R + 26;
+    // to avoid. It sits INSIDE the outside-service shell rather than out by the
+    // belt: pushed to the rim they read as marginalia on a plate whose whole
+    // middle was empty, and an agent is the most alive thing on it.
+    const band = RING_FRACS[RING_FRACS.length - 1] * R * PLATE_SCALE + 0.02 * R;
     const n = list.length;
     list.forEach((a, i) => {
       const ang = rad(-90 + (360 / Math.max(n, 6)) * i + 12);
@@ -1041,8 +1130,10 @@ export function initOrrery(canvas) {
         ctx.globalAlpha = alpha;
       }
 
-      // the mark itself
-      const sz = 11.5;
+      // the mark itself. Sized against a planet rather than against a belt
+      // diamond: this class carries a NAME and a target, and at 11.5px it read
+      // as a speck beside bodies it is actively working on.
+      const sz = active ? 14 : 12;
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(ang + Math.PI / 2);

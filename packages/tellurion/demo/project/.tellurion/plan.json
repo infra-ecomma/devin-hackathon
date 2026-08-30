@@ -113,7 +113,7 @@
         {
           "id": "search-box",
           "title": "Draw the search box",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "product-search"
@@ -122,7 +122,7 @@
         {
           "id": "search-wire",
           "title": "Connect the search box to the product list",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "product-search"
@@ -131,7 +131,7 @@
         {
           "id": "search-empty",
           "title": "Say something useful when nothing matches",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "product-search"
@@ -140,7 +140,7 @@
         {
           "id": "gallery-swipe",
           "title": "Let the customer swipe between photos",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "photo-gallery"
@@ -149,7 +149,7 @@
         {
           "id": "gallery-zoom",
           "title": "Make a photo bigger when it is tapped",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "photo-gallery"
@@ -158,7 +158,7 @@
         {
           "id": "stock-read",
           "title": "Read the shelf count from the warehouse",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "stock-levels"
@@ -167,7 +167,7 @@
         {
           "id": "stock-sold-out",
           "title": "Grey out anything that has sold out",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "stock-levels"
@@ -176,7 +176,7 @@
         {
           "id": "save-button",
           "title": "Add the save-for-later button",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "save-for-later"
@@ -185,7 +185,7 @@
         {
           "id": "save-list",
           "title": "Show the saved things on their own page",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "shop-front",
             "feature": "save-for-later"
@@ -200,7 +200,7 @@
         {
           "id": "card-form",
           "title": "Build the card form",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "card-payment"
@@ -209,7 +209,7 @@
         {
           "id": "card-take",
           "title": "Take the payment and wait for the answer",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "card-payment"
@@ -218,7 +218,7 @@
         {
           "id": "card-declined",
           "title": "Handle a card that gets declined",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "card-payment"
@@ -227,7 +227,7 @@
         {
           "id": "code-box",
           "title": "Add the discount code box",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "discount-codes"
@@ -236,7 +236,7 @@
         {
           "id": "code-check",
           "title": "Check the code is real before dropping the price",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "discount-codes"
@@ -245,7 +245,7 @@
         {
           "id": "slot-grid",
           "title": "Show the free delivery hours as a grid",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "delivery-slots"
@@ -254,7 +254,7 @@
         {
           "id": "slot-hold",
           "title": "Hold the chosen hour so nobody else takes it",
-          "status": "planned",
+          "status": "active",
           "produces": {
             "of": "checkout",
             "feature": "delivery-slots"
@@ -263,7 +263,7 @@
         {
           "id": "receipt-send",
           "title": "Send the receipt email",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "receipt-email"
@@ -272,7 +272,7 @@
         {
           "id": "receipt-content",
           "title": "Put the actual items on the receipt",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "checkout",
             "feature": "receipt-email"
@@ -287,7 +287,7 @@
         {
           "id": "map-draw",
           "title": "Draw the map",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "delivery-tracker",
             "feature": "live-map"
@@ -296,7 +296,7 @@
         {
           "id": "map-dot",
           "title": "Move the driver's dot as they drive",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "delivery-tracker",
             "feature": "live-map"
@@ -305,7 +305,7 @@
         {
           "id": "eta-calc",
           "title": "Work out the minutes to the door",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "delivery-tracker",
             "feature": "arrival-time"
@@ -314,7 +314,7 @@
         {
           "id": "eta-traffic",
           "title": "Slow the estimate down when the road is busy",
-          "status": "planned",
+          "status": "active",
           "produces": {
             "of": "delivery-tracker",
             "feature": "arrival-time"
@@ -323,7 +323,7 @@
         {
           "id": "text-send",
           "title": "Send a message when the driver sets off",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "delivery-tracker",
             "feature": "text-updates"
@@ -347,7 +347,7 @@
         {
           "id": "signin-form",
           "title": "Build the sign-in form",
-          "status": "planned",
+          "status": "done",
           "produces": {
             "of": "customer-account",
             "feature": "sign-in"
