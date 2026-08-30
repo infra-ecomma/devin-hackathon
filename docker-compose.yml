@@ -3,8 +3,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    networks:
+      - coolify
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.hackathon.entrypoints=http,https
+      - traefik.http.routers.hackathon.rule=Host(`hackathon.ecommatools.co`)
+      - traefik.http.routers.hackathon.tls.certresolver=letsencrypt
+      - traefik.http.routers.hackathon.service=hackathon
+      - traefik.http.services.hackathon.loadbalancer.server.port=3000
+
+networks:
+  coolify:
+    external: true
+
