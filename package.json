@@ -1,26 +1,69 @@
 {
-  "name": "devinhackathon",
+  "name": "tellurion",
+  "displayName": "Tellurion — Visual Project Orrery",
+  "description": "A VS Code extension for visual project planning with an astronomical orrery visualization.",
   "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+  "engines": {
+    "vscode": "^1.85.0"
   },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "^15.1.0"
+  "publisher": "tellurion",
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:tellurion.openOrrery",
+    "onCommand:tellurion.startInception",
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tellurion.openOrrery",
+        "title": "Tellurion: Open Orrery",
+        "icon": "$(symbol-class)"
+      },
+      {
+        "command": "tellurion.startInception",
+        "title": "Tellurion: Start Inception Workflow",
+        "icon": "$(play)"
+      },
+      {
+        "command": "tellurion.refreshScan",
+        "title": "Tellurion: Refresh Project Scan",
+        "icon": "$(refresh)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "tellurion.openOrrery",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "when": "editorTextFocus"
+      }
+    ],
+    "views": {
+      "tellurion": [
+        {
+          "type": "webview",
+          "id": "tellurion.orreryPanel",
+          "name": "Tellurion Orrery",
+          "visibility": "visible"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npm run compile",
+    "build": "npm run compile"
   },
   "devDependencies": {
-    "typescript": "^5.7.0",
-    "@types/node": "^22.10.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "tailwindcss": "^3.4.17",
-    "postcss": "^8.4.49",
-    "autoprefixer": "^10.4.20",
-    "@tailwindcss/forms": "^0.5.9"
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.0"
   }
 }

@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tellurion Orrery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#060a14;--panel:rgba(12,18,32,0.92);--border:rgba(79,195,247,0.12);--active:rgba(79,195,247,0.35);--text:#e8edf5;--sec:#8899b0;--dim:#556680;--cyan:#4fc3f7;--purple:#ab47bc;--green:#66bb6a;--orange:#ffa726;--red:#ef5350;--sun:#ffd54f}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:13px}
+.app{display:flex;width:100%;height:100%}
+.spine{width:280px;min-width:280px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;transition:transform .3s,opacity .3s}
+.spine.hidden{transform:translateX(-100%);opacity:0;pointer-events:none;width:0;min-width:0;border:none}
+.spine-hd{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.spine-sun{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffde7,#ffd54f,#ff8f00);box-shadow:0 0 16px rgba(255,213,79,0.4)}
+.spine-ttl{font-weight:600;font-size:15px}.spine-sub{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.spine-acts{padding:12px 18px;border-bottom:1px solid var(--border)}
+.btn-incept{width:100%;padding:10px 16px;background:linear-gradient(135deg,rgba(79,195,247,.15),rgba(171,71,188,.15));border:1px solid var(--active);border-radius:8px;color:var(--cyan);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.btn-incept:hover{background:linear-gradient(135deg,rgba(79,195,247,.25),rgba(171,71,188,.25))}
+.spinner{width:14px;height:14px;border:2px solid transparent;border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;display:none}@keyframes spin{to{transform:rotate(360deg)}}
+.btn-incept.running .spinner{display:block}
+.spine-steps{flex:1;overflow-y:auto;padding:12px 0}
+.spine-step{padding:10px 18px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
+.spine-step:hover{background:rgba(79,195,247,.04)}.spine-step.active{border-left-color:var(--cyan);background:rgba(79,195,247,.06)}.spine-step.done{opacity:.5}.spine-step.fail{border-left-color:var(--red)}
+.step-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;border:2px solid var(--dim);color:var(--dim);transition:all .2s}
+.spine-step.active .step-dot{border-color:var(--cyan);background:rgba(79,195,247,.15);color:var(--cyan);box-shadow:0 0 8px rgba(79,195,247,.3)}
+.spine-step.done .step-dot{border-color:var(--green);background:var(--green);color:#fff}.spine-step.fail .step-dot{border-color:var(--red);background:var(--red);color:#fff}
+.step-body{flex:1;min-width:0}.step-lbl{font-size:12px;font-weight:500;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step-bar{height:3px;border-radius:2px;margin-top:6px;background:rgba(255,255,255,.06);overflow:hidden}
+.step-fill{height:100%;border-radius:2px;background:var(--cyan);transition:width .5s}.spine-step.done .step-fill{background:var(--green)}
+.spine-foot{padding:12px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--dim)}
+.sr{display:flex;justify-content:space-between;margin-bottom:4px}.sv{color:var(--sec);font-family:"JetBrains Mono",monospace;font-size:10px}
+.main{flex:1;position:relative;display:flex;flex-direction:column;overflow:hidden}
+.tabs{display:flex;gap:0;background:var(--panel);border-bottom:1px solid var(--border);z-index:5}
+.tab{padding:10px 20px;background:transparent;border:none;color:var(--dim);font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;letter-spacing:.06em}
+.tab:hover{color:var(--sec)}.tab.on{color:var(--cyan);border-bottom-color:var(--cyan)}
+.canvas-wrap{flex:1;position:relative;overflow:hidden;background:var(--bg)}
+canvas#orrery{position:absolute;top:0;left:0;width:100%;height:100%}
+.info-box{position:absolute;top:16px;right:16px;background:rgba(15,22,40,.75);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:10px;padding:16px 20px;min-width:220px;z-index:5;opacity:0;transform:translateY(-8px);transition:all .3s;pointer-events:none}
+.info-box.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.info-name{font-size:15px;font-weight:600;margin-bottom:4px}.info-desc{font-size:11px;color:var(--sec);line-height:1.5;margin-bottom:10px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.badge.ver{background:rgba(102,187,106,.15);color:var(--green)}.badge.nover{background:rgba(255,255,255,.06);color:var(--dim);border:1px dashed var(--dim)}
+.moon-list{margin-top:10px}.moon-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px;color:var(--sec)}
+.moon-pip{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.spine-btn{position:absolute;top:12px;left:12px;width:32px;height:32px;border-radius:6px;background:rgba(15,22,40,.75);border:1px solid var(--border);color:var(--sec);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;transition:all .2s}
+.spine-btn:hover{color:var(--cyan);border-color:var(--active)}
+.bot-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:var(--panel);border-top:1px solid var(--border);font-size:11px;color:var(--dim);z-index:5}
+.zoom-c{display:flex;gap:6px}.zbtn{width:26px;height:26px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--sec);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.zbtn:hover{background:rgba(79,195,247,.1);border-color:var(--active);color:var(--cyan)}
+.incept-overlay{position:absolute;inset:0;background:rgba(6,10,20,.85);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:20}
+.incept-overlay.show{display:flex}.incept-txt{font-size:16px;font-weight:500;color:var(--cyan)}
+.incept-log{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);max-width:400px;text-align:left;line-height:1.6}
+.incept-log span.found{color:var(--green)}.incept-log span.warn{color:var(--orange)}
+.toast{position:fixed;bottom:50px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(15,22,40,.85);backdrop-filter:blur(12px);border:1px solid var(--active);border-radius:8px;padding:10px 20px;font-size:12px;color:var(--text);opacity:0;transition:all .3s;z-index:100;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.census-panel{flex:1;overflow-y:auto;padding:24px}.census-panel table{width:100%;border-collapse:collapse}
+.census-panel th{text-align:left;padding:8px 12px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);border-bottom:1px solid var(--border)}
+.census-panel td{padding:8px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--sec)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+</style></head><body>
+<div class="app">
+<div class="spine" id="spinePanel"><div class="spine-hd"><div class="spine-sun"></div><div><div class="spine-ttl">Tellurion</div><div class="spine-sub">Project Orrery v0.1</div></div></div>
+<div class="spine-acts"><button class="btn-incept" id="btnIncept" onclick="doInception()"><div class="spinner"></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Start Inception</button></div>
+<div class="spine-steps" id="spineSteps"><div style="padding:20px;text-align:center;color:var(--dim);font-size:12px">Press <strong>Start Inception</strong> to discover your project.</div></div>
+<div class="spine-foot" id="spineFoot"><div class="sr"><span>Detecting</span><span class="sv">-</span></div></div></div>
+<div class="main">
+<button class="spine-btn" onclick="toggleSpine()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></button>
+<div class="tabs">
+<button class="tab on" data-tab="orrery" onclick="switchTab(this)">Orrery</button>
+<button class="tab" data-tab="spine" onclick="switchTab(this)">Spine</button>
+<button class="tab" data-tab="map" onclick="switchTab(this)">Map</button>
+<button class="tab" data-tab="model" onclick="switchTab(this)">Model</button>
+<button class="tab" data-tab="census" onclick="switchTab(this)">Census</button>
+</div>
+<div class="canvas-wrap" id="tab-orrery"><canvas id="orrery"></canvas>
+<div class="info-box" id="infoBox"><div class="info-name" id="infoName"></div><div class="info-desc" id="infoDesc"></div><div id="infoBadges"></div><div class="moon-list" id="infoMoons"></div></div>
+<div class="incept-overlay" id="inceptOverlay"><div class="incept-txt">Scanning repository</div><div class="incept-log" id="inceptLog"></div></div>
+</div>
+<div class="bot-bar"><span id="statText">Ready</span><div style="display:flex;align-items:center;gap:12px"><span id="planetCnt"></span><div class="zoom-c"><button class="zbtn" onclick="zOut()">-</button><button class="zbtn" onclick="resetView()">Home</button><button class="zbtn" onclick="zIn()">+</button></div></div></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+let planets=[],spine=[],zoom=1,panX=0,panY=0,isDrag=false,dSX=0,dSY=0,pSX=0,pSY=0,hov=null,mx=0,my=0,aId=null;
+const SP=[{id:"p-api",name:"App Platform",desc:"Core application services and API layer",color:"#4fc3f7",orbR:130,spd:0.003,size:18,v:true,moons:[{id:"m1",name:"REST API",color:"#29b6f6",oR:32,spd:0.01,sz:6,v:true},{id:"m2",name:"GraphQL",color:"#039be5",oR:42,spd:0.008,sz:5,v:true},{id:"m3",name:"Auth Service",color:"#0277bd",oR:52,spd:0.006,sz:5,v:false}]},{id:"p-fe",name:"Frontend",desc:"UI components and client logic",color:"#ab47bc",orbR:210,spd:0.002,ang:Math.PI/3,size:15,v:true,moons:[{id:"m4",name:"React Components",color:"#ba68c8",oR:26,spd:0.012,sz:5,v:true},{id:"m5",name:"Page Routes",color:"#9c27b0",oR:36,spd:0.009,sz:5,v:true}]},{id:"p-db",name:"Database",desc:"Data models, migrations, query layer",color:"#66bb6a",orbR:290,spd:0.0015,ang:(2*Math.PI)/3,size:14,v:true,moons:[{id:"m6",name:"PostgreSQL",color:"#81c784",oR:24,spd:0.011,sz:6,v:true},{id:"m7",name:"Redis Cache",color:"#4caf50",oR:34,spd:0.007,sz:4,v:false}]},{id:"p-inf",name:"Infra",desc:"Deployment, CI/CD, observability",color:"#ffa726",orbR:370,spd:0.001,ang:Math.PI,size:12,v:false,moons:[{id:"m8",name:"Docker",color:"#ffb74d",oR:22,spd:0.01,sz:5,v:false},{id:"m9",name:"Monitoring",color:"#ff9800",oR:32,spd:0.006,sz:4,v:false}]},{id:"p-ml",name:"ML Pipeline",desc:"Model training and inference",color:"#ef5350",orbR:450,spd:0.0008,ang:(4*Math.PI)/3,size:10,v:false,moons:[{id:"m10",name:"Training",color:"#e57373",oR:20,spd:0.008,sz:4,v:false}]}];
+const SS=[{id:"s1",label:"Project Setup & Scaffold",status:"completed",progress:100},{id:"s2",label:"Repository Discovery",status:"completed",progress:100},{id:"s3",label:"Deliverable Mapping",status:"active",progress:65},{id:"s4",label:"Capability Classification",status:"active",progress:40},{id:"s5",label:"Verification Pass",status:"pending",progress:0},{id:"s6",label:"Integration Testing",status:"pending",progress:0},{id:"s7",label:"Performance Validation",status:"pending",progress:0},{id:"s8",label:"Production Deploy",status:"pending",progress:0}];
+const canvas=document.getElementById("orrery"),ctx=canvas.getContext("2d");
+function resize(){const c=canvas.parentElement,d=window.devicePixelRatio;canvas.width=c.clientWidth*d;canvas.height=c.clientHeight*d;canvas.style.width=c.clientWidth+"px";canvas.style.height=c.clientHeight+"px";ctx.scale(d,d)}
+window.addEventListener("resize",()=>{resize();draw()});
+let stars=[];function genStars(){stars=[];for(let i=0;i<200;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.2,a:Math.random()*.5+.1,tw:Math.random()*.02+.005,to:Math.random()*Math.PI*2})}
+function hexRgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function drawStars(t){for(const s of stars){const a=s.a+Math.sin(t*s.tw+s.to)*.2;ctx.beginPath();ctx.arc(s.x*canvas.clientWidth,s.y*canvas.clientHeight,s.r,0,Math.PI*2);ctx.fillStyle="rgba(200,220,255,"+Math.max(0,a)+")";ctx.fill()}}
+function lighten(h,n){let[r,g,b]=[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];r=Math.min(255,r+n);g=Math.min(255,g+n);b=Math.min(255,b+n);return"#"+[r,g,b].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function drawPlanet(cx,cy,p,t){const ang=p.angle||0,px=cx+Math.cos(ang)*p.orbR,py=cy+Math.sin(ang)*p.orbR;p._x=px;p._y=py;
+ctx.beginPath();ctx.arc(cx,cy,p.orbR,0,Math.PI*2);ctx.strokeStyle="rgba("+hexRgb(p.color)+",.08)";ctx.lineWidth=1;ctx.setLineDash(p.orbR>300?[4,6]:[]);ctx.stroke();ctx.setLineDash([]);
+const dist=Math.hypot(mx-px,my-py),isHov=dist<p.size+4,isSel=hov&&hov.type==="planet"&&hov.data.id===p.id;if(isHov||isSel){const g=ctx.createRadialGradient(px,py,0,px,py,p.size*3);g.addColorStop(0,"rgba("+hexRgb(p.color)+",.15)");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,p.size*3,0,Math.PI*2);ctx.fill()}
+const pg=ctx.createRadialGradient(px-p.size*.3,py-p.size*.3,0,px,py,p.size);pg.addColorStop(0,lighten(p.color,30));pg.addColorStop(.7,p.color);pg.addColorStop(1,p.color+"33");ctx.beginPath();ctx.arc(px,py,p.size,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
+if(p.v){ctx.beginPath();ctx.arc(px,py,p.size+3,0,Math.PI*2);ctx.strokeStyle="rgba("+hexRgb(p.color)+",.4)";ctx.lineWidth=1.5;ctx.stroke()}else{ctx.beginPath();ctx.arc(px,py,p.size+3,0,Math.PI*2);ctx.strokeStyle="rgba(255,255,255,.08)";ctx.lineWidth=1;ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([])}
+if(zoom>.5){ctx.font=Math.max(10,11)+"px Inter,sans-serif";ctx.fillStyle="rgba(200,220,255,.7)";ctx.textAlign="center";ctx.fillText(p.name,px,py+p.size+14)}
+for(const m of(p.moons||[])){const ma=(m.angle||0)+t*m.spd,mx2=px+Math.cos(ma)*m.oR,my2=py+Math.sin(ma)*m.oR;m._x=mx2;m._y=my2;
+ctx.beginPath();ctx.arc(px,py,m.oR,0,Math.PI*2);ctx.strokeStyle="rgba("+hexRgb(m.color)+",.06)";ctx.lineWidth=.5;ctx.stroke();
+const md=Math.hypot(mx-mx2,my-my2),mh=md<m.sz+2;ctx.beginPath();ctx.arc(mx2,my2,m.sz,0,Math.PI*2);ctx.fillStyle=m.v?m.color:"rgba("+hexRgb(m.color)+",.3)";ctx.fill();
+if(!m.v){ctx.strokeStyle="rgba(255,255,255,.06)";ctx.lineWidth=.5;ctx.setLineDash([2,3]);ctx.beginPath();ctx.arc(mx2,my2,m.sz+2,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}
+if(zoom>.8&&mh){ctx.font='10px JetBrains Mono,monospace';ctx.fillStyle="rgba(200,220,255,.6)";ctx.textAlign="center";ctx.fillText(m.name,mx2,my2-m.sz-5)}}} 
+function drawSun(cx,cy){const g=ctx.createRadialGradient(cx,cy,0,cx,cy,25);g.addColorStop(0,"rgba(255,253,231,.95)");g.addColorStop(.3,"rgba(255,213,79,.6)");g.addColorStop(.6,"rgba(255,152,0,.15)");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,25,0,Math.PI*2);ctx.fill();const g2=ctx.createRadialGradient(cx,cy,10,cx,cy,60);g2.addColorStop(0,"rgba(255,213,79,.2)");g2.addColorStop(.5,"rgba(255,152,0,.05)");g2.addColorStop(1,"transparent");ctx.fillStyle=g2;ctx.beginPath();ctx.arc(cx,cy,60,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle="#fffde7";ctx.fill();ctx.font='11px Inter,sans-serif';ctx.fillStyle="rgba(255,213,79,.6)";ctx.textAlign="center";ctx.fillText("REPOSITORY",cx,cy+40)} 
+function draw(t){const w=canvas.clientWidth,h=canvas.clientHeight;ctx.clearRect(0,0,w,h);const bg=ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,Math.max(w,h)*.7);bg.addColorStop(0,"#0d1525");bg.addColorStop(.5,"#0a0e1a");bg.addColorStop(1,"#060a14");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);drawStars(t);ctx.save();ctx.translate(w/2+panX,h/2+panY);ctx.scale(zoom,zoom);ctx.translate(-(w/2+panX),-(h/2+panY));drawSun(w/2+panX,h/2+panY);hov=null;canvas.style.cursor="default";
+for(const p of planets){drawPlanet(w/2+panX,h/2+panY,p,t||0);const px=p._x??0,py=p._y??0;if(Math.hypot(mx-px,my-py)<p.size+4){canvas.style.cursor="pointer";hov={type:"planet",data:p}}}
+if(!hov){for(const p of planets){for(const m of(p.moons||[])){if(Math.hypot(mx-m._x,my-m._y)<m.sz+2){canvas.style.cursor="pointer";hov={type:"moon",data:m,parent:p};break}}if(hov)break}}
+ctx.restore();if(planets.length)aId=requestAnimationFrame(draw)} 
+canvas.addEventListener("mousemove",e=>{const r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;if(isDrag){panX=pSX+(e.clientX-dSX);panY=pSY+(e.clientY-dSY)}});
+canvas.addEventListener("mousedown",e=>{isDrag=true;dSX=e.clientX;dSY=e.clientY;pSX=panX;pSY=panY});
+canvas.addEventListener("mouseup",e=>{const moved=Math.abs(e.clientX-dSX)>3||Math.abs(e.clientY-dSY)>3;isDrag=false;if(!moved)click(e)});
+canvas.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.3,Math.min(3,zoom*(e.deltaY>0?.92:1.08))},{passive:false});
+function click(e){if(hov){showInfo(hov.type==="planet"?{name:hov.data.name,desc:hov.data.desc,ver:hov.data.v,moons:hov.data.moons}:null,{name:hov.data.name,desc:"Capability within "+(hov.parent?.name||""),ver:hov.data.v,moons:[]})}else{document.getElementById("infoBox").classList.remove("show")}}
+function showInfo(data){const box=document.getElementById("infoBox");document.getElementById("infoName").textContent=data.name;document.getElementById("infoDesc").textContent=data.desc;document.getElementById("infoBadges").innerHTML=data.ver?"<span class='badge ver'>Verified</span>":"<span class='badge nover'>Unverified</span>";let ml="";if(data.moons?.length){ml="<div style='margin-top:8px;font-size:10px;color:var(--dim)'>Capabilities</div>";for(const m of data.moons)ml+="<div class='moon-row'><span class='moon-pip' style='background:"+m.v?m.color:m.color+"55"'></span>"+m.name+(!m.v?" <span style='opacity:.4'> (dashed)</span>":"")+"</div>"}document.getElementById("infoMoons").innerHTML=ml;box.classList.add("show")} 
+async function doInception(){const btn=document.getElementById("btnIncept"),ov=document.getElementById("inceptOverlay"),log=document.getElementById("inceptLog");btn.classList.add("running");ov.classList.add("show");log.innerHTML="";
+const steps=[{t:"Initializing scan engine...",d:300},{t:"&#10004; Detected TypeScript project",d:500},{t:"&#10004; Found package.json",d:400},{t:"Scanning directory tree",d:300},{t:"&#10004; api/ deliverable",d:500},{t:"&#10004; frontend/ deliverable",d:450},{t:"&#10004; database/ deliverable",d:350},{t:"infrastructure classified",d:300},{t:"Classifying capabilities",d:400},{t:"&#10004; Auth service detected",d:250},{t:"&#10004; Redis cache found",d:250},{t:"ML pipeline identified",d:300},{t:"Generating census",d:350},{t:"&#10004; 142 files scanned",d:400},{t:"Populating spine",d:300},{t:"&#10004; 8 project steps tracked",d:250},{t:"",d:100,f:true}];
+for(const s of steps){await sleep(s.d);if(s.t){log.innerHTML+="<div>"+s.t+"</div>";log.scrollTop=log.scrollHeight}if(s.f)await sleep(400)}
+planets=JSON.parse(JSON.stringify(SP)).map(p=>({...p,angle:p.ang||Math.random()*Math.PI*2}));spine=JSON.parse(JSON.stringify(SS));renderSpine();updCnt();ov.classList.remove("show");btn.classList.remove("running");toast("Inception complete -- 5 deliverables mapped, 8 steps tracked.");updStat("5 deliverables · 35 capabilities · 8 steps");try{window.vscode?.postMessage({type:"inceptionComplete",spine,planets,message:"Inception complete!"})}catch{}}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))} 
+function renderSpine(){const c=document.getElementById("spineSteps");if(!spine.length)return;c.innerHTML=spine.map((s,i)=>{const cls=s.status==="pending"?"":s.status==="completed"?"done":s.status==="active"?"active":"fail";return"<div class='spine-step "+cls+"' data-id=\""+s.id+"\" onclick='advStep(\""+s.id+"")' ><div class='step-dot '>"+(s.status==="completed"?"&#10004;":i+1)+"</div><div class='step-body' ><div class='step-lbl \">"+s.label+"</div><div class='step-bar' ><div class='step-fill' style='width:"+s.progress+"%' ></div></div></div></div>" }).join("");
+const done=spine.filter(s=>s.status==="completed").length,act=spine.filter(s=>s.status==="active").length;document.getElementById("spineFoot").innerHTML="<div class='sr' ><span>Completed</span><span class='sv '>"+done+"/"+spine.length+"</span></div><div class='sr' ><span>In Progress</span><span class='sv '>"+act+"</span></div><div class='sr' ><span>Remaining</span><span class='sv '>"+(spine.length-done-act)+"</span></div>"}
+function advStep(id){const s=spine.find(x=>x.id===id);if(!s||s.status!=="pending")return;s.status="active";s.progress=15;toast("Started: "+s.label);simulate(s);renderSpine()}
+function simulate(s){const stages=[{p:35,w:1200},{p:55,w:1500},{p:80,w:1000},{p:100,w:800}];let i=0;(function next(){if(i>=stages.length){s.status="completed";s.progress=100;renderSpine();toast("Complete: "+s.label);return}s.progress=stages[i].p;renderSpine();i++;setTimeout(next,stages[i-1].w)})()} 
+function switchTab(el){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b===el));const tab=el.dataset.tab;["orrery","map","model"].forEach(function(t){var el2=document.getElementById("tab-"+t);if(el2)el2.style.display=t==="orrery"?(tab==="orrery"?"block":"none"):"flex"});document.getElementById("tab-census").style.display=tab==="census"?"block":"none";if(tab==="orrery"&&!aId){draw(0)}}
+function toggleSpine(){document.getElementById("spinePanel").classList.toggle("hidden");setTimeout(resize,350)}
+function zIn(){zoom=Math.min(3,zoom*1.2)}function zOut(){zoom=Math.max(.3,zoom*.8)}function resetView(){zoom=1;panX=0;panY=0} 
+function updStat(t){document.getElementById("statText").textContent=t}
+function updCnt(){const mm=planets.reduce((s,p)=>s+(p.moons?.length||0),0),v=planets.filter(p=>p.v).length;document.getElementById("planetCnt").textContent=planets.length+" planets · "+mm+" moons · "+v+" verified"}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("show")},3500)}
+window.addEventListener("message",ev=>{const m=ev.data;if(m.type==="init"){planets=m.planets||planets;spine=m.spine||spine;if(m.brandConfig){applyBrand(m.brandConfig);}renderSpine();updCnt()}if(m.type==="refresh"&&m.planets){planets=m.planets;updCnt()}if(m.type==="inceptionComplete"){if(m.planets)planets=m.planets;if(m.spine)spine=m.spine;renderSpine();updCnt();updStat(m.message||"Inception complete")}});
+function applyBrand(brand){if(brand.colors){document.documentElement.style.setProperty("--cyan",brand.colors.primary||"#4fc3f7");document.documentElement.style.setProperty("--purple",brand.colors.secondary||"#ab47bc");document.documentElement.style.setProperty("--green",brand.colors.accent||"#66bb6a");}if(brand.fonts){document.body.style.fontFamily=brand.fonts;}}
+resize();genStars();requestAnimationFrame(function loop(t){for(const p of planets)p.angle=(p.angle||0)+p.spd*t*.06;draw(t)});
+</script></body></html>
