@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Launcher. Serves on 0.0.0.0 so a browser on another fleet machine can reach it.
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+exec node "$HERE/server.mjs" "$@"

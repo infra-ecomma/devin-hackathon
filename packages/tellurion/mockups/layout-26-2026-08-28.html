@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tellurion · 26 products on one plate</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230F1722'/%3E%3Cg%20transform='translate(8,7)%20skewX(-25)'%3E%3Crect%20x='0'%20y='0'%20width='4.5'%20height='18'%20fill='%23ffffff'/%3E%3Crect%20x='6.5'%20y='0'%20width='4.5'%20height='18'%20fill='%230077FF'/%3E%3Crect%20x='13'%20y='10'%20width='4.5'%20height='8'%20fill='%230077FF'/%3E%3C/g%3E%3C/svg%3E" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F5F7FB;--card:#FFF;--ink:#001033;--ink-70:rgba(0,16,51,.70);--ink-45:rgba(0,16,51,.60);
+--ink-28:rgba(0,16,51,.42);--line:rgba(0,16,51,.13);--line-faint:rgba(0,16,51,.065);--blue:#0077FF;
+--blue-deep:#0055CC;--blue-mid:rgba(0,119,255,.38);--live:#9DFF00;--amber:#D89000;--ghost:rgba(0,16,51,.20);
+--card-shadow:0 8px 28px rgba(0,16,51,.09),0 1px 3px rgba(0,16,51,.07);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:75%;min-width:1100px;max-width:1600px;margin:0 auto;padding:38px 0 90px}
+.mono{font-family:'JetBrains Mono',monospace}
+.masthead{display:flex;gap:18px;align-items:flex-start;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.masthead .mark{width:34px;height:38px;flex:none;margin-top:2px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.20em;color:var(--ink-45);text-transform:uppercase;margin:0 0 6px}
+h1{font-family:Orbitron,sans-serif;font-weight:700;font-size:25px;letter-spacing:.13em;margin:0}
+.lede{font-size:15px;line-height:1.62;color:var(--ink-70);max-width:80ch;margin:12px 0 0}
+.lede b{color:var(--ink);font-weight:600}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--card-shadow);margin:26px 0 0;overflow:hidden}
+.opt.bad{background:rgba(192,48,58,.03)}
+.ohead{padding:18px 26px 14px;border-bottom:1px solid var(--line-faint);display:flex;gap:16px;align-items:baseline}
+.oid{font-family:Orbitron,sans-serif;font-weight:700;font-size:22px;color:var(--blue);width:38px;flex:none}
+.opt.bad .oid{color:#C0303A}
+.ohead h2{font-family:Orbitron,sans-serif;font-size:17px;letter-spacing:.05em;margin:0 0 4px;font-weight:500}
+.ohead p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-70);max-width:80ch}
+.obody{display:grid;grid-template-columns:minmax(0,1fr) 320px}
+.plate{padding:12px 8px 14px 18px;border-right:1px solid var(--line-faint)}
+.side{padding:18px 24px}
+.side h3{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:0 0 7px}
+.side h3.no{color:#C0303A}
+.side ul{margin:0 0 16px;padding-left:16px}
+.side li{font-size:13px;line-height:1.55;color:var(--ink-70);margin-bottom:5px}
+.cost{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-45);border-top:1px solid var(--line-faint);padding-top:11px}
+.cost b{color:var(--ink)}
+.fb{padding:14px 26px 18px;border-top:1px solid var(--line-faint);background:rgba(0,119,255,.028)}
+.fb label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-28);display:block;margin-bottom:6px}
+.fb textarea{width:100%;min-height:44px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-family:Inter,sans-serif;font-size:13.5px;color:var(--ink);background:var(--card);resize:vertical}
+.bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:13px 24px;display:flex;justify-content:space-between;align-items:center;margin-top:10px;border-radius:12px 12px 0 0;box-shadow:0 -6px 22px rgba(0,16,51,.06)}
+.bar .n{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-45)}
+button{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--blue);background:var(--blue);color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <svg class="mark" viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
+    <div>
+      <p class="eyebrow">Tellurion &middot; layout decision &middot; 2026-08-28</p>
+      <h1>26 PRODUCTS, ONE PLATE</h1>
+      <p class="lede">Maximus Desktop declares <b>26 products</b>. Drawn the way the plate draws them today, their
+      names sit on top of each other and the plate stops being readable. Below are the same 26 real names, drawn
+      four ways. <b>Option A is what it does now, so you can see what is broken.</b> Nothing is hidden in any
+      option: every product is on every plate. What changes is where its name goes.</p>
+    </div>
+  </div>
+  <div id="opts"></div>
+  <div class="bar"><span class="n" id="cnt">no notes yet</span><button onclick="copyAll()">Copy my notes</button></div>
+</div>
+<script>
+const NAMES = ["Multi-platform command","Shared cross-platform context","Shared creative library","Strategy section","The marketing repository / library","Embedded dashboard","Settings: the Maximus control surface","Scheduler","Stakeholders","Experiments","Pin a Visual","Brain-use verification","Situation Room","Access Manager","Timeline","Voice","Completion verification","Subagents","Turn reliability","Thinking transparency","Context receipt","The Nuke boost","Outward messages","The complaint rail","Quality Standards","Visible learning"];
+const CX=330, CY=300, W=700, H=600;
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const short=s=>s.length>26?s.slice(0,25)+'…':s;
+
+function body(x,y,r,live){
+  let s=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="var(--ink-28)" stroke-width="1"/>`;
+  for(let i=-1;i<=1;i++){const dy=i*(r*0.42),h=Math.sqrt(Math.max(0,r*r-dy*dy))-2;
+    if(h>2)s+=`<line x1="${x-h}" y1="${y+dy}" x2="${x+h}" y2="${y+dy}" stroke="var(--blue-mid)" stroke-width="${i===0?2:1.1}" opacity="${i===0?.85:.5}"/>`;}
+  if(live)s+=`<circle cx="${x}" cy="${y}" r="${r+5}" fill="none" stroke="var(--live)" stroke-width="2.6" opacity=".85"/>`;
+  return s;
+}
+const shell=inner=>`<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;display:block;margin:0 auto">
+  <circle cx="${CX}" cy="${CY}" r="248" fill="none" stroke="var(--line)"/>${inner}
+  <circle cx="${CX}" cy="${CY}" r="24" fill="#001033"/></svg>`;
+
+// A — today: one ring, names centred under each planet
+function optA(){let s='';const R=118;
+  s+=`<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="var(--line-faint)" stroke-dasharray="3 6"/>`;
+  NAMES.forEach((n,i)=>{const a=(-90+i*360/NAMES.length)*Math.PI/180,x=CX+R*Math.cos(a),y=CY+R*Math.sin(a);
+    s+=body(x,y,15,i===9);
+    s+=`<text class="mono" x="${x}" y="${y+27}" font-size="9" fill="var(--ink-70)" text-anchor="middle">${esc(short(n))}</text>`;});
+  return shell(s);}
+
+// B — three rings
+function optB(){let s='';const rings=[[6,86],[9,150],[11,214]];let k=0;
+  rings.forEach(([n,R])=>{s+=`<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="var(--line-faint)" stroke-dasharray="3 6"/>`;
+    for(let i=0;i<n;i++){const a=(-90+i*360/n+(R===150?18:R===214?9:0))*Math.PI/180;
+      const x=CX+R*Math.cos(a),y=CY+R*Math.sin(a);const nm=NAMES[k++];if(!nm)break;
+      s+=body(x,y,13,k===10);
+      s+=`<text class="mono" x="${x}" y="${y+24}" font-size="8.5" fill="var(--ink-70)" text-anchor="middle">${esc(short(nm))}</text>`;}});
+  return shell(s);}
+
+// C — one ring, names set radially outward like spokes
+function optC(){let s='';const R=112;
+  s+=`<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="var(--line-faint)" stroke-dasharray="3 6"/>`;
+  NAMES.forEach((n,i)=>{const deg=-90+i*360/NAMES.length,a=deg*Math.PI/180;
+    const x=CX+R*Math.cos(a),y=CY+R*Math.sin(a);
+    s+=body(x,y,13,i===9);
+    const left=Math.cos(a)<0, lx=CX+(R+20)*Math.cos(a), ly=CY+(R+20)*Math.sin(a);
+    const rot=left?deg+180:deg;
+    s+=`<text class="mono" x="${lx}" y="${ly}" font-size="9" fill="var(--ink-70)" text-anchor="${left?'end':'start'}" dominant-baseline="middle" transform="rotate(${rot} ${lx} ${ly})">${esc(n)}</text>`;});
+  return shell(s);}
+
+// D — grouped wedges, needs a grouping the plan does not carry today
+function optD(){let s='';const groups=[['Talking to it',0,6],['The library',6,12],['Running the work',12,18],['Trust and proof',18,26]];
+  const R=120;
+  groups.forEach(([title,a0,a1],gi)=>{
+    const d0=-90+a0*360/26, d1=-90+a1*360/26, mid=(d0+d1)/2;
+    const p0=[CX+236*Math.cos(d0*Math.PI/180),CY+236*Math.sin(d0*Math.PI/180)];
+    const p1=[CX+236*Math.cos(d1*Math.PI/180),CY+236*Math.sin(d1*Math.PI/180)];
+    s+=`<path d="M ${p0[0]} ${p0[1]} A 236 236 0 0 1 ${p1[0]} ${p1[1]}" fill="none" stroke="var(--amber)" stroke-width="2.4" opacity=".75"/>`;
+    const lp=[CX+254*Math.cos(mid*Math.PI/180),CY+254*Math.sin(mid*Math.PI/180)];
+    s+=`<text class="mono" x="${lp[0]}" y="${lp[1]}" font-size="9.5" letter-spacing="1.2" fill="var(--amber)" text-anchor="middle" dominant-baseline="middle">${title.toUpperCase()}</text>`;
+    for(let i=a0;i<a1;i++){const deg=-90+(i+.5)*360/26,a=deg*Math.PI/180;
+      const rr=R+((i-a0)%2)*38, x=CX+rr*Math.cos(a),y=CY+rr*Math.sin(a);
+      s+=body(x,y,12,i===9);
+      const left=Math.cos(a)<0,lx=CX+(rr+18)*Math.cos(a),ly=CY+(rr+18)*Math.sin(a);
+      s+=`<text class="mono" x="${lx}" y="${ly}" font-size="8.5" fill="var(--ink-70)" text-anchor="${left?'end':'start'}" dominant-baseline="middle" transform="rotate(${left?deg+180:deg} ${lx} ${ly})">${esc(short(NAMES[i]))}</text>`;}});
+  return shell(s);}
+
+const OPTS=[
+ {id:'A',bad:true,title:'What it does today',
+  d:'One orbit, 26 planets, each name centred underneath it. This is the current renderer, drawn with the real 26 names.',
+  svg:optA,
+  yes:[], no:['Names overlap from about 12 products onward, and at 26 they are unreadable.','You cannot tell which name belongs to which planet.','Truncating to fit loses the part that distinguishes them.'],
+  cost:'Change needed: <b>none</b>. This is the baseline.'},
+ {id:'B',title:'Three orbits instead of one',
+  d:'The same 26 planets spread over three rings, 6 inner, 9 middle, 11 outer. Names stay centred underneath.',
+  svg:optB,
+  yes:['Three times the room, so names stop colliding at this count.','No new information needed: it only changes where a planet sits.','Keeps the orrery reading as orbits.'],
+  no:['A ring now means nothing. A planet on the inner ring is not more important, it just fit there.','Breaks down again past roughly 40 products.'],
+  cost:'Change needed: <b>the plate&rsquo;s seating only</b>. No new data from you.'},
+ {id:'C',title:'Names set radially, like spokes',
+  d:'One orbit, and each name runs outward from its own planet instead of sitting under it. Full names, nothing truncated.',
+  svg:optC,
+  yes:['Names cannot collide: each runs along its own spoke.','Full names survive, so "Shared cross-platform context" stays readable.','Scales to roughly 40 products before the spokes crowd.'],
+  no:['Half the names read right-to-left unless flipped, which is done here.','The plate needs more empty space around it for the longest names.'],
+  cost:'Change needed: <b>the plate&rsquo;s label placement only</b>. No new data from you.'},
+ {id:'D',title:'Grouped into named regions',
+  d:'Products sit inside a labelled wedge: Talking to it, The library, Running the work, Trust and proof. Two staggered radii inside each wedge.',
+  svg:optD,
+  yes:['You can find a product by category instead of scanning 26 names.','The plate says something about how the app is organised, not just what is in it.','Handles far more than 40 products.'],
+  no:['The groups shown here are MY invention, not read from anything. The plan file carries no grouping.','Wrong groups are worse than none: they assert a structure the product does not have.'],
+  cost:'Change needed: the plate, <b>plus a group per product in the plan file</b>, which you would have to declare.'},
+];
+
+document.getElementById('opts').innerHTML=OPTS.map(o=>`
+<div class="opt ${o.bad?'bad':''}" id="o${o.id}">
+  <div class="ohead"><div class="oid">${o.id}</div><div><h2>${o.title}</h2><p>${o.d}</p></div></div>
+  <div class="obody">
+    <div class="plate">${o.svg()}</div>
+    <div class="side">
+      ${o.yes.length?`<h3>What it gives you</h3><ul>${o.yes.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+      <h3 class="no">What it costs you</h3><ul>${o.no.map(x=>`<li>${x}</li>`).join('')}</ul>
+      <div class="cost">${o.cost}</div>
+    </div>
+  </div>
+  <div class="fb"><label>Your note on ${o.id}</label><textarea data-o="${o.id}" placeholder="What is wrong or right about this one?"></textarea></div>
+</div>`).join('');
+
+const KEY='tellurion-layout-26';
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return{}}};
+const saved=load();
+document.querySelectorAll('textarea').forEach(t=>{if(saved[t.dataset.o])t.value=saved[t.dataset.o];
+ t.addEventListener('input',()=>{const a=load();a[t.dataset.o]=t.value;if(!t.value.trim())delete a[t.dataset.o];
+ try{localStorage.setItem(KEY,JSON.stringify(a))}catch{};cnt();});});
+function cnt(){const n=Object.keys(load()).length;document.getElementById('cnt').textContent=n?`${n} of 4 options have a note`:'no notes yet';}
+function copyAll(){const a=load();const t=OPTS.filter(o=>a[o.id]).map(o=>`OPTION ${o.id} — ${o.title}\n${a[o.id]}`).join('\n\n')||'(no notes)';
+ navigator.clipboard.writeText(t).then(()=>{const b=event.target,o=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=o,1300);});}
+cnt();
+</script>
+</body>
+</html>

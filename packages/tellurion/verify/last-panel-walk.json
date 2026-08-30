@@ -1,0 +1,61 @@
+{
+  "at": "2026-08-29T21:44:56.520Z",
+  "totalFails": 0,
+  "steps": [
+    {
+      "n": 1,
+      "name": "P1: a live instrument watching THIS folder gets framed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 2,
+      "name": "P4: the frame src is carried verbatim",
+      "ok": true,
+      "detail": "http://127.0.0.1:8890/"
+    },
+    {
+      "n": 3,
+      "name": "P2: a dead port shows the unreachable card, naming the URL",
+      "ok": true,
+      "detail": "The instrument is not answering  Nothing is serving http://127.0.0.1:8990 — the server stopped, or this window's connect"
+    },
+    {
+      "n": 4,
+      "name": "P2: no frame is left up against a dead port",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 5,
+      "name": "P3: another project's instrument on the port shows the mismatch card",
+      "ok": true,
+      "detail": "This port is serving a different project  The instrument at http://127.0.0.1:8890 is watching /tmp/panel-walk-JyjbTJ, no"
+    },
+    {
+      "n": 6,
+      "name": "P3: the card names what IS being watched",
+      "ok": true,
+      "detail": "This port is serving a different project  The instrument at http://127.0.0.1:8890 is watching /tmp/panel-walk-JyjbTJ, not this folder (/home/wassim/projects/som"
+    },
+    {
+      "n": 7,
+      "name": "P5: the CSP carries connect-src for the instrument origin",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 8,
+      "name": "P5: /api/identity answers CORS-open (a webview-origin probe can read it)",
+      "ok": true,
+      "detail": "acao=*"
+    },
+    {
+      "n": 9,
+      "name": "P5: /api/identity carries identity and nothing sensitive",
+      "ok": true,
+      "detail": "keys=ok,instrument,project,root,pid,version,startedAt"
+    }
+  ],
+  "srvLogTail": "tellurion  project=panel-walk  root=/tmp/panel-walk-JyjbTJ  mode=genesis\n               entities: 0 planets, 0 features, 60 tools, 13 processes, 15 workflows, 0 milestones\n               scanned 0 files in 1ms, watching 1 directories\n               transcripts: none yet — re-checking every 15s\n               http://127.0.0.1:8890\n"
+}

@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tellurion · Maximus Desktop journey</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230F1722'/%3E%3Cg%20transform='translate(8,7)%20skewX(-25)'%3E%3Crect%20x='0'%20y='0'%20width='4.5'%20height='18'%20fill='%23ffffff'/%3E%3Crect%20x='6.5'%20y='0'%20width='4.5'%20height='18'%20fill='%230077FF'/%3E%3Crect%20x='13'%20y='10'%20width='4.5'%20height='8'%20fill='%230077FF'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F7FB; --card:#FFFFFF; --ink:#001033;
+  --ink-70:rgba(0,16,51,.70); --ink-45:rgba(0,16,51,.60); --ink-28:rgba(0,16,51,.42);
+  --line:rgba(0,16,51,.13); --line-faint:rgba(0,16,51,.065);
+  --blue:#0077FF; --blue-deep:#0055CC; --blue-soft:rgba(0,119,255,.09); --blue-mid:rgba(0,119,255,.38);
+  --live:#9DFF00; --live-ink:#4F8A00;
+  --ghost:rgba(0,16,51,.20); --amber:#D89000; --purple:#7C4DEF; --pink:#E0348B;
+  --card-shadow:0 8px 28px rgba(0,16,51,.09),0 1px 3px rgba(0,16,51,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:75%;min-width:1100px;max-width:1600px;margin:0 auto;padding:38px 0 90px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.disp{font-family:Orbitron,sans-serif}
+
+.masthead{display:flex;align-items:flex-start;gap:18px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.masthead .mark{width:34px;height:38px;flex:none;margin-top:2px}
+.masthead h1{font-family:Orbitron,sans-serif;font-weight:700;font-size:26px;letter-spacing:.14em;margin:0}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.20em;color:var(--ink-45);text-transform:uppercase;margin:0 0 6px}
+.lede{font-size:15px;line-height:1.62;color:var(--ink-70);max-width:76ch;margin:12px 0 0}
+.lede b{color:var(--ink);font-weight:600}
+
+/* the two families, stated once at the top because it is the thing under review */
+.families{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:26px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);box-shadow:var(--card-shadow)}
+.fam{padding:20px 24px}
+.fam + .fam{border-left:1px solid var(--line-faint);background:rgba(0,16,51,.018)}
+.fam h3{font-family:Orbitron,sans-serif;font-size:14px;letter-spacing:.09em;margin:0 0 3px;font-weight:500}
+.fam .who{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.fam.b .who{color:var(--purple)}
+.fam p{font-size:13.5px;line-height:1.6;color:var(--ink-70);margin:0 0 12px}
+.famrow{display:flex;gap:16px;flex-wrap:wrap}
+.famrow .fi{display:flex;gap:9px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-70)}
+
+.legend{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--card-shadow);padding:22px 26px;margin:22px 0 34px}
+.legend h2{font-family:Orbitron,sans-serif;font-size:16px;letter-spacing:.10em;margin:0 0 4px}
+.legend p.sub{font-size:13.5px;color:var(--ink-45);margin:0 0 18px}
+.legrow{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 26px}
+.legitem{display:flex;gap:12px;align-items:flex-start}
+.legitem svg{flex:none;margin-top:1px}
+.legitem .lt{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:3px}
+.legitem .ld{font-size:12.5px;line-height:1.5;color:var(--ink-45)}
+
+.frame{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--card-shadow);margin:0 0 30px;overflow:hidden}
+.fhead{display:flex;gap:18px;align-items:baseline;padding:20px 26px 16px;border-bottom:1px solid var(--line-faint)}
+.fnum{font-family:Orbitron,sans-serif;font-weight:700;font-size:30px;color:var(--blue);line-height:1;flex:none;width:52px}
+.fhead h3{font-family:Orbitron,sans-serif;font-size:19px;letter-spacing:.04em;margin:0 0 5px;font-weight:500}
+.fhead .happened{font-size:14px;color:var(--ink-70);line-height:1.55;margin:0;max-width:80ch}
+
+/* the census strip: the two families kept visibly apart */
+.census{display:flex;align-items:center;gap:0;padding:11px 26px;border-bottom:1px solid var(--line-faint);background:rgba(0,119,255,.03)}
+.cgrp{display:flex;gap:20px}
+.cgrp + .cgrp{margin-left:22px;padding-left:22px;border-left:1px solid var(--line)}
+.cell{display:flex;flex-direction:column;gap:1px}
+.cell .num{font-family:Orbitron,sans-serif;font-weight:700;font-size:17px;line-height:1;color:var(--blue)}
+.cgrp.standing .cell .num{color:var(--ink-28);font-weight:500}
+.cell .lab{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-28)}
+.censlab{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-28)}
+
+.fbody{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:0}
+.plateCell{padding:14px 10px 6px 18px;border-right:1px solid var(--line-faint)}
+.plateCap{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--ink-28);text-transform:uppercase;padding:0 0 4px 10px}
+.plateCap .capproj{font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:.14em;color:var(--ink);margin-left:12px}
+.plateCap .caphub{color:var(--ink-45);margin-left:10px;text-transform:none;letter-spacing:.04em}
+.ticker{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-45);padding:6px 0 10px 10px;display:flex;gap:9px;align-items:center}
+.ticker .dot{width:6px;height:6px;border-radius:50%;background:var(--live);flex:none;box-shadow:0 0 0 3px rgba(157,255,0,.25)}
+.ticker.idle .dot{background:var(--ghost);box-shadow:none}
+
+.spine{padding:16px 22px 18px}
+.spine h4{font-family:Orbitron,sans-serif;font-size:15px;letter-spacing:.10em;margin:0 0 7px;font-weight:500}
+.counts{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-45);line-height:1.7;margin-bottom:14px}
+.counts b{color:var(--ink);font-weight:500}
+.stepsdone{display:flex;align-items:baseline;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line-faint)}
+.stepsdone .big{font-family:Orbitron,sans-serif;font-size:26px;font-weight:700;color:var(--blue)}
+.stepsdone .lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:var(--ink-28);text-transform:uppercase}
+.phase{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-45);margin:16px 0 9px;padding-left:11px;border-left:2px solid var(--blue)}
+.phase:first-of-type{margin-top:0}
+.phase span{color:var(--ink-28);letter-spacing:.08em}
+.srow{display:flex;gap:11px;align-items:flex-start;padding:6px 0 6px 11px;font-size:13px;line-height:1.45}
+.srow .tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;flex:none;width:66px;padding-top:2px}
+.t-open{color:var(--ink-28)} .t-hand{color:var(--live-ink)}
+.t-claimed{color:var(--blue-mid)} .t-verified{color:var(--blue)} .t-accepted{color:var(--blue-deep);font-weight:500}
+.t-reached{color:var(--amber)}
+.srow .txt{color:var(--ink-70)}
+.srow.done .txt{color:var(--ink)}
+.srow.dim .txt{color:var(--ink-28)}
+.srow.mile .txt{color:var(--ink);font-weight:500}
+.emptyplan{border:1px dashed var(--line);border-radius:8px;padding:16px;font-size:13px;line-height:1.6;color:var(--ink-45)}
+.emptyplan b{display:block;font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:.06em;color:var(--ink);margin-bottom:7px;font-weight:500}
+
+.changed{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line-faint);background:rgba(0,119,255,.028)}
+.chg{padding:14px 26px 15px}
+.chg + .chg{border-left:1px solid var(--line-faint)}
+.chg .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:5px}
+.chg .v{font-size:13.5px;line-height:1.58;color:var(--ink-70)}
+.fb{padding:15px 26px 20px;border-top:1px solid var(--line-faint)}
+.fb label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-28);display:block;margin-bottom:7px}
+.fb textarea{width:100%;min-height:56px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:Inter,sans-serif;font-size:13.5px;line-height:1.55;color:var(--ink);background:var(--paper);resize:vertical}
+.fb textarea:focus{outline:none;border-color:var(--blue-mid);background:var(--card)}
+.fb textarea::placeholder{color:var(--ink-28)}
+
+.bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:14px 26px;display:flex;gap:14px;align-items:center;justify-content:space-between;box-shadow:0 -6px 22px rgba(0,16,51,.06);border-radius:12px 12px 0 0;margin-top:8px}
+.bar .n{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-45)}
+button{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--blue);background:var(--blue);color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer}
+button.ghost{background:transparent;color:var(--blue)}
+button:hover{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff}
+
+.alt{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--card-shadow);margin:26px 0 0;overflow:hidden}
+.alt .ahead{padding:20px 26px 14px;border-bottom:1px solid var(--line-faint)}
+.alt h2{font-family:Orbitron,sans-serif;font-size:16px;letter-spacing:.10em;margin:0 0 6px}
+.alt .ahead p{font-size:13.5px;line-height:1.6;color:var(--ink-70);margin:0;max-width:84ch}
+.altgrid{display:grid;grid-template-columns:1fr 1fr}
+.altcol{padding:18px 26px 22px}
+.altcol + .altcol{border-left:1px solid var(--line-faint)}
+.altcol.deferred{background:rgba(0,16,51,.03);opacity:.62}
+.altcol.chosen{background:rgba(0,119,255,.035);box-shadow:inset 3px 0 0 var(--blue)}
+.ruling{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:8px;margin-bottom:9px}
+.ruling.on{background:var(--blue);color:#fff}
+.ruling.off{background:transparent;color:var(--ink-28);border:1px solid var(--line)}
+.altcol h3{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:0 0 3px}
+.altcol .zn{font-family:Orbitron,sans-serif;font-size:15px;letter-spacing:.06em;margin:0 0 10px;font-weight:500}
+.altcol .zd{font-size:13px;line-height:1.55;color:var(--ink-70);margin:0 0 14px;min-height:62px}
+.ladder{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2;color:var(--ink-70);border-top:1px solid var(--line-faint);padding-top:12px}
+.ladder b{color:var(--ink);font-weight:500}
+.ladder .lv{color:var(--ink-28);display:inline-block;width:74px}
+.ladder .hit{color:var(--blue);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <svg class="mark" viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
+    <div>
+      <p class="eyebrow">Tellurion · Maximus Desktop · 2026-08-28</p>
+      <h1>MAXIMUS DESKTOP</h1>
+      <p class="lede">A real project this time: the <b>Maximus Reachimus desktop app</b>. Its own product spec calls sections 4.1 to 4.18 the <b>product pillars</b>, so three of them are used here as products: <b>Stations</b> (a chat per platform), <b>Creative Library</b> (the shared asset browser) and <b>Voice</b>. The capabilities under each are real shipped work. Numbers and dates are loose on purpose; what is under review is the shape.</p>
+    </div>
+  </div>
+
+
+  <div class="alt">
+    <div class="ahead">
+      <h2>TWO ZOOM LEVELS, ONE CHOSEN</h2>
+      <p>Pillar and product are the same word, so the word settles nothing. What needed settling was the ZOOM, and it now is: <b>project mode is what we are building.</b> Maximus Desktop is a planet in the estate view and the hub in its own view; both are correct, and the instrument has to say which map you are on. The estate zoom is parked, not discarded, and the ten frames below are all project mode.</p>
+    </div>
+    <div class="altgrid">
+      <div class="altcol deferred">
+        <span class="ruling off">parked for now</span>
+        <h3>Zoom out &middot; universe mode</h3>
+        <div class="zn">The estate</div>
+        <div class="zd">Everything you own on one plate. Maximus Desktop is one planet among many, and its pillars are not drawn at all: too deep to see from here.</div>
+        <svg viewBox="0 0 300 200" width="100%" style="max-width:300px;display:block;margin:0 auto 14px"><circle cx="150" cy="92" r="78" fill="none" stroke="var(--line)"/><circle cx="145.1" cy="20.6" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="154.9" cy="20.6" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="150.0" cy="40.0" r="11" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/><line x1="142.0" y1="40.0" x2="158.0" y2="40.0" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="150.0" y="69.0" font-size="8" fill="var(--ink-45)" text-anchor="middle">Shakeeb</text><circle cx="216.4" cy="65.2" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="219.4" cy="74.6" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="199.5" cy="75.9" r="11" fill="var(--card)" stroke="var(--blue)" stroke-width="1.8"/><line x1="191.5" y1="75.9" x2="207.5" y2="75.9" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="199.5" y="104.9" font-size="8" fill="var(--ink-45)" text-anchor="middle">Maximus Desktop</text><circle cx="196.0" cy="146.8" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="188.0" cy="152.7" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="180.6" cy="134.1" r="11" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/><line x1="172.6" y1="134.1" x2="188.6" y2="134.1" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="180.6" y="163.1" font-size="8" fill="var(--ink-45)" text-anchor="middle">Sentinel</text><circle cx="112.0" cy="152.7" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="104.0" cy="146.8" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="119.4" cy="134.1" r="11" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/><line x1="111.4" y1="134.1" x2="127.4" y2="134.1" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="119.4" y="163.1" font-size="8" fill="var(--ink-45)" text-anchor="middle">Zangetsu</text><circle cx="80.6" cy="74.6" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="83.6" cy="65.2" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="100.5" cy="75.9" r="11" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/><line x1="92.5" y1="75.9" x2="108.5" y2="75.9" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="100.5" y="104.9" font-size="8" fill="var(--ink-45)" text-anchor="middle">Tellurion</text><circle cx="150" cy="92" r="17" fill="#001033"/><text class="mono" x="150" y="190" font-size="8.5" letter-spacing="1" fill="var(--ink)" text-anchor="middle">THE ESTATE</text></svg>
+        <div class="ladder">
+          <span class="lv">hub</span><b>the estate</b><br/>
+          <span class="lv">planet</span><span class="hit">Maximus Desktop</span>, Shakeeb, Sentinel<br/>
+          <span class="lv">moon</span>a shipped capability of that product<br/>
+          <span class="lv">not drawn</span>Stations, Creative Library, Voice
+        </div>
+      </div>
+      <div class="altcol chosen">
+        <span class="ruling on">this is the one</span>
+        <h3>Zoom in &middot; project mode</h3>
+        <div class="zn">One app</div>
+        <div class="zd">One repo on one plate. Maximus Desktop becomes the hub, and the pillars it contains become the planets. Every frame below is this view.</div>
+        <svg viewBox="0 0 300 200" width="100%" style="max-width:300px;display:block;margin:0 auto 14px"><circle cx="150" cy="92" r="78" fill="none" stroke="var(--line)"/><circle cx="140.4" cy="22.4" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="150.0" cy="20.0" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="159.6" cy="22.4" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="150.0" cy="40.0" r="11" fill="var(--card)" stroke="var(--blue)" stroke-width="1.8"/><line x1="142.0" y1="40.0" x2="158.0" y2="40.0" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="150.0" y="69.0" font-size="8" fill="var(--ink-45)" text-anchor="middle">Stations</text><circle cx="215.0" cy="118.5" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="212.4" cy="128.0" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="205.4" cy="135.1" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="195.0" cy="118.0" r="11" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/><line x1="187.0" y1="118.0" x2="203.0" y2="118.0" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="195.0" y="147.0" font-size="8" fill="var(--ink-45)" text-anchor="middle">Creative Library</text><circle cx="94.6" cy="135.1" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="87.6" cy="128.0" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="85.0" cy="118.5" r="3.2" fill="var(--blue-deep)" opacity=".7"/><circle cx="105.0" cy="118.0" r="11" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/><line x1="97.0" y1="118.0" x2="113.0" y2="118.0" stroke="var(--blue-mid)" stroke-width="1.6" opacity=".7"/><text class="mono" x="105.0" y="147.0" font-size="8" fill="var(--ink-45)" text-anchor="middle">Voice</text><circle cx="150" cy="92" r="17" fill="#001033"/><text class="mono" x="150" y="190" font-size="8.5" letter-spacing="1" fill="var(--ink)" text-anchor="middle">MAXIMUS DESKTOP</text></svg>
+        <div class="ladder">
+          <span class="lv">hub</span><b>Maximus Desktop</b><br/>
+          <span class="lv">planet</span><span class="hit">Stations</span>, Creative Library, Voice<br/>
+          <span class="lv">moon</span>branching, square tiles, multi-attach<br/>
+          <span class="lv">not drawn</span>the rest of the estate
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="families">
+    <div class="fam a">
+      <div class="who">Project-specific · grows</div>
+      <h3>WHAT MAXIMUS DESKTOP IS BUILDING</h3>
+      <p>Starts at zero on a new repo and grows only when work lands. A product is a named surface a person opens; a feature is something that surface can now do.</p>
+      <div class="famrow">
+        <span class="fi"><svg width="22" height="22"><circle cx="11" cy="11" r="8" fill="#fff" stroke="rgba(0,16,51,.42)"/><line x1="4" y1="11" x2="18" y2="11" stroke="rgba(0,119,255,.38)" stroke-width="1.8"/></svg>products</span>
+        <span class="fi"><svg width="22" height="22"><circle cx="11" cy="11" r="5" fill="#0055CC"/><circle cx="11" cy="11" r="8" fill="none" stroke="#0055CC" stroke-width="1.5"/></svg>features</span>
+        <span class="fi"><svg width="22" height="22"><line x1="11" y1="3" x2="11" y2="19" stroke="#D89000" stroke-width="3"/></svg>milestones</span>
+      </div>
+    </div>
+    <div class="fam b">
+      <div class="who">Standing · identical on every project</div>
+      <h3>THE BENCH YOU ALREADY OWN</h3>
+      <p>Your tools, processes and workflows. Identical on Maximus Desktop and on everything else, so they sit in the outer belt and never change across these ten frames.</p>
+      <div class="famrow">
+        <span class="fi"><svg width="22" height="22"><rect x="6" y="6" width="4" height="4" fill="rgba(0,16,51,.42)"/><rect x="14" y="12" width="3" height="3" fill="none" stroke="rgba(0,16,51,.20)"/></svg>tools</span>
+        <span class="fi"><svg width="26" height="22"><line x1="3" y1="15" x2="16" y2="8" stroke="#E0348B" stroke-width="1.2" opacity=".5"/><circle cx="18" cy="7" r="3" fill="#E0348B"/></svg>processes</span>
+        <span class="fi"><svg width="26" height="22"><path d="M3 17 Q13 2 23 9" fill="none" stroke="#7C4DEF" stroke-width="1.8"/></svg>workflows</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <h2>THE FIVE STATES A FEATURE PASSES THROUGH</h2>
+    <p class="sub">Every frame below uses only these. If a state is wrong, missing, or one too many, that is the most useful thing you can tell me.</p>
+    <div class="legrow" id="legrow"></div>
+  </div>
+
+  <div id="frames"></div>
+
+  <div class="bar">
+    <span class="n" id="fbcount">no notes yet</span>
+    <span style="display:flex;gap:10px">
+      <button class="ghost" onclick="clearAll()">Clear notes</button>
+      <button onclick="copyAll()">Copy all my feedback</button>
+    </span>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Geometry. Fixed for every frame on purpose: the reader must see ONE
+   plate evolving, not ten plates that reshuffled between shots.
+
+   Two families, two zones, deliberately:
+     inside   the project's own things  (hub, product planets, feature moons)
+     outside  the standing bench        (tools, processes, workflows)
+   ============================================================ */
+const CX = 302, CY = 292, RIM = 240, ORBIT = 102, HUB = 26, PR = 22;
+const ANG = { stations: -90, creative: 30, voice: 150 };
+function pol(r, deg){ const a = deg * Math.PI/180; return { x: CX + r*Math.cos(a), y: CY + r*Math.sin(a) }; }
+const P = { stations: pol(ORBIT, ANG.stations), creative: pol(ORBIT, ANG.creative), voice: pol(ORBIT, ANG.voice) };
+
+/* Product sectors are reserved, so nothing from the bench is ever drawn on top
+   of a planet, its moons, or a moon's label. */
+const BUSY = [[240, 300], [0, 60], [120, 180]];
+const inBusy = d => { const x = ((d % 360) + 360) % 360; return BUSY.some(([a,b]) => x >= a && x <= b); };
+
+let seed = 11;
+const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+
+/* The standing bench is drawn at its REAL size: 60 tools, 13 processes and 15
+   workflows, the counts this repo actually carries in world-static.json. The
+   first version invented 54/6/3 to save space, which quietly made the census
+   strip, whose whole job is to be countable, a decoration. Only the first few
+   of each are labelled; the rest are drawn unlabelled so the density is honest
+   without turning the plate to mud. */
+const FREE = [[62, 118], [182, 238], [302, 358]];
+function freeAngle(){ return atFraction(rnd()); }
+function atFraction(f){
+  const w = FREE.map(([a,b]) => b-a), t = w.reduce((x,y)=>x+y,0);
+  let r = f * t;
+  for (let i = 0; i < FREE.length; i++){ if (r <= w[i]) return FREE[i][0] + r; r -= w[i]; }
+  return FREE[FREE.length-1][1];
+}
+const sectorEnd = d => (FREE.find(([a,b]) => d >= a && d <= b) || [0,360])[1];
+/* Labelled bench marks are spread EVENLY through the free sectors, not placed at
+   random. Random placement is fine for an unlabelled dot and useless for a label:
+   the first seed stacked five of them in one corner on top of each other. */
+function spread(i, n, off){ return atFraction((i + off) / n); }
+
+const TOOLS = [];
+while (TOOLS.length < 60){
+  const d = rnd()*360, r = 150 + rnd()*84;
+  if (inBusy(d) && r < 240) continue;
+  const q = pol(r, d);
+  TOOLS.push({ x:q.x, y:q.y, s: rnd() > .58 ? 3.4 : 2.5, hollow: rnd() > .5 });
+}
+
+const PROC_NAMES = ['ship to shares','verification protocol','escape log','troubleshooting ledger',
+  'features ledger','decision page','ship to vault','delegation routing','penta review','septa review',
+  'brand gate','tbk-autosync','canonical source'];
+const PROCS = PROC_NAMES.map((name, i) => ({
+  d: i < 5 ? spread(i, 5, .18) : freeAngle(),
+  r: i < 5 ? 200 + (i % 2) * 22 : 192 + rnd()*38,
+  len: 20 + rnd()*14, name, label: i < 5
+}));
+
+const FLOW_NAMES = ['real-user-walk','deep-audit','design-engine','apex','inception','gsd','omega-audit',
+  'fix','tribunal-panel','init-tbk','parallel-gsd','agentic-loop','brainstorm','rescue','ux-journey-mockup'];
+const FLOWS = FLOW_NAMES.map((name, i) => {
+  const lab = i < 4;
+  const a0 = lab ? spread(i, 4, .52) : freeAngle();
+  const a1 = Math.min(a0 + (lab ? 30 : 20 + rnd()*24), sectorEnd(a0));
+  return { a0, a1, r: lab ? 158 + (i % 2) * 26 : 150 + rnd()*46, name, label: lab };
+});
+
+const MILES = { firstrun: 330, shipped: 90 };
+
+/* ---------- marks ---------- */
+function moonMark(st, cx, cy, r){
+  if (st === 'open')     return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--ghost)" stroke-width="1.2" stroke-dasharray="2.5 2.5"/>`;
+  if (st === 'hand')     return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--live-ink)" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="${r+4}" fill="none" stroke="var(--live)" stroke-width="2.4" opacity=".8"/>`;
+  if (st === 'claimed')  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--blue-mid)"/>`;
+  if (st === 'verified') return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--blue)"/><circle cx="${cx}" cy="${cy}" r="${r+3.4}" fill="none" stroke="var(--blue-mid)" stroke-width="1"/>`;
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--blue-deep)"/><circle cx="${cx}" cy="${cy}" r="${r+3.8}" fill="none" stroke="var(--blue-deep)" stroke-width="1.7"/>`;
+}
+
+function planet(p){
+  const pos = P[p.id], base = Math.atan2(pos.y - CY, pos.x - CX);
+  let s = '';
+  if (p.arc > 0){
+    const rr = PR + 11, a0 = -Math.PI/2, a1 = a0 + p.arc*Math.PI*2, big = p.arc > .5 ? 1 : 0;
+    s += p.arc >= 1
+      ? `<circle cx="${pos.x}" cy="${pos.y}" r="${rr}" fill="none" stroke="var(--amber)" stroke-width="2.4"/>`
+      : `<path d="M ${pos.x + rr*Math.cos(a0)} ${pos.y + rr*Math.sin(a0)} A ${rr} ${rr} 0 ${big} 1 ${pos.x + rr*Math.cos(a1)} ${pos.y + rr*Math.sin(a1)}" fill="none" stroke="var(--amber)" stroke-width="2.4" stroke-linecap="round"/>`;
+  }
+  if (p.state === 'live') s += `<circle cx="${pos.x}" cy="${pos.y}" r="${PR + 5}" fill="none" stroke="var(--live)" stroke-width="3" opacity=".85"/>`;
+  if (p.state === 'planned'){
+    s += `<circle cx="${pos.x}" cy="${pos.y}" r="${PR}" fill="none" stroke="var(--ink-28)" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  } else {
+    s += `<circle cx="${pos.x}" cy="${pos.y}" r="${PR}" fill="var(--card)" stroke="var(--ink-28)" stroke-width="1"/>`;
+    for (let i = -1; i <= 1; i++){
+      const dy = i*8, half = Math.sqrt(Math.max(0, PR*PR - dy*dy)) - 2.5;
+      if (half > 3) s += `<line x1="${pos.x-half}" y1="${pos.y+dy}" x2="${pos.x+half}" y2="${pos.y+dy}" stroke="var(--blue-mid)" stroke-width="${i===0?2.2:1.3}" opacity="${i===0?.85:.5}"/>`;
+    }
+  }
+  const mr = PR + 30;
+  p.moons.forEach((m, i) => {
+    const spread = p.moons.length === 1 ? 0 : (i - (p.moons.length-1)/2) * 0.60;
+    const a = base + spread, mx = pos.x + mr*Math.cos(a), my = pos.y + mr*Math.sin(a);
+    s += `<line x1="${pos.x + (PR+3)*Math.cos(a)}" y1="${pos.y + (PR+3)*Math.sin(a)}" x2="${mx - 8*Math.cos(a)}" y2="${my - 8*Math.sin(a)}" stroke="var(--line)" stroke-width="1"/>`;
+    s += moonMark(m.state, mx, my, 6.5);
+    const right = Math.cos(a) >= 0;
+    s += `<text class="mono" x="${mx + (right ? 13 : -13)}" y="${my + 3.4}" font-size="9.5" fill="var(--ink-70)" text-anchor="${right ? 'start':'end'}">${m.name}</text>`;
+  });
+  // The caption goes on whichever side the moons are NOT on. Moons always fan
+  // outward from the hub, so a caption pinned under the planet lands on top of
+  // them for any product sitting in the lower half of the plate.
+  const capBelow = Math.sin(base) < 0;
+  const cyName = capBelow ? pos.y + PR + 32 : pos.y - PR - 32;
+  const cySub  = capBelow ? pos.y + PR + 45 : pos.y - PR - 19;
+  // ...and it runs AWAY from the hub horizontally, because a centred caption on a
+  // planet this close to the middle puts its first characters on the dark disc,
+  // where dark-blue text is simply invisible.
+  const outRight = pos.x >= CX, capX = outRight ? pos.x - 14 : pos.x + 14, anch = outRight ? 'start' : 'end';
+  s += `<text class="disp" x="${capX}" y="${cyName}" font-size="13" letter-spacing="1.8" fill="var(--ink)" text-anchor="${anch}">${p.name.toUpperCase()}</text>`;
+  s += `<text class="mono" x="${capX}" y="${cySub}" font-size="9.5" fill="var(--ink-45)" text-anchor="${anch}">${p.sub}</text>`;
+  return s;
+}
+
+function plate(f){
+  // The box is wider than the rim on both sides: milestone labels run outward on
+// the right, and a long process name like "troubleshooting ledger" runs outward
+// on the left, where a box tight to the rim cut its first character.
+  let s = `<svg viewBox="-46 30 710 540" width="100%" style="max-width:672px;display:block;margin:0 auto">`;
+  s += `<circle cx="${CX}" cy="${CY}" r="${RIM}" fill="none" stroke="var(--line)" stroke-width="1"/>`;
+  s += `<circle cx="${CX}" cy="${CY}" r="${ORBIT}" fill="none" stroke="var(--line-faint)" stroke-width="1" stroke-dasharray="3 6"/>`;
+
+  // ---- the standing bench, identical in all ten frames ----
+  FLOWS.forEach(w => {
+    const p0 = pol(w.r, w.a0), p1 = pol(w.r, w.a1), mid = pol(w.r + 13, (w.a0 + w.a1)/2);
+    s += `<path d="M ${p0.x} ${p0.y} A ${w.r} ${w.r} 0 0 1 ${p1.x} ${p1.y}" fill="none" stroke="var(--purple)" stroke-width="${w.label?1.7:1.1}" opacity="${w.label?.55:.28}"/>`;
+    if (w.label) s += `<text class="mono" x="${mid.x}" y="${mid.y}" font-size="8.5" fill="var(--purple)" opacity=".8" text-anchor="middle">${w.name}</text>`;
+  });
+  PROCS.forEach(pr => {
+    const h = pol(pr.r, pr.d), t = pol(pr.r - pr.len, pr.d - 5);
+    s += `<line x1="${t.x}" y1="${t.y}" x2="${h.x}" y2="${h.y}" stroke="var(--pink)" stroke-width="1.2" opacity="${pr.label?.38:.22}"/>`;
+    s += `<circle cx="${h.x}" cy="${h.y}" r="${pr.label?2.9:2.2}" fill="var(--pink)" opacity="${pr.label?.85:.5}"/>`;
+    if (pr.label){
+      const lp = pol(pr.r + 11, pr.d), right = Math.cos(pr.d*Math.PI/180) >= 0;
+      s += `<text class="mono" x="${lp.x}" y="${lp.y+3}" font-size="8" fill="var(--pink)" opacity=".75" text-anchor="${right?'start':'end'}">${pr.name}</text>`;
+    }
+  });
+  TOOLS.forEach(b => s += b.hollow
+    ? `<rect x="${b.x-b.s/2}" y="${b.y-b.s/2}" width="${b.s}" height="${b.s}" fill="none" stroke="var(--ghost)" stroke-width=".9"/>`
+    : `<rect x="${b.x-b.s/2}" y="${b.y-b.s/2}" width="${b.s}" height="${b.s}" fill="var(--ink-28)"/>`);
+
+  // ---- milestones on the rim ----
+  Object.entries(MILES).forEach(([k, deg]) => {
+    const hit = (f.miles || []).includes(k), a = deg*Math.PI/180;
+    const i1 = pol(RIM-11, deg), o1 = pol(RIM+11, deg), lp = pol(RIM+20, deg);
+    s += `<line x1="${i1.x}" y1="${i1.y}" x2="${o1.x}" y2="${o1.y}" stroke="${hit?'var(--amber)':'var(--ghost)'}" stroke-width="${hit?3.4:1.5}"/>`;
+    s += `<text class="mono" x="${lp.x}" y="${lp.y+3.5}" font-size="10" letter-spacing="1.2" fill="${hit?'var(--amber)':'var(--ink-28)'}" text-anchor="${Math.cos(a) < -0.2 ? 'end':'start'}">${k==='firstrun'?'FIRST INSTALL':'SHIPPED'}</text>`;
+  });
+  const nw = pol(RIM-22, -90);
+  s += `<text class="mono" x="${nw.x}" y="${nw.y}" font-size="10" letter-spacing="1.8" fill="var(--blue)" text-anchor="middle">NOW</text>`;
+
+  // ---- hub first, so a product caption is never clipped by the disc ----
+  s += `<circle cx="${CX}" cy="${CY}" r="${HUB}" fill="#001033"/><circle cx="${CX}" cy="${CY}" r="${HUB-9}" fill="#0A2050"/>`;
+  (f.planets || []).forEach(p => s += planet(p));
+  return s + `</svg>`;
+}
+
+function census(f){
+  const c = f.counts || { products:0, features:0, miles:0 };
+  const cell = (n, l) => `<span class="cell"><span class="num">${n}</span><span class="lab">${l}</span></span>`;
+  return `<div class="census">
+    <span class="cgrp">${cell(c.products,'products')}${cell(c.features,'features')}${cell(c.miles,'milestones')}</span>
+    <span class="cgrp standing">${cell(60,'tools')}${cell(13,'processes')}${cell(15,'workflows')}</span>
+    <span class="censlab">left: this project's own · right: standing bench, never changes</span>
+  </div>`;
+}
+
+function spine(f){
+  if (f.noPlan) return `<div class="spine"><h4>THE SPINE</h4>
+    <div class="counts">0 features · 0 open · 0 claimed · 0 verified · 0 accepted</div>
+    <div class="emptyplan"><b>NO PLAN DECLARED YET</b>The spine draws the plan you declare, and the plate draws the bodies that plan produces. Until one exists, this instrument can only show you the standing bench, which is the same on every project.</div></div>`;
+  const c = f.counts;
+  let s = `<div class="spine"><h4>THE SPINE</h4>
+    <div class="counts">${c.features} features · <b>${c.open}</b> open · <b>${c.claimed}</b> claimed · <b>${c.verified}</b> verified · <b>${c.accepted}</b> accepted</div>
+    <div class="stepsdone"><span class="big">${c.done}/${c.steps}</span><span class="lbl">plan steps done</span></div>`;
+  f.spine.forEach(g => {
+    s += `<div class="phase">${g.phase} <span>· product</span></div>`;
+    g.rows.forEach(r => {
+      const cls = (r.tag === 'accepted' || r.tag === 'reached') ? 'done' : r.tag === 'open' ? 'dim' : '';
+      const tcls = r.tag === 'in hand' ? 't-hand' : 't-' + r.tag;
+      s += `<div class="srow ${cls} ${r.mile && r.tag === 'reached' ? 'mile' : ''}"><span class="tag mono ${tcls}">${r.tag}</span><span class="txt">${r.t}</span></div>`;
+    });
+  });
+  return s + `</div>`;
+}
+
+/* ============================================================
+   THE TEN STEPS
+   Maximus Desktop (project) -> Stations, Creative Library, Voice (products,
+   its own spec's "product pillars") -> the capabilities under each (features).
+   ============================================================ */
+const pl = (id, name, sub, state, moons, arc) => ({ id, name, sub, state, moons, arc: arc || 0 });
+const F = [
+{
+  n:1, title:'The project is created',
+  happened:'Tellurion is pointed at the Maximus Desktop repo before anything exists in it. Nothing is planned and nothing is built, but your bench is already there.',
+  hub:'no plan declared', noPlan:true, planets:[], miles:[],
+  counts:{products:0,features:0,miles:0},
+  event:null, eventTxt:'nothing has happened yet',
+  plate:'An empty middle. Everything visible is the standing bench: tools as squares, processes as pink streaks, workflows as purple arcs. None of it belongs to Maximus Desktop.',
+  spineC:'No plan exists, so the spine says so and names the one file that changes it.'
+},
+{
+  n:2, title:'The plan is declared',
+  happened:'A plan names three of the app\'s product pillars, Stations, Creative Library and Voice, with the capabilities each is meant to gain, and two milestones.',
+  hub:'0 of 7 steps',
+  planets:[ pl('stations','Stations','2 features · planned','planned',[]), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:[],
+  counts:{products:3,features:7,miles:2,open:7,claimed:0,verified:0,accepted:0,done:0,steps:7},
+  event:null, eventTxt:'plan declared, nothing built',
+  spine:[{phase:'Stations', rows:[{tag:'open',t:'forks a conversation at any reply into its own window'},{tag:'open',t:'keeps an unsent draft for every platform separately'},{tag:'open',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'Three product planets appear as dashed outlines, all at once, because the plan promised all three. Promised, not built.',
+  spineC:'Every capability listed under the product it belongs to. This is the whole plan before any work starts.'
+},
+{
+  n:3, title:'Work begins on the first capability',
+  happened:'The first capability of the first product is picked up: conversation branching, under Stations. Files start changing.',
+  hub:'0 of 7 steps',
+  planets:[ pl('stations','Stations','0 of 2 · live','live',[{state:'hand',name:'branching'}]), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:[],
+  counts:{products:3,features:7,miles:2,open:7,claimed:0,verified:0,accepted:0,done:0,steps:7},
+  event:'live', eventTxt:'12:41:08  edit  ui/src/chat/branch.tsx',
+  spine:[{phase:'Stations', rows:[{tag:'in hand',t:'forks a conversation at any reply into its own window'},{tag:'open',t:'keeps an unsent draft for every platform separately'},{tag:'open',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'Stations wakes: a solid body and a lime halo, meaning work is happening on it right now. A hollow moon appears for the capability in hand. The other two products are untouched.',
+  spineC:'One row moves from open to in hand. Lime is the only colour that means now.'
+},
+{
+  n:4, title:'The builder says it is done',
+  happened:'Branching is finished and claimed. One tier of three, and the only tier a plan file can grant by itself.',
+  hub:'0 of 7 steps',
+  planets:[ pl('stations','Stations','0 of 2 · claimed','quiet',[{state:'claimed',name:'branching'}]), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:[],
+  counts:{products:3,features:7,miles:2,open:6,claimed:1,verified:0,accepted:0,done:0,steps:7},
+  event:null, eventTxt:'12:58:30  claim  branching',
+  spine:[{phase:'Stations', rows:[{tag:'claimed',t:'forks a conversation at any reply into its own window'},{tag:'open',t:'keeps an unsent draft for every platform separately'},{tag:'open',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'The moon fills in, but only part way. The lime halo goes out because nothing is being typed any more.',
+  spineC:'Claimed, not done. The steps-done counter deliberately does not move.'
+},
+{
+  n:5, title:'A judge passes it',
+  happened:'An independent check drives the real branch window and passes it. Second tier of three.',
+  hub:'0 of 7 steps',
+  planets:[ pl('stations','Stations','0 of 2 · verified','quiet',[{state:'verified',name:'branching'}]), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:[],
+  counts:{products:3,features:7,miles:2,open:6,claimed:0,verified:1,accepted:0,done:0,steps:7},
+  event:null, eventTxt:'13:04:11  verdict  pass',
+  spine:[{phase:'Stations', rows:[{tag:'verified',t:'forks a conversation at any reply into its own window'},{tag:'open',t:'keeps an unsent draft for every platform separately'},{tag:'open',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'The moon goes full colour and picks up a thin ring. Still not the full ring.',
+  spineC:'The count moves out of claimed and into verified. They are separate states, not a running total.'
+},
+{
+  n:6, title:'You accept it',
+  happened:'You use it in the installed app and accept it. Third tier, and only now does the plan step count as done.',
+  hub:'1 of 7 steps',
+  planets:[ pl('stations','Stations','1 of 2 · accepted','quiet',[{state:'accepted',name:'branching'}],0.5), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:[],
+  counts:{products:3,features:7,miles:2,open:6,claimed:0,verified:0,accepted:1,done:1,steps:7},
+  event:null, eventTxt:'13:20:45  accept  branching',
+  spine:[{phase:'Stations', rows:[{tag:'accepted',t:'forks a conversation at any reply into its own window'},{tag:'open',t:'keeps an unsent draft for every platform separately'},{tag:'open',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'Full ring on the moon, and an amber arc starts around Stations showing the product is half accepted.',
+  spineC:'Now the counter moves: 1 of 7. Three tiers, three different parties, and only the third one counts.'
+},
+{
+  n:7, title:'The second capability of the same product',
+  happened:'Work starts on per-station drafts, the other capability Stations is meant to have. The first one stays exactly where it was.',
+  hub:'1 of 7 steps',
+  planets:[ pl('stations','Stations','1 of 2 · live','live',[{state:'accepted',name:'branching'},{state:'hand',name:'per-station draft'}],0.5), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:[],
+  counts:{products:3,features:7,miles:2,open:6,claimed:0,verified:0,accepted:1,done:1,steps:7},
+  event:'live', eventTxt:'14:02:19  edit  ui/src/chat/draftStore.ts',
+  spine:[{phase:'Stations', rows:[{tag:'accepted',t:'forks a conversation at any reply into its own window'},{tag:'in hand',t:'keeps an unsent draft for every platform separately'},{tag:'open',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'A second moon joins the same planet. One finished, one in hand, side by side on one product. This is the frame that shows a product is a collection of capabilities, not a single thing.',
+  spineC:'Two rows of the same product in two different states, under the one Stations heading.'
+},
+{
+  n:8, title:'The product hits its milestone',
+  happened:'Per-station drafts go through the same three tiers and are accepted, which completes Stations and fires its milestone, First install on Legion.',
+  hub:'2 of 7 steps',
+  planets:[ pl('stations','Stations','2 of 2 · complete','quiet',[{state:'accepted',name:'branching'},{state:'accepted',name:'per-station draft'}],1), pl('creative','Creative Library','3 features · planned','planned',[]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:['firstrun'],
+  counts:{products:3,features:7,miles:2,open:5,claimed:0,verified:0,accepted:2,done:2,steps:7},
+  event:null, eventTxt:'16:33:02  milestone  First install on Legion',
+  spine:[{phase:'Stations', rows:[{tag:'accepted',t:'forks a conversation at any reply into its own window'},{tag:'accepted',t:'keeps an unsent draft for every platform separately'},{tag:'reached',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'open',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'The amber arc closes all the way around Stations, and the FIRST INSTALL tick on the rim lights up. Milestones live on the rim, so progress reads from the edge.',
+  spineC:'The milestone row goes to reached. A milestone is earned by the capabilities under it, never declared on its own.'
+},
+{
+  n:9, title:'On to the second product',
+  happened:'Stations is done, so work moves to Creative Library and its first capability, the square-tile grid. Same three tiers again, on a different planet.',
+  hub:'2 of 7 steps',
+  planets:[ pl('stations','Stations','2 of 2 · complete','quiet',[{state:'accepted',name:'branching'},{state:'accepted',name:'per-station draft'}],1), pl('creative','Creative Library','0 of 3 · live','live',[{state:'hand',name:'square tiles'},{state:'open',name:'multi-attach'},{state:'open',name:'folder search'}]), pl('voice','Voice','2 features · planned','planned',[]) ], miles:['firstrun'],
+  counts:{products:3,features:7,miles:2,open:5,claimed:0,verified:0,accepted:2,done:2,steps:7},
+  event:'live', eventTxt:'09:14:55  edit  ui/src/creative/grid.tsx',
+  spine:[{phase:'Stations', rows:[{tag:'accepted',t:'forks a conversation at any reply into its own window'},{tag:'accepted',t:'keeps an unsent draft for every platform separately'},{tag:'reached',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'in hand',t:'shows creatives as large square tiles instead of a list'},{tag:'open',t:'attaches several creatives at once without sending'},{tag:'open',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'open',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'The lime halo moves across the plate to Creative Library, which now shows all three of its moons: one in hand, two still open. Stations stays drawn in full and keeps its closed arc, but goes quiet. Finished work does not disappear, it stops glowing.',
+  spineC:'The active row is now under the second product. The first stays on screen, complete, as the record of what was already earned.'
+},
+{
+  n:10, title:'Three products, three different states',
+  happened:'Creative Library finishes all three of its capabilities, and Voice has just been started. Nothing has shipped yet, because the last milestone is still unearned.',
+  hub:'5 of 7 steps',
+  planets:[ pl('stations','Stations','2 of 2 · complete','quiet',[{state:'accepted',name:'branching'},{state:'accepted',name:'per-station draft'}],1), pl('creative','Creative Library','3 of 3 · complete','quiet',[{state:'accepted',name:'square tiles'},{state:'accepted',name:'multi-attach'},{state:'accepted',name:'folder search'}],1), pl('voice','Voice','0 of 2 · live','live',[{state:'hand',name:'speaks a reply'},{state:'open',name:'spoken turn'}]) ], miles:['firstrun'],
+  counts:{products:3,features:7,miles:2,open:2,claimed:0,verified:0,accepted:5,done:5,steps:7},
+  event:'live', eventTxt:'11:47:31  edit  ui/src/voice/speak.ts',
+  spine:[{phase:'Stations', rows:[{tag:'accepted',t:'forks a conversation at any reply into its own window'},{tag:'accepted',t:'keeps an unsent draft for every platform separately'},{tag:'reached',t:'First install on Legion',mile:true}]},{phase:'Creative Library', rows:[{tag:'accepted',t:'shows creatives as large square tiles instead of a list'},{tag:'accepted',t:'attaches several creatives at once without sending'},{tag:'accepted',t:'walks folders by breadcrumb and searches every level'}]},{phase:'Voice', rows:[{tag:'in hand',t:'speaks a reply out loud when asked'},{tag:'open',t:'takes a spoken instruction as a turn'},{tag:'open',t:'Windows installer ships',mile:true}]}],
+  plate:'This is the frame worth arguing with. Two closed planets and one lit, five ringed moons, one milestone earned and one still grey. Compare it against frame 1: the bench is identical, and everything in the middle was earned by a step you watched happen.',
+  spineC:'5 of 7, with the remaining two under the product still in flight. The SHIPPED milestone stays grey because a milestone is never declared, only earned.'
+}];
+
+/* ---------- legend ---------- */
+const LEG = [
+ ['planned','A product or feature named in the plan and not yet started.','<svg width="34" height="34"><circle cx="17" cy="17" r="12" fill="none" stroke="rgba(0,16,51,.42)" stroke-width="1.5" stroke-dasharray="5 5"/></svg>'],
+ ['in hand','Being worked on right now. Lime is the only colour that means now.','<svg width="34" height="34"><circle cx="17" cy="17" r="7" fill="none" stroke="var(--live-ink)" stroke-width="1.5"/><circle cx="17" cy="17" r="11" fill="none" stroke="var(--live)" stroke-width="2.4" opacity=".8"/></svg>'],
+ ['claimed','The builder says it is done. One tier of three.','<svg width="34" height="34"><circle cx="17" cy="17" r="7.5" fill="var(--blue-mid)"/></svg>'],
+ ['verified','A judge passed it. Two tiers of three.','<svg width="34" height="34"><circle cx="17" cy="17" r="7.5" fill="var(--blue)"/><circle cx="17" cy="17" r="11" fill="none" stroke="var(--blue-mid)" stroke-width="1"/></svg>'],
+ ['accepted','You accepted it. Only this tier moves the counter.','<svg width="34" height="34"><circle cx="17" cy="17" r="7.5" fill="var(--blue-deep)"/><circle cx="17" cy="17" r="11.5" fill="none" stroke="var(--blue-deep)" stroke-width="1.8"/></svg>'],
+ ['product','A planet: a named surface a person opens. This app has three here.','<svg width="34" height="34"><circle cx="17" cy="17" r="10" fill="#fff" stroke="var(--ink-28)"/><line x1="8" y1="17" x2="26" y2="17" stroke="var(--blue-mid)" stroke-width="2.2" opacity=".85"/><line x1="10" y1="10" x2="24" y2="10" stroke="var(--blue-mid)" stroke-width="1.3" opacity=".5"/><line x1="10" y1="24" x2="24" y2="24" stroke="var(--blue-mid)" stroke-width="1.3" opacity=".5"/></svg>'],
+ ['feature','A moon: something that surface can now DO. Not a click, not a task.','<svg width="34" height="34"><circle cx="17" cy="17" r="10" fill="none" stroke="var(--line)"/><circle cx="27" cy="17" r="5" fill="var(--blue-deep)"/></svg>'],
+ ['milestone','A tick on the rim, earned by the features under it.','<svg width="34" height="34"><line x1="17" y1="5" x2="17" y2="29" stroke="var(--amber)" stroke-width="3.4"/></svg>']
+];
+document.getElementById('legrow').innerHTML = LEG.map(([t,d,s]) =>
+  `<div class="legitem">${s}<div><span class="lt">${t}</span><span class="ld">${d}</span></div></div>`).join('');
+
+/* ---------- render ---------- */
+document.getElementById('frames').innerHTML = F.map(f => `
+<div class="frame" id="f${f.n}">
+  <div class="fhead">
+    <div class="fnum">${String(f.n).padStart(2,'0')}</div>
+    <div><h3>${f.title}</h3><p class="happened">${f.happened}</p></div>
+  </div>
+  ${census(f)}
+  <div class="fbody">
+    <div class="plateCell">
+      <div class="plateCap">The orrery <span class="capproj">Maximus Desktop</span> <span class="caphub">${f.hub}</span></div>
+      ${plate(f)}
+      <div class="ticker ${f.event ? '' : 'idle'}"><span class="dot"></span>${f.eventTxt}</div>
+    </div>
+    ${spine(f)}
+  </div>
+  <div class="changed">
+    <div class="chg"><span class="k">What changed on the plate</span><span class="v">${f.plate}</span></div>
+    <div class="chg"><span class="k">What changed on the spine</span><span class="v">${f.spineC}</span></div>
+  </div>
+  <div class="fb">
+    <label for="n${f.n}">Your note on step ${f.n}</label>
+    <textarea id="n${f.n}" data-n="${f.n}" placeholder="What is wrong, missing, or unclear here?"></textarea>
+  </div>
+</div>`).join('');
+
+/* ---------- feedback ---------- */
+const KEY = 'tellurion-journey-v2';
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+const saved = load();
+document.querySelectorAll('textarea').forEach(t => {
+  if (saved[t.dataset.n]) t.value = saved[t.dataset.n];
+  t.addEventListener('input', () => {
+    const all = load(); all[t.dataset.n] = t.value;
+    if (!t.value.trim()) delete all[t.dataset.n];
+    try { localStorage.setItem(KEY, JSON.stringify(all)); } catch {}
+    count();
+  });
+});
+function count(){
+  const n = Object.keys(load()).length;
+  document.getElementById('fbcount').textContent = n ? `${n} of 10 steps have a note` : 'no notes yet';
+}
+function copyAll(){
+  const all = load(), btn = event.target;
+  const txt = F.filter(f => all[f.n]).map(f => `STEP ${f.n} — ${f.title}\n${all[f.n]}`).join('\n\n') || '(no notes)';
+  navigator.clipboard.writeText(txt).then(() => {
+    const o = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = o, 1400);
+  });
+}
+function clearAll(){
+  if (!confirm('Clear every note on this page?')) return;
+  try { localStorage.removeItem(KEY); } catch {}
+  document.querySelectorAll('textarea').forEach(t => t.value = '');
+  count();
+}
+count();
+</script>
+</body>
+</html>

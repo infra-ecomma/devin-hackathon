@@ -1,0 +1,185 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Tellurion — battle test, 2026-08-27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F5F7FB;--ink:#001033;--ink70:rgba(0,16,51,.70);--ink45:rgba(0,16,51,.45);--ink12:rgba(0,16,51,.12);--blue:#0077FF;--pink:#E0348B;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.72 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:min(75vw,1180px);min-width:min(100%,1100px);margin:0 auto;padding:64px 40px 120px}
+@media(max-width:1180px){main{min-width:0;max-width:100%;padding:40px 20px 80px}}
+h1{font:700 32px/1.2 Orbitron,sans-serif;letter-spacing:.04em;text-transform:uppercase;margin:0 0 8px}
+h2{font:600 13px/1.3 Orbitron,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ink45);margin:56px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--ink12)}
+h3{font:600 17px/1.35 Inter,sans-serif;margin:34px 0 10px}
+p{margin:0 0 15px;max-width:82ch}
+code{font:500 13px/1.5 "JetBrains Mono",monospace;background:rgba(0,119,255,.09);padding:1px 5px;border-radius:4px}
+strong{font-weight:600}
+hr{border:0;border-top:1px solid var(--ink12);margin:46px 0}
+ul{margin:0 0 16px;padding-left:20px;max-width:82ch}li{margin:0 0 7px}
+table{width:100%;border-collapse:collapse;margin:14px 0 26px;background:var(--card);border:1px solid var(--ink12);border-radius:12px;overflow:hidden}
+th{font:500 9.5px/1.3 "JetBrains Mono",monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--ink45);text-align:left;padding:11px 14px;border-bottom:1px solid var(--ink12);background:rgba(0,16,51,.02)}
+td{font-size:13.5px;line-height:1.62;color:var(--ink70);padding:12px 14px;border-bottom:1px solid var(--ink12);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink);font:500 12px/1.5 "JetBrains Mono",monospace;width:44px;text-align:right}
+h1+p{font-size:16px;color:var(--ink70)}
+</style></head><body><main><h1>Tellurion — battle test, 2026-08-27</h1>
+
+<p>Run from the operator&#x27;s seat: a brand new repo, a hand-written plan, hostile files, a real</p>
+<p>browser, and the network. Three passes — my own walk, a six-lens parallel hunt (81 findings),</p>
+<p>and a fresh audit against the already-fixed code (22 bugs + 11 edge cases).</p>
+
+<p><strong>The single worst thing found:</strong> hovering a step the judge had FAILED, the instrument said in a</p>
+<p>full sentence <em>&quot;The builder says it is done. Nobody has checked it.&quot;</em> A judge had checked it, and</p>
+<p>rejected it. <code>readVerdicts</code> dropped every non-pass row, so from that line on &quot;the judge failed</p>
+<p>this&quot; and &quot;no judge has looked&quot; were the same thing. That is the screen stating the opposite of</p>
+<p>the truth on the exact claim the product exists to prove.</p>
+
+<p><strong>Second worst, and it is a whole class:</strong> on a brand new project the instrument was a mandala of</p>
+<p>88 TBK Labs fleet entities and zero marks belonging to him, with the header counting them as his</p>
+<p>project&#x27;s census, and a right-hand panel that rendered as a single blue <code>!</code> glyph.</p>
+
+<hr/>
+
+<h2>What was fixed, and how each is held</h2>
+
+<p>Every item below has an assertion in <code>verify/battle-walk.mjs</code> (72 checks). Four had negative</p>
+<p>controls run and recorded: the length-based ticker guard, the first-N ring lighting, the removed</p>
+<p>plan-write refusal, and the removed network guard each fail exactly their own assertions.</p>
+
+<h3>A. The screen stops telling the truth over time</h3>
+<table><thead><tr><th>#</th><th>What it did</th><th>Root cause</th></tr></thead><tbody>
+<tr><td>1</td><td>The ticker froze at event 240 forever, with a frozen clock, while <code>LIVE</code> stayed lit. Proven in a browser: 520 events in, the strip still read <code>12:19:35 built f239.js</code>.</td><td>The ticker is a ring buffer, so its length stops changing when it fills. The client watched the length.</td></tr>
+<tr><td>2</td><td>Harness plumbing (<code>&lt;command-message&gt;</code>, hook output, interruption notices) travelled the wire and reached the published archive.</td><td>Filtered in the browser only. Now refused in the reducer both sides run.</td></tr>
+<tr><td>3</td><td>Every fault read <code>fault: tool error</code>.</td><td>`label \</td><td>\</td><td>detail<code> where </code>label<code> is always the literal </code>&#x27;tool error&#x27;`, so the detail arm was unreachable.</td></tr>
+<tr><td>4</td><td>Two thirds of the ticker was the word <code>Bash</code>.</td><td>It named the tool instead of the work.</td></tr>
+</tbody></table>
+
+<h3>B. Day zero</h3>
+<table><thead><tr><th>#</th><th>What it did</th><th>Root cause</th></tr></thead><tbody>
+<tr><td>5</td><td>A new project rendered 88 fleet entities and 0 of his, with <code>60 TOOLS 13 PROCESSES 15 WORKFLOWS</code> in the header as project counts.</td><td>The standing bench is imported unconditionally and was presented in one undivided row. Now ruled into two groups, labelled <code>FLEET BENCH</code>.</td></tr>
+<tr><td>6</td><td>The spine was a lone blue <code>!</code> — a 10px cord stub with nothing on it.</td><td>No empty state. Now an on-ramp that names the file, shows a starter plan, and writes it on one press.</td></tr>
+<tr><td>7</td><td>The editor feed never attached on a new project, for the life of that project, with nothing saying so.</td><td>Session directories were resolved once at boot; a project with no chat yet has none. Now swept.</td></tr>
+<tr><td>8</td><td>The bar said <code>Choose a project</code> while following one.</td><td>Same cause.</td></tr>
+</tbody></table>
+
+<h3>C. The chain of custody — the product&#x27;s central claim</h3>
+<table><thead><tr><th>#</th><th>What it did</th><th>Root cause</th></tr></thead><tbody>
+<tr><td>9</td><td>A judge&#x27;s FAIL was indistinguishable from silence, and the note was thrown away.</td><td><code>readVerdicts</code> dropped every non-pass row.</td></tr>
+<tr><td>10</td><td>The spine — the panel he actually reads — carried no custody at all.</td><td>Plan phase segments were built with <code>feats: []</code>. Now every row wears the tier mark.</td></tr>
+<tr><td>11</td><td>Renaming a step silently voided its verdict and acceptance. He was promised a rename renames the moon, so renaming is a normal act.</td><td>Ids were derived from the title. Now derived from position; the sign-off goes stale <strong>loudly</strong> instead of evaporating.</td></tr>
+<tr><td>12</td><td>The BUILDER alone could restore the operator&#x27;s top tier by flipping a step <code>done → planned → done</code>.</td><td>The acceptance row survives, and no hash can see a claim withdrawn and re-made. Now the server records the withdrawal it observes.</td></tr>
+<tr><td>13</td><td>Two steps sharing an id shared one sign-off.</td><td>Ids were not made unique. Now uniqued and the collision reported.</td></tr>
+<tr><td>14</td><td>Saving a file minted the <code>claimed</code> tier.</td><td>Genesis features were created <code>claimed</code>. The filesystem is not a builder.</td></tr>
+<tr><td>15</td><td>A product read <code>fully-verified</code> with two thirds of it not started; steps with no <code>produces</code> were outside the ladder entirely and <code>/api/accept</code> answered <code>tier: null</code>.</td><td>Those steps got no body. Now every step in a phase that plainly belongs to a product gets one.</td></tr>
+<tr><td>16</td><td><code>POST /api/accept</code> answered <code>ok:true</code> for a step not in the plan, and for one no judge had passed — writing a row and changing nothing.</td><td>No validation. Now 404 / 409 with the reason, and <code>force:true</code> reports the tier it actually reached.</td></tr>
+<tr><td>17</td><td>The top rung — his own act — could only be reached by curl or by hand-editing JSON.</td><td>Never wired to a control. Now a button on the feature card.</td></tr>
+</tbody></table>
+
+<h3>D. The plan file</h3>
+<table><thead><tr><th>#</th><th>What it did</th><th>Root cause</th></tr></thead><tbody>
+<tr><td>18</td><td><code>POST /api/plan {&quot;oops&quot;:true}</code> deleted the whole declaration and returned <code>ok:true</code>.</td><td>No guard. Now 409 with the count it refused to erase, plus a <code>.bak</code> on every write.</td></tr>
+<tr><td>19</td><td><code>null</code>, <code>[]</code> and <code>&quot;a string&quot;</code> parsed cleanly and rendered as &quot;no plan declared yet&quot;, under a button offering to overwrite them.</td><td>Only <code>JSON.parse</code> throwing was guarded.</td></tr>
+<tr><td>20</td><td>A broken-file banner and the starter-plan offer stacked together, and the offer was live on the one file that must never be overwritten.</td><td>Both branches ran.</td></tr>
+<tr><td>21</td><td>Plan trouble was never said anywhere on screen.</td><td>Computed, never rendered.</td></tr>
+</tbody></table>
+
+<h3>E. Not a write primitive on the network</h3>
+<table><thead><tr><th>#</th><th>What it did</th></tr></thead><tbody>
+<tr><td>22</td><td>Bound <code>0.0.0.0</code> by default, with no authentication anywhere. Anyone on the tailnet could enumerate all 31 project paths <strong>plus the last thing he typed in each</strong>, overwrite any <code>.tellurion/plan.json</code>, re-point the instrument, and accept work in his name. Demonstrated: wrote <code>&quot;project&quot;: &quot;PWNED&quot;</code> into a real plan.</td></tr>
+<tr><td>23</td><td><code>/api/world</code> and <code>/events</code> carried the same prompts, so guarding the picker protected the copy and published the original.</td></tr>
+<tr><td>24</td><td>Any website he visited could write to the loopback instrument with a simple cross-site POST.</td></tr>
+<tr><td>25</td><td>Opening the legend destroyed the API key — the toggle and the key shared <code>localStorage[&#x27;la-key&#x27;]</code>. <em>(Introduced by me during this session and caught by the second audit.)</em></td></tr>
+<tr><td>26</td><td>A 401 rendered as &quot;No projects worked on recently&quot; — he was told his work did not exist.</td></tr>
+</tbody></table>
+
+<p><strong>Now:</strong> loopback by default; <code>--host 0.0.0.0</code> mints a stable key, prints the link, and guards</p>
+<p>every door that carries his work; writes require his own page or the key. Path traversal was</p>
+<p>tested and <strong>holds</strong> — five encoded attempts all 404.</p>
+
+<h3>F. It stays up, and keeps watching</h3>
+<table><thead><tr><th>#</th><th>What it did</th></tr></thead><tbody>
+<tr><td>27</td><td>One unauthenticated request with a malformed <code>Host</code> header killed the whole instrument.</td></tr>
+<tr><td>28</td><td><code>SIGTERM</code> never stopped it while a tab was open, so restarts left zombies.</td></tr>
+<tr><td>29</td><td><code>mkdir -p a/b</code> made <code>b</code> permanently invisible — nothing under it was ever seen again.</td></tr>
+<tr><td>30</td><td>Switching projects mid-poll filed the previous repo&#x27;s commit into the new one.</td></tr>
+<tr><td>31</td><td>60 concurrent <code>/api/projects</code> calls froze the live screen for 15.3 seconds.</td></tr>
+</tbody></table>
+
+<h3>G. Numbers that contradicted each other</h3>
+<table><thead><tr><th>#</th><th>What it did</th></tr></thead><tbody>
+<tr><td>32</td><td>The same screen read <code>76/90 plan steps done</code> and <code>15/20</code> three inches apart.</td></tr>
+<tr><td>33</td><td>The header counted milestones the spine deliberately refuses to draw.</td></tr>
+<tr><td>34</td><td>The legend counted every agent ever seen and called them all &quot;at work&quot;.</td></tr>
+<tr><td>35</td><td>The plan ring lit the FIRST N segments, so it named the wrong steps as finished, and the charge painted over unstarted work.</td></tr>
+<tr><td>36</td><td>The Logic tab — the one surface whose job is to be trustworthy — hardcoded &quot;10 flagships&quot;, &quot;the Features Ledger&quot; and directories becoming planets. None had been true since the plan took over.</td></tr>
+<tr><td>37</td><td>The Key omitted agents, the core&#x27;s plan ring, the step in hand, and the motion table he asked for. It also told him to drag a rim jewel that genesis mode disables.</td></tr>
+<tr><td>38</td><td>The header overprinted the census at 1280x800; the spine score was clipped and then crowded.</td></tr>
+</tbody></table>
+
+<h3>H. The gates themselves</h3>
+<table><thead><tr><th>#</th><th>What it did</th></tr></thead><tbody>
+<tr><td>39</td><td><code>walk.mjs</code> failed with &quot;0/3 passed&quot; because another service held its hardcoded port — a harness fault reported as a product failure. All five gates now find a free port.</td></tr>
+<tr><td>40</td><td>Two assertions encoded bugs: <code>follow-walk</code> step 3 demanded the literal path back (against the ratified &quot;a project is a git root&quot;), and <code>walk</code> step 19 asserted a milestone count that nothing draws.</td></tr>
+</tbody></table>
+
+<hr/>
+
+<h2>Not fixed, named rather than glossed</h2>
+
+<ul><li><strong>400 features on one product draw a hairball</strong> that swallows the core. Moons have two shells and no cap.</li>
+<li><strong>The replay half of the instrument is dead</strong> for every project except the OCC root: <code>nearRim</code> and <code>dateAtPoint</code> both return null in genesis mode, which is every real target.</li>
+<li>**<code>world.notches</code>, <code>world.stepWork</code> and <code>session.todo*</code>** are computed, deduped and shipped in every snapshot, and drawn nowhere. <code>stepWork</code> is the attribution join the architecture is built on.</li>
+<li><strong>Agent labels collide</strong> with the process ring labels; agent threads bury the planet they point at.</li>
+<li><strong>Ultrawide does not scale</strong> — at 3440x1440 the mandala is the same size as at 1920 and 61% of the plate is blank.</li>
+<li><strong>1024x768 is unusable</strong>; there is no breakpoint between 1024 and 1180.</li>
+<li><strong>Partial plan loss is accepted</strong> — only total erasure is refused, so a body that drops 4 of 5 steps writes cleanly.</li>
+<li><strong><code>world.agents</code> and <code>world.stepWork</code> are never pruned</strong>, so the snapshot only grows.</li>
+<li><strong>Genesis stops at 12 features per directory</strong> silently.</li>
+<li><strong>Deleted files never leave the plate</strong>; the 48-hour commit horizon is silent.</li>
+<li><strong>Product motion, ledgers, scars and job cadence</strong> are in the ratified grammar and are not built. The legend now says so on its own face rather than describing them as though they were.</li>
+</ul>
+<hr/>
+
+<h2>Evidence</h2>
+
+<ul><li><code>verify/battle-walk.mjs</code> — 72 assertions, all green</li>
+<li>Full suite: <code>plan-walk 26</code> · <code>follow-walk 17</code> · <code>core-plan-walk 8</code> · <code>agent-walk 11</code> · <code>walk 22</code> · <code>battle-walk 72</code> = <strong>156</strong></li>
+<li>Negative controls recorded for the ticker guard, the ring lighting, the plan-write refusal and the network guard; all four files restored byte-identical (<code>md5sum -c</code>)</li>
+</ul>
+<hr/>
+
+<h2>Follow-on, same day: the middle rung fills itself</h2>
+
+<p>Three of the &quot;not fixed&quot; items above turned out to be one piece of work. The chain of custody</p>
+<p>stopped at <code>claimed</code> unless somebody hand-edited JSON, and the record that could place a real</p>
+<p>verdict — which files were written while a given step was in hand — lived only in memory, died</p>
+<p>with the process, and was drawn nowhere.</p>
+
+<ul><li><strong><code>lib/work.mjs</code></strong> makes the attribution record a real artefact at <code>.tellurion/work.json</code>,</li>
+</ul><p>  merged rather than replaced across restarts. It answers the one question a bridge needs:</p>
+<p>  which step do these files belong to. <strong>Unambiguous or nothing</strong> — a receipt whose files span</p>
+<p>  two steps is refused with both named, because guessing there puts a real judge&#x27;s name on work</p>
+<p>  the judge never looked at.</p>
+<ul><li><strong><code>bin/sentinel-ingest.mjs</code></strong> reads Sentinel&#x27;s own receipts and writes <code>verdicts.json</code>. Every</li>
+</ul><p>  row carries its provenance (the receipt, the files that matched), and the fingerprint is taken</p>
+<p>  from the step <strong>as it is now</strong>, so the staleness rules fire the moment anyone edits it.</p>
+<ul><li><strong>The feature card draws all of it</strong> — the files, the commits, and what the judge was given.</li>
+</ul>
+<p>**Reading against this machine&#x27;s 4,788 real receipts corrected two assumptions I had made from a</p>
+<p>fixture.** The verdict values are <code>judged-pass</code> / <code>judged-fail</code>, not <code>PASS</code> / <code>FAIL</code>. And</p>
+<p><code>judged_unchanged</code> is a separate list carrying a <strong>standing</strong> pass from an earlier receipt — used</p>
+<p>as fresh evidence it would let one old judgement re-assert itself on every run, so it is named in</p>
+<p>the refusals instead of consumed. Of the 4,788: 3,363 <code>no-claim</code>, 762 <code>claim-nothing-to-judge</code>,</p>
+<p>1 <code>judge-unreachable</code>, 424 that re-examined nothing, and <strong>238 real judgements naming 649 files</strong>.</p>
+<p>The judge has covered <strong>87 files under this repo</strong>, so those will place themselves as soon as a</p>
+<p>step is marked active and work accumulates against it.</p>
+
+<p><strong>One real attribution error fixed alongside it:</strong> the git poll replays 48 hours of history at</p>
+<p>boot, and every one of those commits was being credited to whatever step happened to be active.</p>
+<p>Survivable while nothing read the record. Not survivable once a judge&#x27;s verdict routes through it.</p>
+
+<p>Gate: <code>battle-walk</code> group J, 11 assertions (83 in that file, <strong>167 across the suite</strong>). Negative</p>
+<p>control recorded — letting the join pick a best match instead of refusing fails exactly J5, file</p>
+<p>restored byte-identical.</p>
+</main></body></html>

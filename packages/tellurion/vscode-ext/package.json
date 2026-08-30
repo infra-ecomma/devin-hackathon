@@ -1,0 +1,77 @@
+{
+  "name": "tellurion",
+  "displayName": "Tellurion",
+  "description": "The live instrument for the project in this window: its products as planets, their features as moons, and the plan as the spine. One instance per project, opened as a panel beside your code.",
+  "version": "0.6.0",
+  "publisher": "tbk-labs",
+  "license": "UNLICENSED",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "extensionKind": [
+    "workspace",
+    "ui"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tellurion.open",
+        "title": "Tellurion: Open the instrument"
+      },
+      {
+        "command": "tellurion.stop",
+        "title": "Tellurion: Stop this project's instrument"
+      }
+    ],
+    "configuration": {
+      "title": "Tellurion",
+      "properties": {
+        "tellurion.serverPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to live-artifact/server.mjs. Left empty, the extension looks for it inside this workspace, then at ~/projects/Organizing-Claude-Code/live-artifact/server.mjs."
+        },
+        "tellurion.portRange": {
+          "type": "array",
+          "default": [
+            8769,
+            8788
+          ],
+          "description": "Ports the extension may use. It reuses a server already watching this folder before starting a new one."
+        },
+        "tellurion.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start an instrument for this folder if none is already watching it."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tellurion",
+          "title": "Tellurion",
+          "icon": "media/tellurion.svg"
+        }
+      ]
+    },
+    "views": {
+      "tellurion": [
+        {
+          "id": "tellurion.panel",
+          "name": "This project",
+          "type": "webview",
+          "when": "tellurion.invited"
+        }
+      ]
+    }
+  }
+}
