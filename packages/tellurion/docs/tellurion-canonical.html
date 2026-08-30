@@ -598,10 +598,15 @@
       <b>The archive</b> at <code>tellurion-plate.html</code> had been baked 2026-08-28 18:24, two days and 24
       source files behind, so none of the 08-29 or 08-30 work was in the thing this page calls the instrument.
       It is rebaked from committed HEAD rather than the working tree, which carries undocumented in-flight
-      work, and now draws the declared-plan plate: 4 products, 25 features, spine 43/47, verified by rendering
-      it in real Chromium before publishing. Noted and deliberately left alone: the headline 31-planet figure
-      is a dated 2026-08-28 measurement, and a live scan today resolves 4 planets under the declared plan &mdash;
-      changing it is a content decision rather than a staleness fix.</p>
+      work. <b>Corrected within the hour:</b> that first rebake ran from a git worktree, and because the mode is
+      chosen by comparing the watched root against the server&rsquo;s own repo, a worktree made OCC look foreign and
+      the archive silently baked in <i>genesis</i> mode &mdash; an empty sky grown from the four declared products,
+      where a universe-mode estate plate had been published before. Rebaked with an explicit <code>--universe</code>:
+      29 planets, 86 features, 70 milestones, 14 products, verified by rendering in real Chromium and by the
+      embedded world&rsquo;s genesis flag reading false. Noted and left alone: the headline 31-planet figure is a
+      dated 2026-08-28 universe-mode scan, the same scan today gives 29, and the instrument&rsquo;s own header counts
+      14 products against those 29 planets &mdash; so what that stat should say is a content decision, not a
+      staleness fix.</p>
     </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>The honest empty card, the panel that knocks before entering, and a repo of its own.</h4>
@@ -752,7 +757,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v1.5 &middot; updated 30 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v1.6 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 
