@@ -69,6 +69,7 @@ const srv = spawn(process.execPath, [
   path.join(TEL, 'server.mjs'),
   '--project', path.join(FIX, 'project'),
   '--world', path.join(FIX, 'world-static.json'),
+  '--story', path.join(HERE, 'crew.mjs'), '--once',
   '--name', 'Lantern', '--port', String(PORT),
 ], { cwd: TEL, stdio: ['ignore', 'pipe', 'pipe'] });
 
@@ -85,6 +86,18 @@ for (let i = 0; i < 60 && !up; i++) {
   up = await fetch(api).then((r) => r.ok).catch(() => false);
 }
 if (!up) { stop(); console.error(`build-landing: the server never answered on ${PORT}.\n${log}`); process.exit(1); }
+
+// The crew arrives through the ordinary ingest a moment after boot, so the
+// snapshot waits for it. Without this the page is built in the gap and ships with
+// an empty sky — which is exactly what it looks like when it is working, so it
+// is waited for explicitly rather than slept past.
+let crew = 0;
+for (let i = 0; i < 40 && crew < 6; i++) {
+  await new Promise((r) => setTimeout(r, 250));
+  crew = await fetch(api).then((r) => r.json()).then((w) => Object.keys(w.agents || {}).length).catch(() => 0);
+}
+if (crew < 6) { stop(); console.error(`build-landing: only ${crew} of 6 agents reached the world.\n${log}`); process.exit(1); }
+console.log(`build-landing: ${crew} agents on the plate`);
 
 execFileSync(process.execPath, [path.join(TEL, 'bin', 'build-static.mjs'), api, OUT, '--skin', skin], { stdio: 'inherit' });
 stop();

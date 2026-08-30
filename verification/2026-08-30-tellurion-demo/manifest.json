@@ -77,5 +77,13 @@
     "Every body in this demo is invented. The graph carries \"demo\": true and the bar prints a DEMO DATA badge.",
     "The canonical HTML source was updated to v2.2 but NOT shipped to shares; the code it describes is being committed in this same session.",
     "deslop blocks the canonical HTML on findings across the whole 912-line document, most of which predates this change. Left, and reported."
+  ],
+  "follow_ups": [
+    {
+      "found_by": "sentinel judge, 2026-08-30",
+      "defect": "demo/story.mjs wrote plan.json with plain writeFileSync while the server's watcher polled the same file, so a reader could catch a half-written file. readPlan() answers EMPTY on unparseable content, which blanks the spine for a frame and reads as the instrument losing the plan.",
+      "fix": "switched to lib/atomic.mjs writeJsonAtomic (tmp-then-rename), which exists for this exact race.",
+      "evidence": "120 consecutive parses of plan.json taken while the story was actively rewriting it: 0 torn reads (was reproducible before the fix \u2014 the judge caught one)."
+    }
   ]
 }

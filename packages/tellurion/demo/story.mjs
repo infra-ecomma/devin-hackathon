@@ -20,12 +20,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fingerprint } from '../lib/tiers.mjs';
+import { writeJsonAtomic } from '../lib/atomic.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const FULL = JSON.parse(fs.readFileSync(path.join(HERE, 'plan-full.json'), 'utf8'));
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const write = (file, obj) => fs.writeFileSync(file, JSON.stringify(obj, null, 2) + '\n');
+// tmp-then-rename, NOT writeFileSync. This story rewrites the plan about forty
+// times in seventy-eight seconds while the server's watcher polls the same file,
+// so a plain write leaves a window where the reader gets a half-written file.
+// readPlan() catches that and answers EMPTY, which blanks the spine for a frame
+// and looks like the instrument losing the plan. lib/atomic.mjs exists for this
+// exact race and the story had no business bypassing it.
+const write = (file, obj) => writeJsonAtomic(file, obj);
 
 // The product order the sky fills in. Deliberately the order a person would
 // build them: the shelves, then the till, then the road, then the front door.
