@@ -218,7 +218,7 @@
     <svg viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
     <span class="logo-word"><b>TBK</b>&nbsp;<i>Labs</i></span>
   </div>
-  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.7</div>
+  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.9</div>
 </header>
 
 <div class="title-block">
@@ -481,18 +481,30 @@
     <li><b>Could you stop building it without stopping the others?</b> Creative Library, yes. Multi-select attach, no.</li>
     <li><b>Would a person name it when saying what they use?</b> Creative Library, yes. Multi-select attach, no.</li>
   </ul>
-  <p class="prose">Naming follows from this. A feature is written as what the product can now do
-  ("accepts a dropped file and keeps it with its origin"), never as a user action ("drop a file").
-  That is already the shape of the <code>plain</code> field on every feature in the shipped graph,
-  so the rule describes the data rather than being imposed on it.</p>
+  <p class="prose">Naming follows from this, and the test is stricter than &ldquo;use a noun&rdquo;.
+  A feature is a <b>part you could draw a box around and point at</b>, so its name reads naturally
+  after the word <i>the</i>: the plan spine, the render farm, the dispatch rail. An activity noun
+  built out of the work&rsquo;s own verb fails that test &mdash; &ldquo;Discover every project&rdquo;
+  becoming &ldquo;Project discovery&rdquo; is the same step wearing a costume, and on the glass it
+  reads as a worklog exactly as the raw verb did. When a name fails, name the thing that does the
+  work instead: not &ldquo;project discovery&rdquo; but &ldquo;the project index&rdquo;. A feature
+  also normally gathers <b>several</b> steps; one feature per step means the layer is carrying no
+  information, and either the features are too small or the steps are written at capability size.</p>
 
   <div class="kicker">The spine is the plan, led by product</div>
-  <h3 class="claim">One section per product, collapsed, opening to its features.</h3>
-  <p class="prose">The spine was built from the plan's <b>phases</b>, which is how work was sequenced
-  rather than what the project is, and that is why it did not read as a project. Every step already
-  declares the product it produces, so the grouping key was the only thing wrong. The header, the
-  plate, the spine and the map tab now carry the <b>same set of products</b>: they did not, and one
-  screen read 14 products, 16 sections and 25 branches at the same time.</p>
+  <h3 class="claim">One section per product, opening to its features, and a feature opening to the steps that build it.</h3>
+  <p class="prose">The spine was built from the plan&rsquo;s <b>phases</b>, which is how work was
+  sequenced rather than what the project is. Grouping by product fixed half of it. The other half was
+  that a &ldquo;feature&rdquo; <b>was a plan step under a different name</b>: the reducer pushed every
+  step into a list called <code>features</code> carrying the step&rsquo;s own title, so a product
+  opened onto a wall of verb sentences and the word feature was a display label. Features are now
+  <b>declared on the product</b> in <code>plan.json</code> and a step names the one it builds, so a
+  feature can be listed before any work on it exists &mdash; which is what a plan is for &mdash; and
+  the steps sit one level down, closed, inside the feature they belong to. Sign-off moved with them:
+  custody is addressed to the feature, and a feature with no verdict of its own inherits one when
+  every step under it was passed, so nothing already signed was voided. Directories the instrument
+  discovered on its own no longer sit in the same list wearing the same styling as declared products,
+  which is what made the header&rsquo;s product count and the spine&rsquo;s list disagree.</p>
 
   <div class="kicker">Zoom is part of the model</div>
   <h3 class="claim">The same object is a planet in one view and the hub in another, and the instrument has to say which.</h3>
@@ -542,20 +554,29 @@
     (exit 0 at HEAD) flips it to a solid body with a halo, a change in kind, never a brightness
     tweak. Stale evidence decays the halo to dotted amber; a failing check draws a broken red arc.
     No hand can set any of these.</li>
-    <li><b>Product (planet):</b> while features are mixed it wears a meridian arc with the verified
-    fraction printed. When every feature is verified at HEAD and the product's own end-to-end walk
-    passes, the corona ignites and the product's orbit line lights. If anything falls back out of
-    verified, the corona retracts to a dotted ring.</li>
+    <li><b>Product (planet):</b> while features are mixed it wears no ring of any kind; the
+    verified fraction prints in its label. When every feature is verified at HEAD and the product's
+    own end-to-end walk passes, a verification shade blooms around the whole system, the band ring
+    appears where none existed, and the product's orbit line lights. If anything falls back out of
+    verified, the shade fades and the band withdraws to a dotted ring.</li>
   </ul>
   <div class="kicker">One law, four skins &middot; operator ruling, 2026-08-30</div>
-  <p class="prose">The instrument ships two styles in two themes, toggled in the product:
-  <b>Futuristic</b> (the AI-made constellation look; dark is the lead skin, light is Fog and Deep
-  Navy as on the live instrument) and <b>Rustic</b> (engraved star-atlas; cream on a night plate in
+  <p class="prose">Ratified same day, later amended with the default: the instrument ships two
+  styles in two themes, toggled in the product, and <b>Rustic Light is the default skin</b>.
+  <b>Futuristic</b> is the AI-made constellation look (dark space, or Fog and Deep Navy in light,
+  as on the live instrument); <b>Rustic</b> is the engraved star-atlas (cream on a night plate in
   dark, sepia ink on parchment in light). A skin changes token values and typefaces (Orbitron with
   JetBrains Mono in Futuristic, Cinzel with Courier Prime in Rustic), never geometry or state
   meaning, so spatial memory and the law of light survive the toggle. Verification green is a role
-  with a per-skin value, and nothing else in a skin may wear it. The full visual grammar, one
-  formula per glyph, and all four skins drawn on the same sample sky live on
+  with a per-skin value, and nothing else in a skin may wear it.</p>
+  <p class="prose">The cue itself was then sized to its importance, locked from mockup comparison:
+  moon radius floor 5px in every skin; a verified moon keeps its category fill under a 32%
+  verification-green wash with a bold 1.8px halo (the wash survives staleness while the halo decays
+  to dotted amber); and the product cue follows Wassim's sharper flip, no ring to ring rather than
+  ring to bigger ring: a partial product wears no ring geometry at all, and full verification
+  arrives as the shade, a 3.2px band with outer hairline, and the lit orbit together. The full
+  visual grammar, one formula per glyph, all four skins on the same sample sky, and the cue
+  comparison live on
   <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.</p>
 </section>
 
@@ -568,6 +589,45 @@
   thing this section exists to make impossible.</p>
 
   <div class="log">
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>The four skins are locked, Rustic Light is the default, and the verification cue grew into its importance.</h4>
+      <p>Wassim ratified the four-skin system with Rustic Light as the default, and raised a
+      concern while deferring to mockups: the moons might be too small for how much verification
+      matters, suggesting filled moons with a hue and a very visible product ring. Three cue
+      treatments were mocked at true scale; the winner, now on every sky of the canvas, grows moons
+      to a 5px floor and lights a verified moon from within (category fill under a green wash, bold
+      halo). On his second look Wassim sharpened the product cue: no ring to ring beats ring to
+      bigger ring, so the partial-product meridian arc died (fraction moved to the label) and full
+      verification now blooms a background verification shade around the whole system as the band
+      ring appears on a lit orbit. Full-green moon bodies were rejected for deleting the category
+      channel where work finished; a heavier permanent ring was rejected for reading as a body
+      rather than a cue. The model tab carries the exact locked numbers; the comparison board and
+      the four updated skies:
+      <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.</p>
+    </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>A feature stopped being a plan step under a different name.</h4>
+      <p>Wassim, on the running spine: &ldquo;it&rsquo;s meant to highlight the products and features,
+      and in the version I see, I see weird steps in there as well.&rdquo; He was right, and the cause
+      was in the reducer rather than the styling: <code>state.mjs</code> pushed every plan step into a
+      list called <code>features</code> with the step&rsquo;s own title, so the word feature was a
+      display label for step and the spine printed verbs where the reference printed nouns. The schema
+      had anticipated it and stopped &mdash; <code>plan.mjs</code> wrote a <code>produces.kind</code>
+      field defaulting to <code>'feature'</code> that nothing anywhere read. <b>Features are now
+      declared</b> on the product, a step names the feature it builds, custody is addressed to the
+      feature with older step-addressed sign-offs inheriting upward, the spine renders product then
+      feature then step, discovered directories move into their own group, and the header counts
+      products, features and steps from the plan rather than from everything discovered anywhere.
+      Decided on a five-question sheet; the operator overrode the recommendation on custody, ruling it
+      &ldquo;has to be feature&hellip; a visual cue that something has been verified is a key highlight
+      of this project&rdquo;. Rendering it caught three defects a code read had missed: every
+      feature-addressed sign-off reported as an orphan, feature ids silently renamed by sharing the
+      step id space, and an un-migrated plan reporting 0/0 against 21 done steps. A second operator
+      pass then corrected the naming rule itself &mdash; the first draft nominalised the step verbs
+      (&ldquo;Project discovery&rdquo;) &mdash; which is the &ldquo;reads after <i>the</i>&rdquo; test
+      now on the model tab. <b>Not yet claimed:</b> this is in the working source and the
+      <code>packages/tellurion</code> subtree, and has not been committed or shipped to the extension.</p>
+    </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>Project numbers came out of a document about the product.</h4>
       <p>Operator ruling: the counts on this page were sample data from whichever repository the instrument
@@ -773,7 +833,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v1.7 &middot; updated 30 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v1.9 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 
