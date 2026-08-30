@@ -115,3 +115,29 @@ export type FromWebview =
 
 export const DEFAULT_STYLE: SkinStyle = "rustic";
 export const DEFAULT_THEME: SkinTheme = "light";
+
+// ---- Legacy aliases for ProjectScanner / StateManager -------------------------
+// These map to the current domain types.
+export type Planet = ProductView;
+export type Moon = FeatureView;
+
+export interface SpineStep {
+  id: string;
+  name: string;
+  done: boolean;
+  at?: string;
+}
+
+export interface OrrerySettings {
+  style: SkinStyle;
+  theme: SkinTheme;
+  showSpine: boolean;
+  showProducts: boolean;
+}
+
+export const DEFAULT_SETTINGS: OrrerySettings = {
+  style: DEFAULT_STYLE,
+  theme: DEFAULT_THEME,
+  showSpine: true,
+  showProducts: true,
+};
