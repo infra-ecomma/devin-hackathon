@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&amp;family=Cinzel:wght@600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #05080f; }
+    a { color: #0077FF; text-decoration: none; }
+    a:hover { color: #4fa3ff; }
+  </style>
+</helmet>
+<div style="width: 1240px; height: 860px; background: #05080f; color: #e8edf5; font-family: Inter, system-ui, sans-serif; padding: 34px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; overflow: hidden;">
+
+  <div style="display: flex; align-items: baseline; gap: 18px;">
+    <div style="font-family: Orbitron, Verdana, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 0.04em;">ONE LAW, FOUR SKINS</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #556680; letter-spacing: 0.12em;">STYLE × THEME TOGGLE · STATES NEVER CHANGE MEANING, ONLY TOKEN VALUES CHANGE</div>
+  </div>
+
+  <div style="display: flex; gap: 18px; flex: 1; min-height: 0;">
+
+    <div style="width: 400px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px;">
+      <div style="border: 1px solid rgba(79,195,247,0.15); border-radius: 12px; background: rgba(12,18,32,0.6); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-family: Orbitron, Verdana, sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.06em;">THE TOGGLE</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #556680; letter-spacing: 0.1em;">STYLE</div>
+          <div style="display: flex; border: 1px solid rgba(79,195,247,0.25); border-radius: 8px; overflow: hidden; font-family: 'JetBrains Mono', monospace; font-size: 10px;">
+            <span style="flex: 1; text-align: center; padding: 7px 0; color: #8899b0;">FUTURISTIC</span>
+            <span style="flex: 1; text-align: center; padding: 7px 0; background: #0077FF; color: #ffffff; font-weight: 600;">RUSTIC</span>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #556680; letter-spacing: 0.1em; margin-top: 4px;">THEME</div>
+          <div style="display: flex; border: 1px solid rgba(79,195,247,0.25); border-radius: 8px; overflow: hidden; font-family: 'JetBrains Mono', monospace; font-size: 10px;">
+            <span style="flex: 1; text-align: center; padding: 7px 0; color: #8899b0;">DARK</span>
+            <span style="flex: 1; text-align: center; padding: 7px 0; background: #0077FF; color: #ffffff; font-weight: 600;">LIGHT</span>
+            <span style="flex: 1; text-align: center; padding: 7px 0; color: #8899b0;">AUTO</span>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #8899b0; line-height: 1.6;">Locked 2026-08-30: the default skin is <b style="color: #e8edf5;">Rustic Light</b>, shown selected above. Lives in the top bar and as commands (Tellurion: Switch Style, Tellurion: Switch Theme). Settings <span style="font-family: 'JetBrains Mono', monospace; color: #e8edf5;">tellurion.style</span> and <span style="font-family: 'JetBrains Mono', monospace; color: #e8edf5;">tellurion.theme</span>; AUTO follows the VS Code editor theme. The Plate export always offers all four skins.</div>
+      </div>
+
+      <div style="border: 1px solid rgba(102,187,106,0.3); border-radius: 12px; background: rgba(102,187,106,0.05); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1;">
+        <div style="font-family: Orbitron, Verdana, sans-serif; font-size: 16px; font-weight: 600; color: #66bb6a; letter-spacing: 0.06em;">THE INVARIANT</div>
+        <div style="font-size: 11.5px; color: #8899b0; line-height: 1.65;">The Law of Light does not bend to a skin. Dashed still means started and unproven, a halo still requires a recorded exit 0, amber still means evidence went stale, the corona band still requires everything verified plus the product walk. Verification green is a <b>role</b> with a per-skin value, and nothing else in a skin may wear it, so a green-colored category could never be mistaken for a verified state.</div>
+        <div style="font-size: 11.5px; color: #8899b0; line-height: 1.65;">Type follows style: Orbitron with JetBrains Mono in Futuristic, Cinzel with Courier Prime in Rustic, Inter for body in both. A skin swap changes tokens and typefaces, never geometry, so spatial memory survives the toggle.</div>
+      </div>
+    </div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0;">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+
+        <div style="border: 1px solid rgba(79,195,247,0.2); border-radius: 12px; overflow: hidden;">
+          <div style="height: 128px; background: radial-gradient(ellipse at 50% 45%, #0d1525 0%, #05080f 75%); position: relative;">
+            <svg viewBox="0 0 360 128" style="position: absolute; inset: 0; width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="180" cy="64" r="34" fill="none" stroke="rgba(102,187,106,0.5)" stroke-width="1"></circle>
+              <circle cx="180" cy="64" r="52" fill="none" stroke="rgba(126,168,222,0.18)" stroke-width="0.8"></circle>
+              <circle cx="180" cy="64" r="6" fill="#ffd54f"></circle>
+              <circle cx="151" cy="80" r="15" fill="rgba(102,187,106,0.14)"></circle>
+              <circle cx="151" cy="80" r="6" fill="#ec407a"></circle><circle cx="151" cy="80" r="9" fill="none" stroke="#66bb6a" stroke-width="1.8"></circle>
+              <circle cx="227" cy="52" r="6" fill="#4fc3f7"></circle>
+              <circle cx="236" cy="42" r="2.4" fill="rgba(79,195,247,0.35)" stroke="#b0763a" stroke-width="0.9" stroke-dasharray="2 2"></circle>
+            </svg>
+          </div>
+          <div style="padding: 8px 12px; background: rgba(12,18,32,0.9); display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-family: Orbitron, Verdana, sans-serif; font-size: 16px; font-weight: 600;">FUTURISTIC · DARK</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; color: #556680;">page 1 hero mockup</span>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(0,16,51,0.3); border-radius: 12px; overflow: hidden;">
+          <div style="height: 128px; background: radial-gradient(ellipse at 50% 45%, #ffffff 0%, #F5F7FB 75%); position: relative;">
+            <svg viewBox="0 0 360 128" style="position: absolute; inset: 0; width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="180" cy="64" r="34" fill="none" stroke="rgba(46,125,50,0.55)" stroke-width="1"></circle>
+              <circle cx="180" cy="64" r="52" fill="none" stroke="rgba(0,16,51,0.16)" stroke-width="0.8"></circle>
+              <circle cx="180" cy="64" r="6" fill="#f9a825"></circle>
+              <circle cx="151" cy="80" r="15" fill="rgba(46,125,50,0.12)"></circle>
+              <circle cx="151" cy="80" r="6" fill="#c2185b"></circle><circle cx="151" cy="80" r="9" fill="none" stroke="#2e7d32" stroke-width="1.8"></circle>
+              <circle cx="227" cy="52" r="6" fill="#0288d1"></circle>
+              <circle cx="236" cy="42" r="2.4" fill="rgba(2,136,209,0.3)" stroke="#a06a2c" stroke-width="0.9" stroke-dasharray="2 2"></circle>
+            </svg>
+          </div>
+          <div style="padding: 8px 12px; background: #ffffff; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid rgba(0,16,51,0.1);">
+            <span style="font-family: Orbitron, Verdana, sans-serif; font-size: 16px; font-weight: 600; color: #001033;">FUTURISTIC · LIGHT</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; color: rgba(0,16,51,0.5);">fog and navy, from the live instrument</span>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(165,130,75,0.45); border-radius: 12px; overflow: hidden;">
+          <div style="height: 128px; background: radial-gradient(ellipse at 50% 45%, #1d1712 0%, #16110e 75%); position: relative;">
+            <svg viewBox="0 0 360 128" style="position: absolute; inset: 0; width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="180" cy="64" r="34" fill="none" stroke="rgba(127,174,106,0.7)" stroke-width="0.9"></circle>
+              <circle cx="180" cy="64" r="52" fill="none" stroke="rgba(232,226,212,0.25)" stroke-width="0.7"></circle>
+              <circle cx="180" cy="64" r="5" fill="#c9a35a"></circle><circle cx="180" cy="64" r="8" fill="none" stroke="#c9a35a" stroke-width="1"></circle>
+              <circle cx="151" cy="80" r="15" fill="rgba(127,174,106,0.14)"></circle>
+              <circle cx="151" cy="80" r="6" fill="#c9738f"></circle><circle cx="151" cy="80" r="9" fill="none" stroke="#7fae6a" stroke-width="1.8"></circle>
+              <circle cx="227" cy="52" r="6" fill="#6fa8c9"></circle>
+              <circle cx="236" cy="42" r="2.4" fill="rgba(111,168,201,0.3)" stroke="#8a6d3b" stroke-width="0.9" stroke-dasharray="2 2"></circle>
+            </svg>
+          </div>
+          <div style="padding: 8px 12px; background: #1d1712; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid rgba(165,130,75,0.3);">
+            <span style="font-family: Cinzel, Georgia, serif; font-size: 15px; font-weight: 700; color: #e8e2d4; letter-spacing: 0.08em;">RUSTIC · DARK</span>
+            <span style="font-family: 'Courier Prime', 'Courier New', monospace; font-size: 9px; color: rgba(232,226,212,0.5);">cream engraving on a night plate</span>
+          </div>
+        </div>
+
+        <div style="border: 1px solid rgba(138,109,59,0.5); border-radius: 12px; overflow: hidden;">
+          <div style="height: 128px; background: radial-gradient(ellipse at 50% 45%, #f5eedd 0%, #efe7d3 75%); position: relative;">
+            <svg viewBox="0 0 360 128" style="position: absolute; inset: 0; width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="180" cy="64" r="34" fill="none" stroke="rgba(46,107,52,0.75)" stroke-width="0.9"></circle>
+              <circle cx="180" cy="64" r="52" fill="none" stroke="rgba(44,35,23,0.3)" stroke-width="0.7"></circle>
+              <circle cx="180" cy="64" r="5" fill="#c99f4d"></circle><circle cx="180" cy="64" r="8" fill="none" stroke="#a0793a" stroke-width="1"></circle>
+              <circle cx="151" cy="80" r="15" fill="rgba(46,107,52,0.12)"></circle>
+              <circle cx="151" cy="80" r="6" fill="#96395c"></circle><circle cx="151" cy="80" r="9" fill="none" stroke="#2e6b34" stroke-width="1.8"></circle>
+              <circle cx="227" cy="52" r="6" fill="#23608a"></circle>
+              <circle cx="236" cy="42" r="2.4" fill="rgba(35,96,138,0.25)" stroke="#8a6d3b" stroke-width="0.9" stroke-dasharray="2 2"></circle>
+            </svg>
+          </div>
+          <div style="padding: 8px 12px; background: #f7f1e2; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid rgba(138,109,59,0.35);">
+            <span style="font-family: Cinzel, Georgia, serif; font-size: 15px; font-weight: 700; color: #2c2317; letter-spacing: 0.08em;">RUSTIC · LIGHT</span>
+            <span style="font-family: 'Courier Prime', 'Courier New', monospace; font-size: 9px; font-weight: 700; color: #2e6b34;">THE DEFAULT SKIN · sepia ink on parchment</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="border: 1px solid rgba(79,195,247,0.15); border-radius: 12px; overflow: hidden; flex: 1;">
+        <div style="display: grid; grid-template-columns: 130px repeat(4, minmax(0, 1fr)); font-family: 'JetBrains Mono', monospace; font-size: 9px;">
+          <div style="padding: 8px 12px; background: rgba(12,18,32,0.9); color: #556680; letter-spacing: 0.08em; border-bottom: 1px solid rgba(79,195,247,0.15);">TOKEN</div>
+          <div style="padding: 8px 10px; background: rgba(12,18,32,0.9); color: #8899b0; border-bottom: 1px solid rgba(79,195,247,0.15);">FUT · DARK</div>
+          <div style="padding: 8px 10px; background: rgba(12,18,32,0.9); color: #8899b0; border-bottom: 1px solid rgba(79,195,247,0.15);">FUT · LIGHT</div>
+          <div style="padding: 8px 10px; background: rgba(12,18,32,0.9); color: #8899b0; border-bottom: 1px solid rgba(79,195,247,0.15);">RUSTIC · DARK</div>
+          <div style="padding: 8px 10px; background: rgba(12,18,32,0.9); color: #8899b0; border-bottom: 1px solid rgba(79,195,247,0.15);">RUSTIC · LIGHT</div>
+
+          <div style="padding: 7px 12px; color: #8899b0; border-bottom: 1px solid rgba(255,255,255,0.04);">field</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #05080f; border: 1px solid rgba(255,255,255,0.2); vertical-align: -1px; margin-right: 5px;"></span>#05080f</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #F5F7FB; vertical-align: -1px; margin-right: 5px;"></span>#F5F7FB</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #16110e; border: 1px solid rgba(255,255,255,0.2); vertical-align: -1px; margin-right: 5px;"></span>#16110e</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #efe7d3; vertical-align: -1px; margin-right: 5px;"></span>#efe7d3</div>
+
+          <div style="padding: 7px 12px; color: #8899b0; border-bottom: 1px solid rgba(255,255,255,0.04);">ink</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#e8edf5</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#001033</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#e8e2d4</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#2c2317</div>
+
+          <div style="padding: 7px 12px; color: #66bb6a; border-bottom: 1px solid rgba(255,255,255,0.04);">verified (role)</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #66bb6a; vertical-align: -1px; margin-right: 5px;"></span>#66bb6a</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #2e7d32; vertical-align: -1px; margin-right: 5px;"></span>#2e7d32</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #7fae6a; vertical-align: -1px; margin-right: 5px;"></span>#7fae6a</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);"><span style="display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: #2e6b34; vertical-align: -1px; margin-right: 5px;"></span>#2e6b34</div>
+
+          <div style="padding: 7px 12px; color: #ffc66b; border-bottom: 1px solid rgba(255,255,255,0.04);">stale</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#ffc66b</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#b07d1d</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#c9a35a</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#9a7423</div>
+
+          <div style="padding: 7px 12px; color: #ff5252; border-bottom: 1px solid rgba(255,255,255,0.04);">failing</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#ff1744</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#c62828</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#b8453a</div>
+          <div style="padding: 7px 10px; color: #556680; border-bottom: 1px solid rgba(255,255,255,0.04);">#9c2b1f</div>
+
+          <div style="padding: 7px 12px; color: #8899b0;">accent + display</div>
+          <div style="padding: 7px 10px; color: #556680;">#0077FF · Orbitron</div>
+          <div style="padding: 7px 10px; color: #556680;">#0077FF · Orbitron</div>
+          <div style="padding: 7px 10px; color: #556680;">#8a6d3b · Cinzel</div>
+          <div style="padding: 7px 10px; color: #556680;">#8a6d3b · Cinzel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
