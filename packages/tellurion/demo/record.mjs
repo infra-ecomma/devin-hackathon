@@ -21,6 +21,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -108,7 +109,21 @@ async function until(page, fn, { timeout = 120000, label = 'state', arg = undefi
   fs.mkdirSync(OUT, { recursive: true });
 
   const port = await freePort(8830);
-  console.log(`recording demo on :${port} (skin ${SKIN}, speed ${SPEED})\n`);
+
+  // ITS OWN COPY OF THE FIXTURE, never the shared one.
+  //
+  // demo/project is a directory the story REWRITES, and a live looping demo
+  // (the one you leave on a screen behind a stand) writes the same files. Run
+  // both at once and the looping story resets the plan to empty underneath the
+  // recording: the run still exits 0, the video still plays, and the last frame
+  // quietly shows fourteen unexamined features where the whole point was five
+  // signed and one rejected. Caught exactly that way. A recording that can be
+  // corrupted by another process on the same machine is not reproducible, so
+  // this takes a private copy and leaves the shared fixture alone.
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'tellurion-demo-'));
+  fs.cpSync(path.join(HERE, 'project'), proj, { recursive: true });
+  console.log(`recording demo on :${port} (skin ${SKIN}, speed ${SPEED})`);
+  console.log(`fixture copy: ${proj}\n`);
 
   // ---------------------------------------------------------------- prologue
   // The Inception story runs FIRST and in the same page, so the recording is one
@@ -147,7 +162,7 @@ async function until(page, fn, { timeout = 120000, label = 'state', arg = undefi
   // ------------------------------------------------------------- the instrument
   const server = spawn(process.execPath, [
     path.join(ROOT, 'server.mjs'),
-    '--project', path.join(HERE, 'project'),
+    '--project', proj,
     '--world', path.join(HERE, 'data', 'world-static.json'),
     '--story', path.join(HERE, 'story.mjs'),
     '--name', 'Lantern', '--port', String(port), '--speed', SPEED, '--once',
@@ -263,6 +278,7 @@ async function until(page, fn, { timeout = 120000, label = 'state', arg = undefi
   await ctx.close();
   await browser.close();
   server.kill();
+  try { fs.rmSync(proj, { recursive: true, force: true }); } catch {}
 
   let videoFile = null;
   if (video) {

@@ -3,15 +3,15 @@
   "infra": false,
   "category": "ui",
   "promised": "Replace the TBK Labs logo with the Ecomma logo in the Tellurion UI and the VS Code extension (Wassim: 'add Ecomma logo to the Tellurion (instead of TBK Labs)' / 'just replace the logo' / 'in the UI, and the extension').",
-  "requested": "push to MAIN all of it and install if needed. i want to se the bew lkogo ont he extnesion",
-  "request_hash": "sha256:f723a3907daf541a0455062c87d7820674801ad0477ba200edbcc28f541605be",
+  "requested": "are you sure the proper Ecomma logos are in?!",
+  "request_hash": "sha256:1b048e7680651ee91f1bdb0539b9322d950b6534def1ab603d6d6fe35c879466",
   "reasons": [
-    "No recorded multi-step walk (video) provided; only static screenshots are present, which do not satisfy the mandatory category requirement for a multi-step user flow exercise."
+    "The category requirement mandates a recorded multi-step walk video of the user flow, but the evidence provided consists only of static screenshots, not a video walk."
   ],
   "failed_conditions": [
     "required-evidence-missing"
   ],
-  "artifacts_hash": "sha256:0afdb73a66eb89c1c6a63ab566ae970c96239bd49e78f63dddf1d9300691e917",
+  "artifacts_hash": "sha256:b3e9a79df288b1ff30e64af259cac87f380150125518aa8e9b832d65844948b1",
   "verifier_model": "xiaomi/mimo-v2.5",
-  "timestamp": "2026-08-30T12:28:49.760Z"
+  "timestamp": "2026-08-30T12:50:19.575Z"
 }
