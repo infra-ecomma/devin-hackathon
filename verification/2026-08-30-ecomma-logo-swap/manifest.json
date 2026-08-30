@@ -28,5 +28,7 @@
     }
   ],
   "method": "Served the edited files over HTTP on throwaway ports (8123 app, 8124 media), rendered each surface in the Playwright-driven Chrome, screenshotted, and looked at all three images. Temporary servers shut down after; the pre-existing tellurion-fleet-deck systemd service on 8768 was left untouched.",
-  "not_claimed": "Changes are uncommitted; nothing was pushed to infra-ecomma/devin-hackathon. The OCC live-artifact copy of Tellurion still carries the TBK mark by design (the hackathon subtree is the authoritative surface for this request)."
+  "pushed": "origin/main at 6343c97 on infra-ecomma/devin-hackathon, confirmed by git ls-remote after a rebase onto Rabih's 141b19e; 36 files, logo swap + demo fixture + outstanding session work (packages/node_modules, .tellurion state and the 45MB demo/last-recording excluded).",
+  "installed": "Extension compiled (tsc), packaged as tellurion-0.2.1.vsix, installed into Forge's vscode-server as tellurion.tellurion-0.2.1; installed media/tellurion-bundled.html is md5-identical (dd9a3cdc) to the repo file and greps 1 Ecomma mark, 0 TBK marks. Vsix also delivered md5-verified to Legion Downloads for a local VS Code install.",
+  "not_claimed": "The OCC live-artifact copy of Tellurion still carries the TBK mark by design (the hackathon subtree is the authoritative surface for this request); the old tbk-labs.tellurion-0.6.0 wrapper extension frames that OCC-served page, so a TBK logo seen there is the other product, not a failed install."
 }

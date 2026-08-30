@@ -471,6 +471,12 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
 
   function editBar(host) {
     if (!world || !world.plan || !world.plan.exists || world.plan.error) return;
+    // An archive has no server behind it, so the editor's first move — GET
+    // /api/plan — cannot resolve: the click did nothing at all and printed
+    // "Fetch API cannot load file:///api/plan" where nobody was looking. The
+    // Browser link already withdraws itself here for the same reason, on the
+    // same reasoning: a control that cannot do anything is worse than no control.
+    if (window.__EMBEDDED_WORLD__) return;
     const bar = div('splan-edit', host);
     const b = document.createElement('button');
     b.textContent = 'Edit plan';

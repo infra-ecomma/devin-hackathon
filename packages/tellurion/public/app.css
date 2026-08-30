@@ -144,8 +144,13 @@ html[data-mode="observatory"] body {
   position: relative; z-index: 30;
 }
 .bar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
-.mark { height: 30px; width: auto; flex: 0 0 auto; }
-html[data-mode="observatory"] .mark path { fill: #57CAFB; }
+/* The Ecomma wordmark, from the brand book's own assets
+   (Marketing/brand/brand-book/assets/ecomma-logo-dark.svg). Two-tone by design:
+   the seven letterform paths follow the register through currentColor, and the
+   one brand-blue path IS the mark and never changes. The old rule repainted
+   EVERY path #57CAFB in observatory, which would flatten the two tones into one
+   and lose the mark inside the word. */
+.mark { height: 26px; width: auto; flex: 0 0 auto; color: var(--ink); }
 
 .census { display: flex; align-items: center; gap: 26px; position: relative; min-width: 0; }
 /* At 1280 the project subline ran straight under the census and both became

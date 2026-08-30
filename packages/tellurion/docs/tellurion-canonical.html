@@ -218,7 +218,7 @@
     <svg viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
     <span class="logo-word"><b>TBK</b>&nbsp;<i>Labs</i></span>
   </div>
-  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v2.1</div>
+  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v2.2</div>
 </header>
 
 <div class="title-block">
@@ -461,8 +461,28 @@
       <tr><td><b>The walk</b></td><td><code>live-artifact/verify/walk.mjs</code></td><td>The acceptance walk, run in a real browser against a running server in demo mode. <code>totalFails</code> must be 0.</td></tr>
       <tr><td><b>Supervision</b></td><td><code>live-artifact/systemd/</code></td><td>Two user units: <code>tellurion.service</code> on 8769 for this repo, <code>tellurion-fleet-deck.service</code> on 8768.</td></tr>
       <tr><td><b>The model mockup</b></td><td><code>live-artifact/mockups/journey-2026-08-28.html</code></td><td>The ten-frame walkthrough the hierarchy was ratified against. A mockup, not the instrument.</td></tr>
+      <tr><td><b>The demo story</b></td><td><code>demo/story.mjs</code></td><td>A scripted timeline that supplies the INPUTS a working session would supply. It writes <code>plan.json</code>, <code>verdicts.json</code> and <code>accepted.json</code> on disk and feeds transcript record shapes; the ordinary watchers and the ordinary reducer do the rest. Refuses to run in any directory without a <code>.tellurion/DEMO-PROJECT</code> marker, because it writes.</td></tr>
+      <tr><td><b>The demo graph</b></td><td><code>demo/data/world-static.json</code></td><td>An invented standing bench (29 tools, 11 ring arcs, 7 comets) for a made-up grocery app. Carries <code>"demo": true</code>, which puts a DEMO DATA badge in the bar so a screenshot of it can never be mistaken for the fleet.</td></tr>
+      <tr><td><b>The recorder</b></td><td><code>demo/record.mjs</code></td><td>Boots its own server on a free port, plays the Inception prologue and then the orrery story in one continuous take, and writes a video, 21 stills and <code>recording.json</code>. Exits non-zero if any of its eight assertions about the finished plate fail.</td></tr>
     </tbody>
   </table>
+
+  <div class="kicker">The demo is the instrument, not a picture of it</div>
+  <p class="prose">A demo that poses the picture would break the rule the whole product rests on:
+  that no body on the plate exists unless a record produced it. So the story writes real files and
+  the instrument reads them exactly as it reads a real project's, which means a broken instrument
+  would demo as broken. The cost is that the story WRITES, in a codebase whose first constraint is
+  that it never writes to what it draws, and that is fenced rather than excused: <code>--story</code>
+  refuses any directory that has not opted in by carrying a marker file, so pointing it at a real
+  repository stops it instead of overwriting somebody's plan.</p>
+  <p class="prose">Two bodies were added to the plate for it, and both are named in the key, because
+  a legend that does not name every mark is the same defect as a plate that draws one nothing
+  produced. A <b>satellite</b> orbits a ring arc rather than the core, for a mechanism whose subject
+  is that arc's output rather than the project: Broken Promises reads the Features Ledger back and
+  reaches, in fault red, for any feature a builder claimed and a judge then rejected. A <b>shooting
+  star</b> is a commit landing, and only a live one: git history already carries <code>pre</code>,
+  and a backlog drain replaying hours of commits must not fill the sky with streaks claiming the
+  fleet is working now.</p>
 
   <div class="kicker">The sign-off vocabulary</div>
   <p class="prose">Three tiers, three different parties, and only the third moves the counter. A plan
@@ -614,6 +634,31 @@
   thing this section exists to make impossible.</p>
 
   <div class="log">
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>v2.2 &middot; A demo that runs the instrument rather than posing it, and the entrance stopped
+      restarting itself.</h4>
+      <p>Built for showing Tellurion to an audience with no context. <code>demo/</code> carries an
+      invented grocery app called Lantern (4 products, 14 features, 30 steps) on an invented bench of
+      29 tools, 11 ring arcs and 7 comets, all named to explain themselves cold. The story writes the
+      real plan and sign-off files and feeds real record shapes, so the ordinary watchers and the
+      ordinary reducer draw it; <code>--story</code> refuses any directory without a
+      <code>.tellurion/DEMO-PROJECT</code> marker, and the graph carries <code>"demo": true</code>
+      which puts a DEMO DATA badge in the bar. Two new bodies, both named in the key: a
+      <b>satellite</b> orbiting a ring arc (Broken Promises, reading the Features Ledger back and
+      reaching in fault red for a feature a judge rejected after the builder claimed it), and a
+      <b>shooting star</b> for a commit landing, live ones only.</p>
+      <p><b>The defect this surfaced, which was not a demo defect.</b> The entrance choreography ran off
+      one global clock reset by <code>setWorld</code>, and <code>setWorld</code> runs on every
+      snapshot, which the server sends whenever the plan or a sign-off file changes. So on any project
+      actually being worked, the whole plate restarted its entrance several times a minute: every
+      planet re-swept into its seat and the labels, which fade in at 1250ms, never survived long enough
+      to be read. The plate was least legible exactly when it had the most to say. Each body now carries
+      its own birth stamp, taken at first sighting and never reset, so a new product sweeps in while
+      everything already drawn stays put. The plate also gained a third register,
+      <code>data-mode="rustic"</code>, putting the engraved chart on parchment; the canvas reads its
+      label knockout from a <code>--halo</code> token now rather than picking a string by mode name,
+      which is why a third register was invisible to it before.</p>
+    </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>v2.1 &middot; The governance ring took its first reading, and its arcs stopped being equal.</h4>
       <p>Ratified by the operator the same day as decisions K1 <i>process-detection</i>, K2
@@ -887,7 +932,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v2.1 &middot; updated 30 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v2.2 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 

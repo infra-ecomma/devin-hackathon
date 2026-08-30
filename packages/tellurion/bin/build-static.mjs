@@ -8,8 +8,22 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
-const src = process.argv[2] || 'http://127.0.0.1:8768/api/world';
-const out = process.argv[3] || path.join(ROOT, 'tellurion-archive.html');
+// The register the archive OPENS in. index.html hardcodes data-mode="plate" for
+// the served instrument, and ?skin= is the only thing that overrides it — which a
+// file on disk, a bookmark, or a double-click all lose. An archive is opened by
+// address rather than launched, so its opening register has to be baked in, and
+// the baked default is the product's own: rustic light.
+const argv = process.argv.slice(2);
+const si = argv.indexOf('--skin');
+const skin = si >= 0 && argv[si + 1] ? argv[si + 1] : 'rustic';
+if (si >= 0) argv.splice(si, 2);
+if (!['plate', 'rustic', 'observatory'].includes(skin)) {
+  console.error(`build-static: --skin ${skin} is not a register the stylesheet defines (plate, rustic, observatory).`);
+  process.exit(2);
+}
+
+const src = argv[0] || 'http://127.0.0.1:8768/api/world';
+const out = argv[1] || path.join(ROOT, 'tellurion-archive.html');
 
 const world = src.startsWith('http')
   ? await fetch(src).then((r) => r.json())
@@ -45,5 +59,18 @@ const bundle = [
 let html = read('public/index.html');
 html = html.replace('<link rel="stylesheet" href="/app.css" />', '<style>\n' + read('public/app.css') + '\n</style>');
 html = html.replace('<script type="module" src="/app.js"></script>', '<script>\n' + bundle + '\n</script>');
+// Two places, or the register is only half set: the root attribute is what CSS
+// and the first paint read, and `lightMode` is where the Observatory button
+// returns to — left at 'plate', a round trip through the observatory would drop
+// a rustic archive into the cold register and never come back.
+if (skin !== 'plate') {
+  const before = html;
+  html = html.replace('<html lang="en" data-mode="plate">', `<html lang="en" data-mode="${skin}">`)
+             .replace("let lightMode = 'plate';", `let lightMode = '${skin === 'observatory' ? 'plate' : skin}';`);
+  if (html === before) {
+    console.error('build-static: could not bake the skin — index.html or app.js no longer carry the strings this rewrites.');
+    process.exit(2);
+  }
+}
 writeFileSync(out, html);
 console.log('wrote', out, `(${(html.length / 1024).toFixed(0)} KB, snapshot of ${world.project.name})`);
