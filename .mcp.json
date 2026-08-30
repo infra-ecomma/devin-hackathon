@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "kit-rag": {
+      "command": "node",
+      "args": [
+        "/home/rabih/.master-kit/Master-Starter-Kit/tools/mcp-servers/kit-rag/server.js"
+      ],
+      "env": {
+        "RAG_STORAGE_ROOT": "/home/rabih/.master-kit/Master-Starter-Kit/.rag",
+        "RAG_PROJECT_ROOT": ".",
+        "KIT_RAG_KIT_ROOT": "/home/rabih/.master-kit/Master-Starter-Kit",
+        "LIGHTRAG_HOST": "127.0.0.1",
+        "LIGHTRAG_PORT": "9621"
+      },
+      "timeout": 300000
+    },
+    "kit-skills": {
+      "command": "python3",
+      "args": [
+        "/home/rabih/.master-kit/Master-Starter-Kit/tools/mcp-servers/kit-skills/server.py"
+      ],
+      "env": {
+        "KIT_SKILLS_MANIFEST": "/home/rabih/.master-kit/Master-Starter-Kit/plugin/skills/SKILL-MANIFEST.json"
+      }
+    }
+  }
+}
