@@ -1,0 +1,23 @@
+{
+  "date": "2026-08-30",
+  "session": "tellurion-hackathon-e3",
+  "note": "Copy of the workspace-level manifest at ../verification/2026-08-30-tellurion-earned-light-reimagining/manifest.json (the wrapper folder holds this workspace's rule-36 manifests); duplicated here because gates resolve the project root to this repo. Untracked on purpose.",
+  "category": "deploy document",
+  "evidence_files_in": "../../verification/2026-08-30-tellurion-earned-light-reimagining/ (workspace-level copy holds live-canonical-v16.html and canvas-artifact-readback.html)",
+  "high_risk": false,
+  "promised": "A design canvas reimagining Tellurion built with the /design skill and a multi-agent workflow, honoring the locked state grammar and the four-skin toggle ruling, with the canonical HTML updated to v1.6 in the same session",
+  "evidence": [
+    "Design canvas published and read back: https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203 · 2.5MB · marker greps THE LAW OF LIGHT=1, EARNED LIGHT=1, PRODUCT VERIFIED=1, Grammar.dc.html=1, DirectionAtlas.dc.html=1, pg-directions=1",
+    "Boards rendered and viewed in headless Chromium before each save: Main, Cover, Grammar (full page), Ignition, FirstLight, Plate, DirectionCapcom, SkyRusticLight, SkyRusticDark, SkyFuturisticLight, StyleMatrix",
+    "seed-canvas.mjs --check: ok, 15 files, both seeds",
+    "Live canonical loaded through the Cloudflare Access broker (exit 0 = real 2xx, not a login page): v1.5 served 'law of light' on attempt 1; v1.6 served 'One law, four skins' + v1.6 masthead + 3x 'law of light' on attempt 2",
+    "All four canonical copies md5-identical after sync (single unique hash across tbk-shares, packages/tellurion, OCC live-artifact, legacy repo)",
+    "Pushes: tbk-shares 610f0b098 then 9bedd5e63 (re-apply after concurrent clobber 673ce9184), devin-hackathon ecee753, OCC 9938568d; legacy local commit f1a7d5e",
+    "Canvas opened on the user's measured workstation: tbk-open confirmed opened on legion-win, twice",
+    "Concept workflow wf_769fd077-920: 8/8 agents done, 0 errors, journal in the session's workflows dir"
+  ],
+  "not_done": [
+    "No code changes in devin-hackathon src/ (design session; the canvas is the build spec)",
+    "applyPlan does not yet obey appear-on-work-start; recorded as code-behind-model in canonical v1.6"
+  ]
+}

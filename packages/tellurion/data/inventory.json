@@ -12,15 +12,6 @@
       "evidence": "project-starter/.claude/skills/kit/ship-to-shares/SKILL.md"
     },
     {
-      "name": "Ship to Vault",
-      "kind": "process",
-      "one_liner": "File an artifact into its canonical OCC home with gates, approval, and cascade",
-      "status": "live",
-      "parent": "OCC",
-      "home": "project-starter/.claude/skills/kit/ship-to-vault/",
-      "evidence": "project-starter/.claude/skills/kit/ship-to-vault/SKILL.md"
-    },
-    {
       "name": "Verification Protocol (Rule 36)",
       "kind": "process",
       "one_liner": "Independent second model judges delivery evidence; high-risk blocks, normal-risk verifies in background",
@@ -73,15 +64,6 @@
       "parent": "OCC",
       "home": "project-starter/governance/AUTO-SYNC.md",
       "evidence": "project-starter/governance/AUTO-SYNC.md"
-    },
-    {
-      "name": "OCC Cascade",
-      "kind": "process",
-      "one_liner": "One-way pull cascade: primitives authored in OCC; website and Obsidian re-derive from it",
-      "status": "live",
-      "parent": "OCC",
-      "home": "project-starter/governance/CASCADE-AND-WORKFLOW.md",
-      "evidence": "project-starter/governance/CASCADE-AND-WORKFLOW.md"
     },
     {
       "name": "Delegation routing (Rule 40)",

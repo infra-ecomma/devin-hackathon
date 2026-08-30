@@ -99,19 +99,13 @@ async function runScan(ctx: vscode.ExtensionContext): Promise<void> {
   p.reveal();
   void armGitWatcher();
   try {
-    const state = await computeVentureState(root);
-    p.postEvent("scan", `plan loaded: ${state.products.length} products from ${state.planPath}`);
-    const commits = await countCommits(root);
-    if (commits !== undefined) {
-      p.postEvent("scan", `git history read: ${commits} commits on ${state.branch}`);
-    }
+    // First Light streams: each line lands the moment the engine reaches that
+    // milestone, and the sky itself lands only when the state is computed.
+    const state = await computeVentureState(root, ev => { p.postEvent(ev.kind, ev.line); });
     p.postEvent(
       "scan",
-      `state computed: ${state.productsInSky} products in the sky, ${state.productsVerified} verified`
+      `first light: ${state.productsInSky} products in the sky, ${state.productsVerified} verified`
     );
-    for (const problem of state.planProblems) {
-      p.postEvent("error", `plan problem: ${problem}`);
-    }
     p.postState(state);
   } catch (e) {
     p.postEvent("error", errorText(e));

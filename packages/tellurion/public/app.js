@@ -84,7 +84,15 @@ const orrery = initOrrery(canvas);
 
 /* ------------------------------------------------------------- census + key */
 
-function fillCensus() {
+// ONE census, read by the bar AND the key. They used to count separately, three
+// inches apart: fillCensus dropped undeclared products and deferred to the plan's
+// totals, buildKey did neither and read world.plan.totals without the exists and
+// error guards. So a project with a plan could print "5 products" in the bar and
+// "planet - a product from your plan  7" in the legend, and a BROKEN plan could
+// put step totals on the core that the bar had already refused. That is decision
+// D5's defect one layer down, and it takes D5's fix: anything that counts a body
+// counts it HERE, once, or the screen gets two answers to one question again.
+function census() {
   const s = world.stat;
   // A product nobody declared is a typo wearing a body. It is drawn, so the
   // operator can see and fix it, and it is counted as NEITHER a product nor a
@@ -92,25 +100,45 @@ function fillCensus() {
   // than remove it.
   const real = s.planets.filter(p => p.declared !== false);
   const flag = real.filter(p => p.tier === 'flagship').length;
-  // WHEN A PLAN EXISTS, THE BAR COUNTS THE PLAN (decision D5, 2026-08-30).
+  // WHEN A PLAN EXISTS, THE COUNT IS THE PLAN'S (decision D5, 2026-08-30).
   // It used to count everything the instrument had discovered anywhere, so the
-  // bar read "14 products, 86 features" beside a spine reading 21/25: one screen,
-  // two answers to the same question, three inches apart. Products, features and
-  // steps are the three the plan actually declares.
+  // bar read "14 products, 86 features" beside a spine reading 21/25. Products,
+  // features and steps are the three the plan actually declares.
   const t = (world.plan && world.plan.exists && !world.plan.error && world.plan.totals) || null;
-  $('cnProducts').textContent = t ? t.products : flag;
-  $('cnFeatures').textContent = t ? t.features : s.features.length;
+  return {
+    products: t ? t.products : flag,
+    // Minor planets are the discovered non-flagship bodies. No plan declares one,
+    // so this figure comes from discovery whether a plan exists or not.
+    projects: real.length - flag,
+    // FEATURES, NOT STEPS. plan.mjs builds these as two different totals and
+    // state.mjs is emphatic about why (a feature is a noun on the product, a step
+    // is a verb under it). Reading one for the other is the bug that made the
+    // spine read as a worklog.
+    features: t ? t.features : s.features.length,
+    // Steps are the work under the features, and the one thing the plan declares
+    // that the other two do not already say. The chat's to-do rows are not the
+    // plan and are excluded wherever they are counted.
+    steps: t ? t.steps : s.milestones.filter(m => m.entity !== 'plan').length,
+    stepsDone: t ? t.stepsDone : 0,
+  };
+}
+
+function fillCensus() {
+  const n = census();
+  $('cnProducts').textContent = n.products;
+  $('cnFeatures').textContent = n.features;
   // projects, tools, processes and workflows are no longer in the bar: they are
   // not this project, and they are what pushed it into the drive gauge
-  // Steps are the third figure: they are the work under the features, and the
-  // one thing the plan declares that the other two do not already say. The chat's
-  // to-do rows are not the plan and are excluded wherever they are counted.
-  $('cnSteps').textContent = t ? t.steps : s.milestones.filter(m => m.entity !== 'plan').length;
+  $('cnSteps').textContent = n.steps;
+  // The entity graph says whether it is invented; the bar repeats it. Read from
+  // the data rather than from a launch flag, so the badge cannot be switched off
+  // while the demo graph is still loaded.
+  $('demoBadge').hidden = !(world && world.stat && world.stat.demo);
 }
 
 function buildKey() {
   const s = world.stat;
-  const flag = s.planets.filter(p => p.tier === 'flagship').length;
+  const n = census();
   const c = 'stroke="currentColor" fill="none"';
   const g = (svg) => `<svg viewBox="0 0 26 18">${svg}</svg>`;
   // A row that counts something the plate is not drawing is a legend lying about
@@ -132,6 +160,79 @@ function buildKey() {
   };
   const sec = (t) => `<div class="key-sec">${t}</div>`;
 
+  // A row for something the instrument CANNOT DETECT says so, rather than
+  // sitting at zero where it reads as "you have never used one". The two are
+  // opposite facts and the reader cannot tell them apart from a bare 0.
+  // "there should be a place where all this is explained. as in what each one is.
+  // maybe a small button that has a section. i dont want it to be big, just
+  // there." - Wassim, 2026-08-30 on the processes, and one line earlier on the
+  // belt families: "i need to know what those are." So the explanation sits ON
+  // the row that raises the question, folded behind a small opener, rather than
+  // as a wall of text the legend would have to carry open at all times.
+  const opener = (id, label) => `<button class="kr-what" data-what="${id}" aria-expanded="false">${label}</button>`;
+  const whatRow = (name, note, cls = '') =>
+    `<div class="kw-row ${cls}"><span class="kw-name">${name}</span><span class="kw-note">${note}</span></div>`;
+  const whatPanel = (id, body) => `<div class="key-what" id="kw-${id}" hidden>${body}</div>`;
+
+  // Each line is read off the family's ACTUAL members in world-static, never
+  // invented: fleet is the thirteen tbk-* machine commands, ledgers is the
+  // troubleshooting appender plus the five tracker scripts, engines is the
+  // model-routing set, and so on.
+  const FAMILY_SAID = {
+    fleet: 'the tbk-* commands that know which machine you are on and reach the others',
+    guardrails: 'hooks and gates that stop or reroute a call before it runs',
+    engines: 'which model a session is on, and which pool still has quota',
+    ledgers: 'appenders that write one durable row &mdash; the troubleshooting sheet, the skill tracker',
+    publishing: 'through the Cloudflare Access wall and out to a public URL',
+    ops: 'upkeep on the machines themselves &mdash; identity, memory, stuck processes, keeping WSL awake',
+    bench: 'everything else that earned a place: readers, generators, project scripts',
+  };
+
+  // THE BELT IS SEVEN FAMILIES, AND "FLEET" IS ONE OF THEM.
+  // The row used to read "belt diamond - a fleet tool" over a count of all 60
+  // tools, but only 13 carry group:fleet (tbk-open, tbk-whoami, tbk-human-at and
+  // the rest of the machine-level commands). The other 47 are guardrails,
+  // engines, ledgers, publishing, ops and bench. The plate has always drawn these
+  // as seven separate group arcs (orrery GROUP_ORDER), so the label disagreed
+  // with the picture beside it as well as with the data under both. The families
+  // are named here, where the question the old label raised is raised.
+  const TOOL_FAMILIES = ['fleet', 'guardrails', 'engines', 'ledgers', 'publishing', 'ops', 'bench'];
+  const familyLine = () => {
+    const all = orrery.getBench() === 'all';
+    const parts = TOOL_FAMILIES.map((fam) => {
+      const list = (s.tools || []).filter((x) => (x.group || 'bench') === fam);
+      if (!list.length) return '';
+      const u = all ? list.length : usedN(list);
+      return `${fam} <b>${u}</b>/${list.length}`;
+    }).filter(Boolean);
+    if (!parts.length) return '';
+    return `<div class="key-sub">${parts.join(' &middot; ')} ${opener('fam', 'what these are')}</div>` +
+      whatPanel('fam', TOOL_FAMILIES.map((fam) => {
+        const list = (s.tools || []).filter((x) => (x.group || 'bench') === fam);
+        return list.length
+          ? whatRow(`${esc(fam)} <span class="kw-rule">${list.length}</span>`, FAMILY_SAID[fam] || '')
+          : '';
+      }).join(''));
+  };
+
+  // THE ELEVEN, AND THE TWO OF THEM NOTHING CAN SEE. Wassim kept eleven of the
+  // thirteen scraped from OCC (K3 process-scope, 2026-08-30) and took Ship to
+  // Vault and the OCC Cascade off the plate. Two survivors are blind by
+  // construction - AutoSync runs on a timer and the brand gate is a pre-commit
+  // hook - so the row names them, rather than letting a permanently dark arc
+  // read as "you never do this".
+  const blindProcs = (s.processes || []).filter((p) => !p.detect);
+  const procPanel = () => whatPanel('proc',
+    (s.processes || []).slice()
+      .sort((a, b) => (Number(b.weight) || 1) - (Number(a.weight) || 1))
+      .map((p) => whatRow(
+        esc(p.name) + (p.rule ? ` <span class="kw-rule">rule ${esc(p.rule)}</span>` : ''),
+        esc(p.plain || p.one_liner || '') + (p.blind ? ` <em>&mdash; ${esc(p.blind)}</em>` : ''),
+        (Number(p.weight) || 1) > 1 ? 'kw-heavy' : '',
+      )).join('') +
+    '<div class="kw-foot">A wider arc on the plate is how much one matters to you, set in the data. ' +
+    'It is not a measurement of anything.</div>');
+
   const fs = s.features;
   const nHand = fs.filter(f => f.inHand).length;
   const nOpen = fs.filter(f => f.status === 'open' && !f.inHand).length;
@@ -142,7 +243,22 @@ function buildKey() {
   // overstated the fleet the moment a session finished.
   const AGENT_IDLE = 4 * 60_000;
   const nAgents = Object.values(world.agents || {}).filter(a => (Date.now() - a.lastAt) < AGENT_IDLE).length;
-  const plan = (world.plan && world.plan.totals) || { steps: 0, stepsDone: 0 };
+  // Commits this session, which is what a shooting star is drawn for. Git
+  // history carries `pre`, and history does not streak: replaying a backlog
+  // must not claim the fleet committed forty times a moment ago.
+  const nCommits = (world.notches || []).filter((x) => !x.pre).length;
+  // A process may declare a satellite: a mechanism that runs over its output.
+  // Read from the data, so adding one is a data edit and the legend follows.
+  const sats = (s.processes || []).filter((p) => p.satellite && (orrery.getBench() === 'all' || (world.usage && world.usage[p.id])));
+  const satelliteRows = () => sats.map((p) => {
+    const nBroken = fs.filter((f) => f.failedBy).length;
+    return `<div class="key-row ${nBroken ? 'k-fault' : ''}">` +
+      g(`<circle cx="13" cy="9" r="6.4" ${c} stroke-width=".6" stroke-dasharray="2 2.5" opacity=".7"/>` +
+        `<circle cx="19.4" cy="9" r="2.5" ${c} stroke-width="1.2"/><circle cx="19.4" cy="9" r=".9" fill="currentColor"/>`) +
+      `<span class="kr-name"><b>${esc(p.satellite.name)}</b> &middot; ${esc(p.satellite.plain || p.satellite.one_liner || '')}</span>` +
+      `<span class="kr-n">${nBroken}</span></div>` +
+      `<div class="key-sub">It orbits <b>${esc(p.name)}</b> because that is what it reads. A thread from it to a moon means that part was claimed done and a judge then rejected it.</div>`;
+  }).join('');
   // The rim is a date scrubber only where there are dates to scrub. In genesis
   // mode there are none and the control is inert, so the legend must not tell
   // him to drag it: an instruction for a disabled control is worse than silence.
@@ -154,14 +270,54 @@ function buildKey() {
   // does not exist is the same defect as a screen that reports work nobody did.
   $('keyBody').innerHTML =
     sec('The bodies') +
-    row(g(`<circle cx="13" cy="9" r="6.5" ${c} stroke-width="1.2"/><path d="M7.5 6.8h11M6.6 9h12.8M7.5 11.2h11" ${c} stroke-width=".6" opacity=".5"/>`), 'planet &middot; a product from your plan', flag) +
-    row(g(`<circle cx="13" cy="9" r="3.6" ${c} stroke-width="1"/><circle cx="13" cy="9" r="1.4" ${c} stroke-width=".5" opacity=".5"/>`), 'minor planet &middot; a project', s.planets.length - flag) +
-    row(g(`<circle cx="13" cy="9" r="2" fill="currentColor"/><circle cx="13" cy="9" r="5.6" ${c} stroke-width=".7" opacity=".55"/>`), 'moon &middot; one step of the plan', fs.length, 'k-pink') +
+    // THE CORE IS FIRST BECAUSE THE CORE IS THE PROJECT. Wassim, 2026-08-30:
+    // "the project should be listed first, it's the core!". It sat fifth of
+    // nine, under three classes of body that only exist because it does, so the
+    // legend opened on the periphery and buried its own subject.
+    row(g(`<circle cx="13" cy="9" r="3.4" fill="currentColor"/><path d="M13 2.2 A 6.8 6.8 0 0 1 19.8 9" ${c} stroke-width="1.8"/>`), 'the core &middot; this project, ringed by its plan', n.stepsDone + '/' + n.steps) +
+    row(g(`<circle cx="13" cy="9" r="6.5" ${c} stroke-width="1.2"/><path d="M7.5 6.8h11M6.6 9h12.8M7.5 11.2h11" ${c} stroke-width=".6" opacity=".5"/>`), 'planet &middot; a product from your plan', n.products) +
+    row(g(`<circle cx="13" cy="9" r="3.6" ${c} stroke-width="1"/><circle cx="13" cy="9" r="1.4" ${c} stroke-width=".5" opacity=".5"/>`), 'minor planet &middot; a project', n.projects) +
+    // A MOON IS A FEATURE, NOT A STEP. state.mjs says so in capitals and gives
+    // the reason: a step is a unit of work and reads as a verb ("Resolve a
+    // project to its git root"), a feature is a part of the product and reads as
+    // a noun ("Project discovery"). Promoting every step into a feature is the
+    // exact bug that made the spine read as a worklog, and it was fixed in the
+    // reducer while this row went on describing it.
+    row(g(`<circle cx="13" cy="9" r="2" fill="currentColor"/><circle cx="13" cy="9" r="5.6" ${c} stroke-width=".7" opacity=".55"/>`), 'moon &middot; a feature of that product', n.features, 'k-pink') +
     row(g(`<path d="M13 3.4 L17.4 9 L13 14.6 L8.6 9 Z" ${c} stroke-width="1.1"/>`), 'chevron &middot; an agent at work now', nAgents, 'k-purple') +
-    row(g(`<circle cx="13" cy="9" r="3.4" fill="currentColor"/><path d="M13 2.2 A 6.8 6.8 0 0 1 19.8 9" ${c} stroke-width="1.8"/>`), 'the core &middot; this project, ringed by its plan', plan.stepsDone + '/' + plan.steps) +
-    benchRow(g(`<rect x="10.8" y="6.8" width="4.4" height="4.4" transform="rotate(45 13 9)" ${c} stroke-width="1"/>`), 'belt diamond &middot; a fleet tool', s.tools, 'k-bench') +
+    // Neither a product nor a part of one, and it can never climb the ladder,
+    // because there is nothing of ours in it to sign off. Hollow on a dotted
+    // shell so it cannot be read as a planet.
+    row(g(`<circle cx="13" cy="9" r="6.6" ${c} stroke-width=".6" stroke-dasharray="1.5 2.5"/><circle cx="13" cy="9" r="3.6" ${c} stroke-width="1.2"/><circle cx="13" cy="9" r="1.1" fill="currentColor"/>`),
+        'outside service &middot; something this product leans on and does not own', (s.services || []).length) +
+    ((s.services || []).length
+      ? `<div class="key-sub">Its thread runs to the product that DEPENDS on it, which is the only question anyone asks about a dependency: what of ours stops if theirs does.</div>`
+      : '') +
+    benchRow(g(`<rect x="10.8" y="6.8" width="4.4" height="4.4" transform="rotate(45 13 9)" ${c} stroke-width="1"/>`), 'belt diamond &middot; a standing tool', s.tools, 'k-bench') +
+    familyLine() +
+    // THE RING CARRIES A READING NOW. This row said "detection not built" and sat
+    // hardcoded at 0 because attribute.mjs had three branches and no fourth:
+    // Skill to a workflow, Agent to an unnamed comet, Bash to a belt tool, and
+    // no path at all that could return a process. Each process now carries its
+    // own signature in the data and the reducer has the fourth branch, so a
+    // decision page written, a septa review run or a relay packet routed lights
+    // its own arc. The two no session can reach are named on the line below
+    // rather than buried inside the count.
     benchRow(g(`<path d="M3 13 A 11 11 0 0 1 23 13" ${c} stroke-width="1.6"/>`), 'ring arc &middot; a governance process', s.processes, 'k-amber') +
+    `<div class="key-sub">${blindProcs.length
+      ? `${blindProcs.map((p) => esc(p.name)).join(' and ')} cannot be seen from a session and draw dashed, never amber. `
+      : ''}${opener('proc', 'what these are')}</div>` +
+    procPanel() +
+    // A satellite orbits a ring arc rather than the core, because its subject is
+    // that arc's OUTPUT rather than the project. Only drawn where a process
+    // declares one, so the row is absent rather than sitting at zero on a plate
+    // that has none.
+    satelliteRows() +
     benchRow(g(`<circle cx="19" cy="6" r="2" fill="currentColor"/><path d="M17 7.5 Q 12 11 4 13" ${c} stroke-width=".9" opacity=".6"/>`), 'comet &middot; a workflow', s.workflows, 'k-purple') +
+    // A commit is the one thing here that is over the instant it happens, so it
+    // is the one mark that exists only while it is happening. Named because the
+    // legend's whole claim is that nothing on the plate is decoration.
+    row(g(`<circle cx="19.5" cy="5.5" r="1.8" fill="currentColor"/><path d="M18 6.8 L5 13" ${c} stroke-width="1.3" opacity=".55" stroke-linecap="round"/>`), 'shooting star &middot; a commit landing', nCommits) +
     row(g(`<path d="M8 5.5 Q 13 8 18 5.5 Q 19.5 9 18 12.5 Q 13 10 8 12.5 Q 6.5 9 8 5.5 Z" ${c} stroke-width="1"/><circle cx="13" cy="9" r="1.2" fill="currentColor"/>`), 'vertebra &middot; a dated milestone', s.milestones.length) +
     `<div class="key-note">The belt, the ring arcs and the comets are the <b>standing fleet bench</b>. They are the same on every project and they are not yours to build.</div>` +
 
@@ -194,6 +350,20 @@ function buildKey() {
      (rimLive ? '<br/>drag the jewel on the rim to replay the record day by day' : '') +
      `<br/><b>Orbit and angle carry nothing.</b> Which ring a body sits on is composition, not data. Trust size, form, fill, rings, and spine order.</div>`;
 }
+// Delegated on the body, not bound per button: buildKey() rewrites keyBody's
+// innerHTML on every repaint, so any listener attached to a button inside it is
+// discarded the next time the world ticks.
+document.getElementById('keyBody').addEventListener('click', (e) => {
+  const b = e.target.closest('.kr-what');
+  if (!b) return;
+  e.stopPropagation();
+  const panel = document.getElementById('kw-' + b.dataset.what);
+  if (!panel) return;
+  panel.hidden = !panel.hidden;
+  b.setAttribute('aria-expanded', String(!panel.hidden));
+  b.textContent = panel.hidden ? 'what these are' : 'hide';
+});
+
 document.querySelector('#key .key-head').addEventListener('click', () => {
   const k = $('key');
   k.classList.toggle('closed');
@@ -517,15 +687,24 @@ $('scrubReset').addEventListener('click', () => setScrub(null));
 
 /* ------------------------------------------------------------- mode */
 
+// Which LIGHT register the Observatory button returns to. There are two now
+// (plate and rustic), so a hardcoded 'plate' would silently throw the skin away
+// the first time anyone looked at the observatory and came back. Declared above
+// setMode rather than beside its listener: `let` is in the temporal dead zone
+// until its own line runs, so a setMode call from anywhere earlier would throw.
+let lightMode = 'plate';
+
 function setMode(m) {
   document.documentElement.dataset.mode = m;
-  $('modeBtn').textContent = m === 'observatory' ? 'Plate' : 'Observatory';
+  if (m !== 'observatory') lightMode = m;
+  $('modeBtn').textContent = m === 'observatory' ? (lightMode === 'rustic' ? 'Rustic' : 'Plate') : 'Observatory';
   orrery.retheme();
   spine.invalidate();
   spine.render({ scrubT: view.scrubT });
   try { localStorage.setItem('la-mode', m); } catch {}
 }
-$('modeBtn').addEventListener('click', () => setMode(document.documentElement.dataset.mode === 'observatory' ? 'plate' : 'observatory'));
+$('modeBtn').addEventListener('click', () => setMode(
+  document.documentElement.dataset.mode === 'observatory' ? lightMode : 'observatory'));
 
 /* ---------------------------------------------------------------- the View menu
    One control for what the plate draws. It replaces the project picker, which
@@ -548,6 +727,9 @@ const VIEW_KINDS = [
   ['processes', 'Processes', (s) => usedOf(s.processes)],
   ['workflows', 'Workflows', (s) => usedOf(s.workflows)],
   ['agents', 'Agents', () => ''],
+  // Only offered where the graph has any, so the menu never lists a control for
+  // a class this plate cannot draw.
+  ['services', 'Outside services', (s) => String((s.services || []).length)],
 ];
 let hiddenKinds = new Set();
 try { hiddenKinds = new Set(JSON.parse(localStorage.getItem('tellurion-hidden') || '[]')); } catch {}
@@ -559,7 +741,7 @@ function applyHidden() {
 function buildViewMenu() {
   if (!world) return;
   const m = $('viewMenu');
-  const rows = VIEW_KINDS.map(([k, label, count]) => {
+  const rows = VIEW_KINDS.filter(([k]) => k !== 'services' || (world.stat.services || []).length).map(([k, label, count]) => {
     const n = count(world.stat);
     return `<div class="vm-row ${hiddenKinds.has(k) ? '' : 'on'}" data-kind="${k}">
       <span class="vm-box"></span><span>${label}</span><span class="vm-n">${n === '' ? '' : n}</span></div>`;
@@ -602,7 +784,19 @@ function setBenchMode(m) {
 }
 try { setBenchMode(localStorage.getItem('tellurion-bench') || 'used'); } catch { setBenchMode('used'); }
 try { setLabelMode(localStorage.getItem('tellurion-labels') || 'hover'); } catch { setLabelMode('hover'); }
-try { const saved = localStorage.getItem('la-mode'); if (saved) setMode(saved); } catch {}
+// ?skin= wins over the saved preference and does NOT overwrite it, so opening
+// the demo link on the operator's own browser cannot leave his instrument in a
+// register he never chose. Only names the stylesheet defines are honoured.
+const SKINS = new Set(['plate', 'rustic', 'observatory']);
+const wantSkin = new URLSearchParams(location.search).get('skin');
+if (wantSkin && SKINS.has(wantSkin)) {
+  document.documentElement.dataset.mode = wantSkin;
+  if (wantSkin !== 'observatory') lightMode = wantSkin;
+  $('modeBtn').textContent = wantSkin === 'observatory' ? (lightMode === 'rustic' ? 'Rustic' : 'Plate') : 'Observatory';
+  orrery.retheme(); spine.invalidate(); spine.render({ scrubT: view.scrubT });
+} else {
+  try { const saved = localStorage.getItem('la-mode'); if (saved) setMode(saved); } catch {}
+}
 
 /* ------------------------------------------------------------- ticker + readouts */
 
@@ -825,6 +1019,11 @@ window.__la = {
   scrubTo: (dateStr) => setScrub(dateStr ? +new Date(dateStr + 'T12:00:00Z') : null),
   mode: () => document.documentElement.dataset.mode,
   setMode,
+  // Names are opt-in and live behind the View menu, which a walk would have to
+  // open and click through to reach. Both modes are reachable here so a
+  // screenshot can be taken with every body named without simulating a menu.
+  setLabels: (m) => setLabelMode(m),
+  setBench: (m) => setBenchMode(m),
   dossierText: () => (dossier.hidden ? '' : dossier.textContent),
 };
 

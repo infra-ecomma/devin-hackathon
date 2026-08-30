@@ -10,7 +10,7 @@
 //
 // Exit code is the number of failures. `totalFails` in the JSON must be 0.
 
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, mkdtempSync } from 'node:fs';
 import os from 'node:os';
@@ -109,17 +109,32 @@ try {
   // describes other projects, none of which is what this screen is for, and
   // together they overflowed the bar and ran under the drive gauge. The contract
   // is now three numbers about the project, and the bench cells must be ABSENT.
-  const census = await page.evaluate(() => ({
-    products: document.getElementById('cnProducts').textContent,
-    features: document.getElementById('cnFeatures').textContent,
-    milestones: document.getElementById('cnMilestones').textContent,
-    benchCells: ['cnProjects', 'cnTools', 'cnProcesses', 'cnWorkflows'].filter((id) => document.getElementById(id)).length,
-  }));
+  // The third cell is STEPS, not milestones. The bar swapped that cell when the
+  // plan became the spine's source, and this walk kept reading `cnMilestones`,
+  // which no longer exists — so `.textContent` on null threw, `step()` never
+  // ran, and the whole walk ABORTED here. Steps 4b through 18 have not executed
+  // since; the committed walk.json recorded totalFails 1 and nobody read past
+  // it. A test that aborts is worse than a test that fails, because a failure
+  // names one thing and an abort silently retires everything behind it.
+  const census = await page.evaluate(() => {
+    const txt = (id) => { const el = document.getElementById(id); return el ? el.textContent : null; };
+    return {
+      products: txt('cnProducts'),
+      features: txt('cnFeatures'),
+      steps: txt('cnSteps'),
+      benchCells: ['cnProjects', 'cnTools', 'cnProcesses', 'cnWorkflows', 'cnMilestones'].filter((id) => document.getElementById(id)).length,
+      // What the cell OUGHT to read, taken from the same world the bar painted
+      // from. `world` above is a counts summary, not the live world, so the
+      // expectation has to be read here or it silently compares against 0.
+      planSteps: ((window.__la.world.plan || {}).totals || {}).steps || 0,
+    };
+  });
   const flag = stat.planets.filter((p) => p.tier === 'flagship' && p.declared !== false).length;
-  step('header census is the project alone: products, features, milestones, and no bench cells',
+  const planSteps = census.planSteps;
+  step('header census is the project alone: products, features, steps, and no bench cells',
     +census.products === flag && +census.features === stat.features.length &&
-    +census.milestones === stat.milestones.length && census.benchCells === 0,
-    JSON.stringify(census));
+    +census.steps === planSteps && census.benchCells === 0,
+    JSON.stringify({ ...census, expected: { products: flag, features: stat.features.length, steps: planSteps } }));
 
   /* 4b — the header, the plate and the spine count the SAME products */
   // Regression guard for a real defect: the bar read 14 PRODUCTS beside a spine
@@ -251,7 +266,9 @@ try {
   await gpage.waitForTimeout(2400);
   const gcensus = await gpage.evaluate(() => ({
     products: +document.getElementById('cnProducts').textContent,
-    ms: +document.getElementById('cnMilestones').textContent,
+    // Same swap as step 4: the third cell counts plan STEPS now. Reading the
+    // removed id here threw and took the genesis half of the walk with it.
+    ms: +document.getElementById('cnSteps').textContent,
     name: window.__la.world.project.name,
   }));
   // The census must count what the instrument DRAWS. The session to-do rows it

@@ -11,7 +11,7 @@ import { spawn } from 'node:child_process';
 import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 import * as W from '../lib/state.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));

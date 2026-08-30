@@ -157,5 +157,18 @@ ok(s.branch === "main", "state carries the real branch");
 ok(auth().orbitIndex === 0 && s.products.find(p => p.id === "checkout").orbitIndex === 1,
   "orbit index is formation order and stable");
 
+// Act X · First Light streams real milestones in scan order, with real numbers.
+const events = [];
+await computeVentureState(root, ev => events.push(ev));
+const lines = events.map(e => e.line);
+ok(lines.some(l => /^plan loaded: 2 products, 4 features/.test(l)),
+  "streamed events carry the plan milestone with its real counts");
+ok(lines.some(l => /^git history read: \d+ commits on main/.test(l)),
+  "streamed events carry the git milestone with the real branch");
+ok(lines.some(l => /^auth: /.test(l)) && lines.some(l => /^checkout: /.test(l)),
+  "streamed events carry a per-product summary line each");
+ok(events.every(e => e.kind === "scan" || e.kind === "error"),
+  "streamed events use only scan and error kinds");
+
 console.log(`\nWALK PASS · ${step} steps · the law of light holds`);
 rmSync(root, { recursive: true, force: true });

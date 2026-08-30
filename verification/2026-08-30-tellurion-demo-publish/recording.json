@@ -1,0 +1,453 @@
+{
+  "at": "2026-08-30T12:53:08.206Z",
+  "skin": "rustic",
+  "speed": "1",
+  "viewport": {
+    "w": 1600,
+    "h": 1000
+  },
+  "video": "tellurion-demo-rustic.webm",
+  "keyLegendPx": 1337,
+  "checks": [
+    {
+      "name": "four products on the finished plate",
+      "ok": true
+    },
+    {
+      "name": "fourteen features on the finished plate",
+      "ok": true
+    },
+    {
+      "name": "five carry an operator signature",
+      "ok": true
+    },
+    {
+      "name": "exactly one rejected promise",
+      "ok": true
+    },
+    {
+      "name": "the sky started empty",
+      "ok": true
+    },
+    {
+      "name": "at least five agents appeared",
+      "ok": true
+    },
+    {
+      "name": "the graph declares itself invented",
+      "ok": true
+    },
+    {
+      "name": "the Inception prologue played to its receipt",
+      "ok": true
+    }
+  ],
+  "totalFails": 0,
+  "shots": [
+    {
+      "name": "inception-open",
+      "note": "Inception: seven stages from a raw idea to a published product.",
+      "file": "01-inception-open.png",
+      "state": null
+    },
+    {
+      "name": "inception-mid",
+      "note": "Stage 4 of 7: every stage names the evidence it owes.",
+      "file": "02-inception-mid.png",
+      "state": null
+    },
+    {
+      "name": "inception-receipt",
+      "note": "The receipt: what was agreed, what was created, what was checked.",
+      "file": "03-inception-receipt.png",
+      "state": null
+    },
+    {
+      "name": "blank-sky",
+      "note": "No plan declared. The bench is standing; the project is not.",
+      "file": "04-blank-sky.png",
+      "state": {
+        "products": 0,
+        "features": 0,
+        "open": 0,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 0,
+        "agents": [],
+        "demo": true
+      }
+    },
+    {
+      "name": "plan-1-products",
+      "note": "1 of 4 products declared. Parts exist before any of them is built.",
+      "file": "05-plan-1-products.png",
+      "state": {
+        "products": 1,
+        "features": 4,
+        "open": 4,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 0,
+        "agents": [],
+        "demo": true
+      }
+    },
+    {
+      "name": "plan-2-products",
+      "note": "2 of 4 products declared. Parts exist before any of them is built.",
+      "file": "06-plan-2-products.png",
+      "state": {
+        "products": 2,
+        "features": 8,
+        "open": 8,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 0,
+        "agents": [],
+        "demo": true
+      }
+    },
+    {
+      "name": "plan-3-products",
+      "note": "3 of 4 products declared. Parts exist before any of them is built.",
+      "file": "07-plan-3-products.png",
+      "state": {
+        "products": 3,
+        "features": 11,
+        "open": 11,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 0,
+        "agents": [],
+        "demo": true
+      }
+    },
+    {
+      "name": "plan-4-products",
+      "note": "4 of 4 products declared. Parts exist before any of them is built.",
+      "file": "08-plan-4-products.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 14,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 0,
+        "agents": [],
+        "demo": true
+      }
+    },
+    {
+      "name": "agents-dispatched",
+      "note": "Agents threaded to what they are touching.",
+      "file": "09-agents-dispatched.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 14,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 1,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "work-in-hand",
+      "note": "A moon with a turning arc is work happening right now.",
+      "file": "10-work-in-hand.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 14,
+        "claimed": 0,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 1,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "builder-claims",
+      "note": "Eight parts claimed done. Nobody has checked one of them.",
+      "file": "11-builder-claims.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 8,
+        "verified": 0,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 1,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "judge-passes",
+      "note": "A ring lands on a moon: a judge looked, and passed it.",
+      "file": "12-judge-passes.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 7,
+        "verified": 1,
+        "fullyVerified": 0,
+        "rejected": 0,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "broken-promise",
+      "note": "Broken Promises found one. Claimed done, judge said no.",
+      "file": "13-broken-promise.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 7,
+        "fullyVerified": 0,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "operator-accepts",
+      "note": "Two rings: a judge passed it and a person put their name to it.",
+      "file": "14-operator-accepts.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "spine-record",
+      "note": "The Spine, Record: the plan as declared, product by product.",
+      "file": "15-spine-record.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "spine-map",
+      "note": "The Spine, Map: the same plan laid out as a shape.",
+      "file": "16-spine-map.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "spine-logic",
+      "note": "The Spine, Logic: what has to be true before what.",
+      "file": "17-spine-logic.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "key-open",
+      "note": "The Key: every mark on the plate, named.",
+      "file": "18-key-open.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "key-mid",
+      "note": "The bench: the standing tools and the governance ring.",
+      "file": "19-key-mid.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "key-bottom",
+      "note": "The ladder, and what each kind of motion means.",
+      "file": "20-key-bottom.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    },
+    {
+      "name": "closed-full-plate",
+      "note": "The finished plate: four products, one broken promise still on it.",
+      "file": "21-closed-full-plate.png",
+      "state": {
+        "products": 4,
+        "features": 14,
+        "open": 6,
+        "claimed": 1,
+        "verified": 2,
+        "fullyVerified": 5,
+        "rejected": 1,
+        "inHand": 2,
+        "agents": [
+          "Librarian",
+          "Scout",
+          "Builder",
+          "Fixer",
+          "Judge",
+          "Courier"
+        ],
+        "demo": true
+      }
+    }
+  ]
+}

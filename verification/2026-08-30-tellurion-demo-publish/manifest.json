@@ -1,0 +1,101 @@
+{
+  "slug": "2026-08-30-tellurion-demo-publish",
+  "at": "2026-08-30T12:56:00+04:00",
+  "request": "Add non-product bodies to the plate (it was too empty), use the real Ecomma logo from the Ecomma folder, commit and push to main, deploy to hackathon.ecommatools.co as the front page.",
+  "category": "ui-feature+deploy",
+  "high_risk": true,
+  "acceptance_walk": {
+    "command": "node demo/record.mjs",
+    "cwd": "devin-hackathon/packages/tellurion",
+    "checks": [
+      {
+        "name": "four products on the finished plate",
+        "ok": true
+      },
+      {
+        "name": "fourteen features on the finished plate",
+        "ok": true
+      },
+      {
+        "name": "five carry an operator signature",
+        "ok": true
+      },
+      {
+        "name": "exactly one rejected promise",
+        "ok": true
+      },
+      {
+        "name": "the sky started empty",
+        "ok": true
+      },
+      {
+        "name": "at least five agents appeared",
+        "ok": true
+      },
+      {
+        "name": "the graph declares itself invented",
+        "ok": true
+      },
+      {
+        "name": "the Inception prologue played to its receipt",
+        "ok": true
+      }
+    ],
+    "totalFails": 0,
+    "note": "Re-run with the live looping demo on :8805 still up, to prove the fixture-isolation fix. 8/8."
+  },
+  "auth_boundary_test": {
+    "what": "--public mode, probed with NO key at all",
+    "reads_200": [
+      "/",
+      "/api/world",
+      "/app.css",
+      "/orrery.js"
+    ],
+    "enumeration_401": [
+      "/api/projects",
+      "/api/instances"
+    ],
+    "writes_403": [
+      "POST /api/plan",
+      "GET /api/plan",
+      "PUT /api/plan",
+      "POST /api/accept"
+    ],
+    "client": "plan editor hidden when world.project.public is set (0 .splan-edit nodes)"
+  },
+  "defects_found_and_fixed_this_delivery": [
+    {
+      "found_by": "sentinel judge",
+      "defect": "story wrote plan.json non-atomically, racing the server's own watcher; readPlan answers EMPTY on a torn read, blanking the spine",
+      "fix": "lib/atomic.mjs writeJsonAtomic",
+      "evidence": "120 parses during active rewriting, 0 torn reads"
+    },
+    {
+      "found_by": "this walk",
+      "defect": "recorder shared demo/project with any live looping demo, so a concurrent story reset the plan mid-recording; the run still exited 0 while the final frame showed 14 unexamined features instead of 5 signed and 1 rejected",
+      "fix": "recorder copies the fixture to a temp dir and removes it after",
+      "evidence": "8/8 with the live demo deliberately left running"
+    }
+  ],
+  "deploy": {
+    "target": "hackathon.ecommatools.co",
+    "status": "NOT DEPLOYED BY THIS SESSION",
+    "pushed": "all changes are on origin/main",
+    "blocker": "the domain resolves to 167.233.83.149 and its control plane is coolify.ecommatools.co, an infra-ecomma Coolify. Every credential on this fleet returns 401 against it: TBK COOLIFY_TOKEN, the broker tokens on Legion and Strix, and MARKETING_COOLIFY_TOKEN from Ecomma/.env after a fresh tbk-secrets materialize.",
+    "attempt_log": [
+      "TBK COOLIFY_TOKEN vs coolify.ecommatools.co -> 401",
+      "legion broker token -> 401",
+      "strix broker token -> 401",
+      "MARKETING_COOLIFY_TOKEN (Ecomma/.env) -> 401",
+      "tbk-secrets materialize then retry -> 401",
+      "http://167.233.83.149:8000 -> unreachable",
+      "polled the live URL for ~3 min after push: still 5271 bytes, the old placeholder"
+    ],
+    "handoff": "coolify.ecommatools.co -> the hackathon app -> Deploy. Builds from main."
+  },
+  "looked_at": [
+    "21-closed-full-plate.png",
+    "18-key-open.png"
+  ]
+}

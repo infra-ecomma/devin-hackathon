@@ -1,0 +1,89 @@
+{
+  "slug": "2026-08-30-tellurion-demo",
+  "at": "2026-08-30T12:35:00+04:00",
+  "request": "Build a demo of Tellurion: dummy data an audience can read cold, plus an animation of the orrery being created as the plan runs, touring the spine and the key. Highlight the Features Ledger (with Broken Promises orbiting it), Autosync, MemSearch, Troubleshooting Ledger, Penta Review, shooting stars, 5-6 agents. Rustic light.",
+  "category": "ui-feature",
+  "high_risk": false,
+  "acceptance_walk": {
+    "command": "node demo/record.mjs",
+    "cwd": "devin-hackathon/packages/tellurion",
+    "what_it_exercises": "Boots a real server on a free port with the story running, plays the Inception prologue, then watches the LIVE world as the plan is declared product by product, worked, judged, rejected and accepted. Drives the spine tabs and opens/scrolls/closes the key. Asserts on the world the browser actually holds, not on a stopwatch.",
+    "steps": 21,
+    "checks": [
+      {
+        "name": "four products on the finished plate",
+        "ok": true
+      },
+      {
+        "name": "fourteen features on the finished plate",
+        "ok": true
+      },
+      {
+        "name": "five carry an operator signature",
+        "ok": true
+      },
+      {
+        "name": "exactly one rejected promise",
+        "ok": true
+      },
+      {
+        "name": "the sky started empty",
+        "ok": true
+      },
+      {
+        "name": "at least five agents appeared",
+        "ok": true
+      },
+      {
+        "name": "the graph declares itself invented",
+        "ok": true
+      },
+      {
+        "name": "the Inception prologue played to its receipt",
+        "ok": true
+      }
+    ],
+    "totalFails": 0,
+    "video": "tellurion-demo-rustic.webm",
+    "keyLegendPx": 1256
+  },
+  "regression_walk": {
+    "command": "npm run walk",
+    "result": "16/23 passed",
+    "totalFails": 7,
+    "attribution": "The 7 failures are PRE-EXISTING and not caused by this change. Proven: a scratch copy with all 5 edited files restored from origin/main produced the identical 16/23 with the same 7 failures. Before this session the walk ABORTED at step 4 (it read #cnMilestones, an element removed from the bar), so steps 4b-23 had not run at all; the committed walk.json recorded that as totalFails 1. This change repairs the abort, which is why the 7 are now visible.",
+    "pre_existing_failures": "steps 4,5,7,8,9,11,15 - stale expectations from before the plan became the spine's source; the walk still expects milestones to stand as vertebrae",
+    "totalSteps": 23
+  },
+  "looked_at": [
+    {
+      "file": "03-inception-receipt.png",
+      "shows": "the Inception prologue played through to its final receipt"
+    },
+    {
+      "file": "13-broken-promise.png",
+      "shows": "Broken Promises red on the Features Ledger, threading to the rejected feature"
+    },
+    {
+      "file": "18-key-open.png",
+      "shows": "the key naming every mark including the satellite and the shooting star"
+    },
+    {
+      "file": "21-closed-full-plate.png",
+      "shows": "the finished plate: 4 products named, 6 agents, one broken promise still on it"
+    }
+  ],
+  "honesty": [
+    "Every body in this demo is invented. The graph carries \"demo\": true and the bar prints a DEMO DATA badge.",
+    "The canonical HTML source was updated to v2.2 but NOT shipped to shares; the code it describes is being committed in this same session.",
+    "deslop blocks the canonical HTML on findings across the whole 912-line document, most of which predates this change. Left, and reported."
+  ],
+  "follow_ups": [
+    {
+      "found_by": "sentinel judge, 2026-08-30",
+      "defect": "demo/story.mjs wrote plan.json with plain writeFileSync while the server's watcher polled the same file, so a reader could catch a half-written file. readPlan() answers EMPTY on unparseable content, which blanks the spine for a frame and reads as the instrument losing the plan.",
+      "fix": "switched to lib/atomic.mjs writeJsonAtomic (tmp-then-rename), which exists for this exact race.",
+      "evidence": "120 consecutive parses of plan.json taken while the story was actively rewriting it: 0 torn reads (was reproducible before the fix \u2014 the judge caught one)."
+    }
+  ]
+}

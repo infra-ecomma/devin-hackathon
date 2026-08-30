@@ -11,7 +11,7 @@
 // project. The draft step spawns the project's own harness and honestly waits
 // for it — this walk takes minutes by design. Exit code is the failure count.
 
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 import { spawn, spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync, rmSync, readdirSync, renameSync } from 'node:fs';
 import os from 'node:os';

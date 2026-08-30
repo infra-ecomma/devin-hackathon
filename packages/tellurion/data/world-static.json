@@ -1061,15 +1061,16 @@
       "rule": null,
       "one_liner": "Publish HTML to shares.tbk-labs.dev via tbk-shares repo and Coolify, verified live",
       "home": "https://shares.tbk-labs.dev",
-      "plain": "every public page goes out through one verified site"
-    },
-    {
-      "id": "p1",
-      "name": "Ship to Vault",
-      "rule": null,
-      "one_liner": "File an artifact into its canonical OCC home with gates, approval, and cascade",
-      "home": "project-starter/.claude/skills/kit/ship-to-vault/",
-      "plain": "finished work is filed in its one official home after approval"
+      "plain": "every public page goes out through one verified site",
+      "weight": 1,
+      "detect": {
+        "skills": [
+          "ship-to-shares"
+        ],
+        "paths": [
+          "tbk-shares/"
+        ]
+      }
     },
     {
       "id": "p2",
@@ -1077,7 +1078,24 @@
       "rule": "36",
       "one_liner": "Independent second model judges delivery evidence; high-risk blocks, normal-risk verifies in background",
       "home": "project-starter/governance/VERIFICATION-PROTOCOL.md",
-      "plain": "a second, independent AI judges the proof before work counts as done"
+      "plain": "a second, independent AI judges the proof before work counts as done",
+      "weight": 1,
+      "detect": {
+        "skills": [
+          "verification",
+          "verification-before-completion",
+          "real-user-walk",
+          "deploy-verify"
+        ],
+        "cmds": [
+          "verification-gate",
+          "verify-requeue",
+          "tbk-attention"
+        ],
+        "paths": [
+          "verification/"
+        ]
+      }
     },
     {
       "id": "p3",
@@ -1085,7 +1103,17 @@
       "rule": null,
       "one_liner": "Alignment moments become interactive HTML decision pages; ratified picks get a companion ADR",
       "home": "project-starter/governance/DECISION-PAGE-TEMPLATE.html",
-      "plain": "every real decision gets a clickable page, then a permanent written record"
+      "plain": "every real decision gets a clickable page, then a permanent written record",
+      "weight": 2,
+      "detect": {
+        "skills": [
+          "decision-page"
+        ],
+        "paths": [
+          "decisions/",
+          "Decisions/"
+        ]
+      }
     },
     {
       "id": "p4",
@@ -1093,7 +1121,13 @@
       "rule": "38",
       "one_liner": "Append-only log of shipped work later found broken; monthly trend is quality north star",
       "home": "ESCAPE-LOG.md",
-      "plain": "shipped work later found broken is logged; the trend steers quality"
+      "plain": "shipped work later found broken is logged; the trend steers quality",
+      "weight": 1,
+      "detect": {
+        "paths": [
+          "ESCAPE-LOG.md"
+        ]
+      }
     },
     {
       "id": "p5",
@@ -1101,7 +1135,14 @@
       "rule": "39",
       "one_liner": "TodoWrite hook captures every to-do to a durable ledger so requests never drop",
       "home": "features-ledger/",
-      "plain": "every to-do is saved to a permanent ledger so nothing drops"
+      "plain": "every to-do is saved to a permanent ledger so nothing drops",
+      "weight": 2,
+      "detect": {
+        "todos": true,
+        "paths": [
+          "features-ledger/"
+        ]
+      }
     },
     {
       "id": "p6",
@@ -1109,7 +1150,14 @@
       "rule": "45",
       "one_liner": "Every fleet fault diagnosis appends a twelve-column row to a Google Sheet via appender tool",
       "home": "tools/ledger/troubleshooting-ledger.py",
-      "plain": "every machine fault diagnosed gets a detailed row in a shared log"
+      "plain": "every machine fault diagnosed gets a detailed row in a shared log",
+      "weight": 2,
+      "detect": {
+        "cmds": [
+          "troubleshooting-ledger.py",
+          "troubleshooting-ledger"
+        ]
+      }
     },
     {
       "id": "p7",
@@ -1117,15 +1165,10 @@
       "rule": null,
       "one_liner": "Cross-machine git sync engine reconciling canon repos four times daily, fail-loud on conflict",
       "home": "project-starter/governance/AUTO-SYNC.md",
-      "plain": "keeps all machines' shared records in step four times a day"
-    },
-    {
-      "id": "p8",
-      "name": "OCC Cascade",
-      "rule": null,
-      "one_liner": "One-way pull cascade: primitives authored in OCC; website and Obsidian re-derive from it",
-      "home": "project-starter/governance/CASCADE-AND-WORKFLOW.md",
-      "plain": "everything is authored in one place, and every copy derives from it"
+      "plain": "keeps all machines' shared records in step four times a day",
+      "weight": 2,
+      "detect": null,
+      "blind": "runs on a timer four times a day, outside any session - nothing done here can light it"
     },
     {
       "id": "p9",
@@ -1133,7 +1176,27 @@
       "rule": "40",
       "one_liner": "Executable gate forcing recon and mechanical work onto cheaper role-bound subagent lanes",
       "home": "project-starter/governance/fleet/delegation-router.py",
-      "plain": "routine lookup and mechanical work go to cheaper helper agents"
+      "plain": "routine lookup and mechanical work go to cheaper helper agents",
+      "weight": 1,
+      "detect": {
+        "cmds": [
+          "tbk-relay-worker",
+          "delegation-router.py",
+          "delegation-router"
+        ],
+        "agents": [
+          "scout",
+          "scout-pro",
+          "ops-scout",
+          "Explore",
+          "OpsExplore",
+          "mech-executor",
+          "mech-executor-sonnet",
+          "mech-executor-minimax",
+          "verifier",
+          "security-executor"
+        ]
+      }
     },
     {
       "id": "p10",
@@ -1141,7 +1204,16 @@
       "rule": null,
       "one_liner": "Five-vendor adversarial review pipeline; halts unless all five credentials are live",
       "home": "project-starter/.claude/skills/orchestration/penta-review/",
-      "plain": "five rival AI models review the work together, or not at all"
+      "plain": "five rival AI models review the work together, or not at all",
+      "weight": 1,
+      "detect": {
+        "skills": [
+          "penta-review"
+        ],
+        "cmds": [
+          "penta-review"
+        ]
+      }
     },
     {
       "id": "p11",
@@ -1149,7 +1221,16 @@
       "rule": null,
       "one_liner": "Seven-model, seven-lab adversarial review with distinct lenses and strict vendor gate",
       "home": "project-starter/.claude/skills/orchestration/septa-review/",
-      "plain": "seven AI models from seven labs review, each through its own lens"
+      "plain": "seven AI models from seven labs review, each through its own lens",
+      "weight": 2,
+      "detect": {
+        "skills": [
+          "septa-review"
+        ],
+        "cmds": [
+          "septa-review"
+        ]
+      }
     },
     {
       "id": "p12",
@@ -1157,7 +1238,10 @@
       "rule": null,
       "one_liner": "Pre-commit hook blocking invented TBK brand assets and non-template HTML",
       "home": "project-starter/governance/hooks/brand-gate-pre-commit.sh",
-      "plain": "blocks any invented TBK logo or off-template page before it ships"
+      "plain": "blocks any invented TBK logo or off-template page before it ships",
+      "weight": 1,
+      "detect": null,
+      "blind": "a pre-commit hook fires with no tool call behind it - the commit lands, the gate leaves no trace to match"
     }
   ],
   "workflows": [

@@ -366,6 +366,10 @@ export function stepWorkOf(world, id) { return world.stepWork[id] || null; }
 
 export function applyFile(world, { path, created, removed, at }) {
   if (removed) return null;
+  // Before the genesis branch: a decision page written into a brand new project
+  // is still a decision page, and the ring arc reads the same either way.
+  const wroteFor = attributor(world).processForPath(path);
+  if (wroteFor) pulse(world, wroteFor, 'process', at);
   if (world.stat.genesis) {
     const g = genesisFile(world, { path, created, at });
     creditStep(world, { path, entity: g, at });
@@ -410,6 +414,14 @@ export function applyTool(world, { name, input, at }) {
   world.counts.events++;
   bumpDrive(world, at, 5);
 
+  // A GOVERNANCE PROCESS IS LIT FIRST, AND ALONGSIDE - never instead of. Running
+  // the ledger appender lights the belt tool you ran and the ring arc it serves,
+  // which are two different classes on the plate. It runs before the branches
+  // below because the agent branch returns early, and a routed subagent IS the
+  // delegation-routing signature.
+  const proc = attributor(world).processForTool(name, input);
+  if (proc) pulse(world, proc, 'process', at);
+
   // A dispatched agent takes the agent path, never the comet path: a comet said
   // "a workflow ran", which is a different claim and the wrong shape.
   const sub = input && input.subagent_type;
@@ -446,6 +458,9 @@ export function applyTool(world, { name, input, at }) {
 
 export function applyTodos(world, { todos, at }) {
   if (!Array.isArray(todos)) return;
+  // The features ledger is a hook on this exact call, so the todos event is the
+  // signature itself rather than a proxy for one.
+  for (const id of attributor(world).processesForTodos()) pulse(world, id, 'process', at);
   if (world.stat.genesis) {
     // the session plan IS the spine: one milestone per plan item, statuses live
     const day = new Date(at).toISOString().slice(0, 10);

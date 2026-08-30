@@ -1,0 +1,19 @@
+{
+  "verdict": "FAIL",
+  "infra": false,
+  "category": "ui-feature",
+  "promised": "",
+  "requested": "Build a demo of Tellurion: dummy data an audience can read cold, plus an animation of the orrery being created as the plan runs, touring the spine and the key. Highlight the Features Ledger (with Broken Promises orbiting it), Autosync, MemSearch, Troubleshooting Ledger, Penta Review, shooting stars, 5-6 agents. Rustic light.\n\n(The transcript's most recent human message was: \"what is the filepath for http://tbk-forge-wsl.taild8c407.ts.net:8777/tellurion-demo.html int he repo\". The manifest declares the line above as the ask THIS delivery answers; judge against that.)",
+  "request_hash": "sha256:0a8e92c51651965693af98f2ff6517f016c5746c22d6c0d16a2bcf9d76fe86d8",
+  "reasons": [
+    "unrecognised category \"ui-feature\" — the gate matches BARE TOKENS from the protocol's §3 catalog, so a label like \"3.1 Existing web or app UI change\" is read as its leading token \"3.1\".",
+    "Valid: 3.1, 3.10, 3.11, 3.12, 3.13, 3.14, 3.15, 3.16, 3.17, 3.18, 3.19, 3.2, 3.20, 3.3, 3.4, 3.5, 3.5b, 3.6, 3.7, 3.8, 3.9, ads, analysis, api, automation, backend, bug-fix, bugfix, campaign, cli, config, connector, copy, creative, cron, database, dependency, deploy, document, email, feature, image, infra, integration, job, landing, landing-page, mcp, migration, other, refactor, report, script, ui, video, walk.",
+    "An unrecognised category used to mean 'no vision, no walk' silently, which lowered the bar instead of raising an alarm. It is an error now (ratified 2026-08-07, V2)."
+  ],
+  "failed_conditions": [
+    "unknown category: ui-feature"
+  ],
+  "artifacts_hash": "sha256:fd8c12cf8112d64596bee0036921fcfa994a7e9fff2f4167c2dbc722d6b062d6",
+  "verifier_model": "n/a",
+  "timestamp": "2026-08-30T12:38:55.563Z"
+}

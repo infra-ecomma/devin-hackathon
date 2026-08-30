@@ -1,0 +1,40 @@
+{
+  "name": "devin-hackathon",
+  "products": [
+    {
+      "id": "earned-light",
+      "name": "Earned Light Extension",
+      "category": "frontend",
+      "walk": { "command": "npm run compile && node verify/earned-light-walk.mjs && PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright node verify/render-skins.mjs", "timeoutMs": 300000 },
+      "features": [
+        {
+          "id": "law-of-light",
+          "name": "Derives every state from recorded evidence",
+          "paths": ["src/core/engine", "src/types.ts"],
+          "check": { "command": "npm run compile && node verify/earned-light-walk.mjs", "timeoutMs": 300000 }
+        },
+        {
+          "id": "four-skins",
+          "name": "Draws the sky in four skins",
+          "paths": ["media/tellurion.html"],
+          "check": { "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright node verify/render-skins.mjs", "timeoutMs": 300000 }
+        },
+        {
+          "id": "editor-glue",
+          "name": "Wires the editor to the engine",
+          "paths": ["src/extension.ts", "src/panels"],
+          "check": { "command": "npx tsc -p .", "timeoutMs": 300000 }
+        }
+      ]
+    },
+    {
+      "id": "instrument",
+      "name": "Fleet Instrument",
+      "category": "infra",
+      "features": [
+        { "id": "orrery-plate", "name": "Serves the live orrery plate", "paths": ["packages/tellurion/public", "packages/tellurion/lib"] },
+        { "id": "walks", "name": "Carries its own acceptance walks", "paths": ["packages/tellurion/verify"] }
+      ]
+    }
+  ]
+}

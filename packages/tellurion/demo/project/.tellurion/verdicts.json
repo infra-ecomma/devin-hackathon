@@ -1,0 +1,93 @@
+{
+  "verdicts": [
+    {
+      "step": "product-search",
+      "by": "Judge",
+      "pass": true,
+      "via": "customer-walk",
+      "matched": [
+        "typed \"milk\", got 14 matching items",
+        "typed \"zzzz\", got the empty-shelf message"
+      ],
+      "fp": "4xdha4",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "photo-gallery",
+      "by": "Judge",
+      "pass": true,
+      "via": "customer-walk",
+      "matched": [
+        "swiped through 4 photos on 3 items",
+        "tapped a photo, it opened full size"
+      ],
+      "fp": "12205zi",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "stock-levels",
+      "by": "Judge",
+      "pass": true,
+      "via": "full-check",
+      "matched": [
+        "sold-out items are greyed out and cannot be added to a basket"
+      ],
+      "fp": "bj85no",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "save-for-later",
+      "by": "Judge",
+      "pass": true,
+      "via": "customer-walk",
+      "matched": [
+        "saved 3 items, all 3 were still there after signing out and back in"
+      ],
+      "fp": "1n4h5hj",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "card-payment",
+      "by": "Judge",
+      "pass": true,
+      "via": "full-check",
+      "matched": [
+        "a test card was charged and the money moved",
+        "a declined card showed the retry message"
+      ],
+      "fp": "sv2oxg",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "discount-codes",
+      "by": "Judge",
+      "pass": true,
+      "via": "customer-walk",
+      "matched": [
+        "a real code took 10% off the basket",
+        "an invented code was refused"
+      ],
+      "fp": "1pdp89i",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "live-map",
+      "by": "Judge",
+      "pass": true,
+      "via": "customer-walk",
+      "matched": [
+        "the driver dot moved along the street for 4 minutes"
+      ],
+      "fp": "zfh600",
+      "at": "2026-08-30T12:53:36.978Z"
+    },
+    {
+      "step": "receipt-email",
+      "by": "Judge",
+      "pass": false,
+      "note": "The email arrives and the total is right, but it lists the items from the PREVIOUS order.",
+      "fp": "ghat6y",
+      "at": "2026-08-30T12:53:36.978Z"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "session": "f43384b4-337c-42a8-803c-a4ce1eb52a9d",
+  "date": "2026-08-30",
+  "slug": "ecomma-logo-swap",
+  "category": "ui",
+  "high_risk": false,
+  "promised": "Replace the TBK Labs logo with the Ecomma logo in the Tellurion UI and the VS Code extension (Wassim: 'add Ecomma logo to the Tellurion (instead of TBK Labs)' / 'just replace the logo' / 'in the UI, and the extension').",
+  "changed": [
+    "packages/tellurion/public/index.html (masthead SVG mark + favicon data URI)",
+    "packages/tellurion/public/app.css (observatory-mode mark recolor rule)",
+    "media/tellurion-bundled.html (extension webview: masthead SVG, favicon, inline CSS rule)"
+  ],
+  "evidence": [
+    {
+      "type": "screenshot",
+      "path": "ecomma-logo-light.png",
+      "shows": "Tellurion web UI served from the edited packages/tellurion/public, light skin: Ecomma E mark in #0F172A beside the TELLURION wordmark in the masthead."
+    },
+    {
+      "type": "screenshot",
+      "path": "ecomma-logo-dark.png",
+      "shows": "Same page with data-mode=observatory: the Ecomma E renders in brand blue #57CAFB on the dark bar, proving the mode recolor rule fires on the new path element."
+    },
+    {
+      "type": "screenshot",
+      "path": "ecomma-logo-extension.png",
+      "shows": "media/tellurion-bundled.html (the file TellurionPanel.ts loads into the VS Code webview) rendered in a real browser: Ecomma E in the masthead over the working demo plate."
+    }
+  ],
+  "method": "Served the edited files over HTTP on throwaway ports (8123 app, 8124 media), rendered each surface in the Playwright-driven Chrome, screenshotted, and looked at all three images. Temporary servers shut down after; the pre-existing tellurion-fleet-deck systemd service on 8768 was left untouched.",
+  "pushed": "origin/main at 6343c97 on infra-ecomma/devin-hackathon, confirmed by git ls-remote after a rebase onto Rabih's 141b19e; 36 files, logo swap + demo fixture + outstanding session work (packages/node_modules, .tellurion state and the 45MB demo/last-recording excluded).",
+  "installed": "Extension compiled (tsc), packaged as tellurion-0.2.1.vsix, installed into Forge's vscode-server as tellurion.tellurion-0.2.1; installed media/tellurion-bundled.html is md5-identical (dd9a3cdc) to the repo file and greps 1 Ecomma mark, 0 TBK marks. Vsix also delivered md5-verified to Legion Downloads for a local VS Code install.",
+  "wordmark_correction": "Wassim challenged whether the proper logo was in. Compared against the official brand files: the E must be brand blue #57CAFB in BOTH modes, and the full quoted ECOMMA wordmark is the proper lockup. A parallel session's f577f14 had already put the correct wordmark (letters currentColor, E held blue) into public/index.html; this session copied that exact masthead into the extension webview (media/tellurion-bundled.html), repackaged and force-reinstalled tellurion.tellurion-0.2.1 (installed webview md5 48070e74 matches repo), re-delivered the vsix to Legion Downloads, and pushed as 9b279fe. Rendered proof: wordmark-light.png, wordmark-dark.png, wordmark-extension.png in this folder.",
+  "not_claimed": "The OCC live-artifact copy of Tellurion still carries the TBK mark by design (the hackathon subtree is the authoritative surface for this request); the old tbk-labs.tellurion-0.6.0 wrapper extension frames that OCC-served page, so a TBK logo seen there is the other product, not a failed install."
+}
