@@ -1,0 +1,425 @@
+{
+  "generated": "2026-08-30",
+  "demo": true,
+  "source": "DEMO DATA. Invented, not measured. Every name here is chosen to explain itself to an audience with no context. Nothing in this file describes a real fleet.",
+  "planets": [],
+  "features": [],
+  "tools": [
+    {
+      "id": "t0",
+      "name": "which-machine",
+      "group": "fleet",
+      "one_liner": "Says which computer you are on right now",
+      "plain": "tells you which computer you are actually on"
+    },
+    {
+      "id": "t1",
+      "name": "open-on-my-screen",
+      "group": "fleet",
+      "one_liner": "Opens a page on whichever screen the person is sitting at",
+      "plain": "opens a page on the screen the person is actually sitting at"
+    },
+    {
+      "id": "t2",
+      "name": "hand-me-the-file",
+      "group": "fleet",
+      "one_liner": "Copies a finished file onto the person's own computer",
+      "plain": "copies a finished file onto the person's own computer"
+    },
+    {
+      "id": "t3",
+      "name": "reach-the-others",
+      "group": "fleet",
+      "one_liner": "Runs one command on every other machine at once",
+      "plain": "runs one command on every other machine at once"
+    },
+    {
+      "id": "t4",
+      "name": "who-is-awake",
+      "group": "fleet",
+      "one_liner": "Lists which machines are switched on and reachable",
+      "plain": "lists which machines are switched on and reachable"
+    },
+    {
+      "id": "t5",
+      "name": "no-secrets-in-public",
+      "group": "guardrails",
+      "one_liner": "Refuses to publish anything containing a password or key",
+      "plain": "refuses to publish anything with a password in it"
+    },
+    {
+      "id": "t6",
+      "name": "ask-before-deleting",
+      "group": "guardrails",
+      "one_liner": "Stops a delete command and asks first",
+      "plain": "stops a delete command and asks first"
+    },
+    {
+      "id": "t7",
+      "name": "no-empty-claims",
+      "group": "guardrails",
+      "one_liner": "Blocks the words done and shipped when no proof is attached",
+      "plain": "blocks the word done when no proof is attached"
+    },
+    {
+      "id": "t8",
+      "name": "answer-every-point",
+      "group": "guardrails",
+      "one_liner": "Counts the points in a request and blocks a reply that skips one",
+      "plain": "blocks a reply that quietly skips part of the request"
+    },
+    {
+      "id": "t9",
+      "name": "plain-words-only",
+      "group": "guardrails",
+      "one_liner": "Flags jargon and undefined shorthand before it reaches a person",
+      "plain": "flags jargon before it reaches a person"
+    },
+    {
+      "id": "t10",
+      "name": "which-model",
+      "group": "engines",
+      "one_liner": "Reports which AI model this session is running on",
+      "plain": "reports which AI model is doing the work"
+    },
+    {
+      "id": "t11",
+      "name": "cheapest-lane",
+      "group": "engines",
+      "one_liner": "Sends routine lookups to the cheapest model that can do them",
+      "plain": "sends routine lookups to the cheapest model that can do them"
+    },
+    {
+      "id": "t12",
+      "name": "quota-left",
+      "group": "engines",
+      "one_liner": "Shows how much of each AI subscription is still unspent",
+      "plain": "shows how much of each subscription is still unspent"
+    },
+    {
+      "id": "t13",
+      "name": "write-one-row",
+      "group": "ledgers",
+      "one_liner": "Appends a single permanent row to a shared record",
+      "plain": "adds one permanent row to a shared record"
+    },
+    {
+      "id": "t14",
+      "name": "read-the-record",
+      "group": "ledgers",
+      "one_liner": "Reads back what a ledger already says before writing to it",
+      "plain": "reads back what a record already says before adding to it"
+    },
+    {
+      "id": "t15",
+      "name": "count-the-gaps",
+      "group": "ledgers",
+      "one_liner": "Counts promises with no matching entry",
+      "plain": "counts the promises with nothing recorded against them"
+    },
+    {
+      "id": "t16",
+      "name": "put-it-online",
+      "group": "publishing",
+      "one_liner": "Publishes a page and checks it actually loads",
+      "plain": "publishes a page and checks it actually loads"
+    },
+    {
+      "id": "t17",
+      "name": "check-it-loaded",
+      "group": "publishing",
+      "one_liner": "Opens the published page and compares it to the source",
+      "plain": "opens the published page and compares it to the source"
+    },
+    {
+      "id": "t18",
+      "name": "behind-the-door",
+      "group": "publishing",
+      "one_liner": "Fetches a page that sits behind a login wall",
+      "plain": "fetches a page that sits behind a login wall"
+    },
+    {
+      "id": "t19",
+      "name": "free-the-memory",
+      "group": "ops",
+      "one_liner": "Clears memory when a machine starts running short",
+      "plain": "clears memory when a machine starts running short"
+    },
+    {
+      "id": "t20",
+      "name": "stuck-process",
+      "group": "ops",
+      "one_liner": "Finds and stops a process that has hung",
+      "plain": "finds and stops a program that has hung"
+    },
+    {
+      "id": "t21",
+      "name": "keep-it-awake",
+      "group": "ops",
+      "one_liner": "Stops a machine going to sleep mid-job",
+      "plain": "stops a machine going to sleep in the middle of a job"
+    },
+    {
+      "id": "t22",
+      "name": "disk-is-filling",
+      "group": "ops",
+      "one_liner": "Warns before a disk runs out of room",
+      "plain": "warns before a disk runs out of room"
+    },
+    {
+      "id": "t23",
+      "name": "read-the-whole-folder",
+      "group": "bench",
+      "one_liner": "Reads every file in a folder in one pass",
+      "plain": "reads every file in a folder in one pass"
+    },
+    {
+      "id": "t24",
+      "name": "screenshot-the-page",
+      "group": "bench",
+      "one_liner": "Loads a page in a real browser and captures what it looks like",
+      "plain": "loads a page in a real browser and photographs it"
+    },
+    {
+      "id": "t25",
+      "name": "draw-the-chart",
+      "group": "bench",
+      "one_liner": "Turns a table of numbers into a readable chart",
+      "plain": "turns a table of numbers into a readable chart"
+    },
+    {
+      "id": "t26",
+      "name": "spell-it-out",
+      "group": "bench",
+      "one_liner": "Rewrites a technical paragraph in plain words",
+      "plain": "rewrites a technical paragraph in plain words"
+    },
+    {
+      "id": "t27",
+      "name": "find-the-duplicate",
+      "group": "bench",
+      "one_liner": "Finds the same thing written twice in two places",
+      "plain": "finds the same thing written twice in two places"
+    },
+    {
+      "id": "t28",
+      "name": "name-the-file",
+      "group": "bench",
+      "one_liner": "Names a new file the way every other file is named",
+      "plain": "names a new file the way every other file is named"
+    }
+  ],
+  "processes": [
+    {
+      "id": "p-ledger",
+      "name": "Features Ledger",
+      "rule": "rule 39",
+      "weight": 4,
+      "one_liner": "Every promise made about the product is written down the moment it is made",
+      "plain": "every promise made about the product is written down the moment it is made, so none of them can quietly disappear",
+      "detect": {
+        "skills": [
+          "features-ledger"
+        ],
+        "paths": [
+          "features-ledger/"
+        ],
+        "todos": true
+      },
+      "satellite": {
+        "id": "p-broken-promises",
+        "name": "Broken Promises",
+        "one_liner": "Re-reads every promise in the ledger and names the ones the product never kept",
+        "plain": "goes back through every promise in the ledger and names the ones the product never actually kept"
+      }
+    },
+    {
+      "id": "p-memsearch",
+      "name": "MemSearch",
+      "rule": null,
+      "weight": 3,
+      "one_liner": "Searches everything the team has ever said, so nothing has to be remembered twice",
+      "plain": "searches everything the team has ever said, so nobody has to remember it twice",
+      "detect": {
+        "skills": [
+          "memsearch"
+        ],
+        "paths": [
+          ".memsearch/"
+        ]
+      }
+    },
+    {
+      "id": "p-autosync",
+      "name": "Autosync",
+      "rule": null,
+      "weight": 3,
+      "one_liner": "Keeps every machine's copy of the shared records in step, on a timer",
+      "plain": "keeps every machine's copy of the shared records in step, on its own timer \u2014 nothing done in a session can light it",
+      "detect": null
+    },
+    {
+      "id": "p-trouble",
+      "name": "Troubleshooting Ledger",
+      "rule": "rule 45",
+      "weight": 3,
+      "one_liner": "Every fault diagnosed is written down with the one check that settles it",
+      "plain": "every fault that gets diagnosed is written down, along with the single check that settles it next time",
+      "detect": {
+        "skills": [
+          "troubleshooting-ledger"
+        ],
+        "paths": [
+          "ledger/"
+        ]
+      }
+    },
+    {
+      "id": "p-penta",
+      "name": "Penta Review",
+      "rule": null,
+      "weight": 3,
+      "one_liner": "Five rival AI models review the work together, or it does not ship",
+      "plain": "five rival AI models review the work together, and if one of them is missing the review does not run at all",
+      "detect": {
+        "skills": [
+          "penta-review"
+        ],
+        "paths": []
+      }
+    },
+    {
+      "id": "p-verify",
+      "name": "Second Opinion",
+      "rule": "rule 36",
+      "weight": 2,
+      "one_liner": "A second, independent AI judges the proof before work counts as done",
+      "plain": "a second, independent AI judges the proof before any work counts as done",
+      "detect": {
+        "skills": [
+          "verification"
+        ],
+        "paths": [
+          "verification/"
+        ]
+      }
+    },
+    {
+      "id": "p-decision",
+      "name": "Decision Page",
+      "rule": "rule 20",
+      "weight": 2,
+      "one_liner": "Every real decision gets a clickable page, then a permanent written record",
+      "plain": "every real decision gets a page you click through, and then a permanent written record of what was chosen",
+      "detect": {
+        "skills": [
+          "decision-page"
+        ],
+        "paths": [
+          "decisions/"
+        ]
+      }
+    },
+    {
+      "id": "p-escape",
+      "name": "Escape Log",
+      "rule": "rule 38",
+      "weight": 1,
+      "one_liner": "Shipped work later found broken is logged; the trend steers quality",
+      "plain": "anything shipped that later turns out broken gets logged, and the trend tells the team what to fix",
+      "detect": {
+        "skills": [
+          "escape-log"
+        ],
+        "paths": [
+          "ESCAPE-LOG.md"
+        ]
+      }
+    },
+    {
+      "id": "p-publish",
+      "name": "Publish Gate",
+      "rule": "rule 22",
+      "weight": 1,
+      "one_liner": "Every public page goes out through one verified route",
+      "plain": "every public page goes out through one route that checks it actually loaded",
+      "detect": {
+        "skills": [
+          "ship-to-shares"
+        ],
+        "paths": [
+          "shares/"
+        ]
+      }
+    },
+    {
+      "id": "p-routing",
+      "name": "Work Routing",
+      "rule": "rule 40",
+      "weight": 1,
+      "one_liner": "Routine lookup and mechanical work go to cheaper helper agents",
+      "plain": "routine lookups and mechanical edits go to cheaper helper agents, so the expensive one is kept for judgment",
+      "detect": {
+        "skills": [
+          "delegation-router"
+        ],
+        "paths": []
+      }
+    },
+    {
+      "id": "p-brand",
+      "name": "Brand Gate",
+      "rule": null,
+      "weight": 1,
+      "one_liner": "Blocks an invented logo or an off-template page before it ships",
+      "plain": "blocks an invented logo or an off-template page before it ever ships",
+      "detect": null
+    }
+  ],
+  "workflows": [
+    {
+      "id": "w-firstdraft",
+      "name": "first-draft",
+      "one_liner": "Turns one sentence into a working first version",
+      "plain": "turns one sentence into a working first version"
+    },
+    {
+      "id": "w-fullcheck",
+      "name": "full-check",
+      "one_liner": "Runs every check and fixes what it finds, until nothing is left",
+      "plain": "runs every check and fixes what it finds, over and over, until nothing is left"
+    },
+    {
+      "id": "w-customerwalk",
+      "name": "customer-walk",
+      "one_liner": "Clicks through the product like a real customer and reports what it saw",
+      "plain": "clicks through the product like a real customer and reports what it actually saw"
+    },
+    {
+      "id": "w-designpass",
+      "name": "design-pass",
+      "one_liner": "Brings in the right design specialists for the job",
+      "plain": "brings in the right design specialists for the job at hand"
+    },
+    {
+      "id": "w-nightshift",
+      "name": "night-shift",
+      "one_liner": "Works through the plan overnight without supervision",
+      "plain": "works through the plan overnight without anyone watching, pausing and resuming itself"
+    },
+    {
+      "id": "w-askaround",
+      "name": "ask-around",
+      "one_liner": "Puts the same question to several models and reports where they disagree",
+      "plain": "puts the same question to several models at once and reports where they disagree"
+    },
+    {
+      "id": "w-tidyup",
+      "name": "tidy-up",
+      "one_liner": "Removes dead code and duplicate work left behind by earlier passes",
+      "plain": "removes dead code and duplicated work left behind by earlier passes"
+    }
+  ],
+  "milestones": [],
+  "attribution": []
+}

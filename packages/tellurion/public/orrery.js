@@ -92,7 +92,10 @@ export function initOrrery(canvas) {
       card: v('--card'), paper: v('--paper'),
       pink: v('--pink'), purple: v('--purple'), purpleSoft: v('--purple-soft'), amber: v('--amber'),
       dark: document.documentElement.dataset.mode === 'observatory',
-      halo: document.documentElement.dataset.mode === 'observatory' ? 'rgba(3,10,28,.82)' : 'rgba(245,247,251,.85)',
+      // From the stylesheet, so a register the canvas has never heard of still
+      // knocks its labels out against its own paper. The literal stays as the
+      // fallback for a stylesheet that predates the token.
+      halo: v('--halo') || (document.documentElement.dataset.mode === 'observatory' ? 'rgba(3,10,28,.82)' : 'rgba(245,247,251,.85)'),
     };
   }
 
@@ -109,9 +112,44 @@ export function initOrrery(canvas) {
     R = Math.min(W, H) * 0.5 - 4;
   }
 
+  // WHEN EACH BODY ARRIVED, as its own clock.
+  //
+  // The entrance used to be one global stopwatch reset by setWorld, and setWorld
+  // runs on every snapshot — which the server sends whenever the plan or a
+  // sign-off file changes. So on any project being actively worked, the whole
+  // plate restarted its entrance several times a minute: every planet re-swept
+  // into its seat, every arc redrew itself, and the labels (which fade in at
+  // 1250ms) never survived long enough to be readable. The plate looked busiest
+  // exactly when it had the most to say.
+  //
+  // A body's entrance belongs to the BODY, not to the frame it first appeared
+  // in. First sighting is stamped here and never reset, so a new product sweeps
+  // in while everything already on the plate stays exactly where it was.
+  const births = new Map();
+  let worldKey = null;
+  function stampBirths(w) {
+    const now = performance.now();
+    const ids = [];
+    for (const p of (w.stat.planets || [])) ids.push(p.id);
+    for (const f of (w.stat.features || [])) ids.push(f.id);
+    for (const x of (w.stat.tools || [])) ids.push(x.id);
+    for (const x of (w.stat.processes || [])) ids.push(x.id);
+    for (const x of (w.stat.workflows || [])) ids.push(x.id);
+    for (const id of ids) if (!births.has(id)) births.set(id, now);
+  }
+  // The clock an entrance is measured from. A body that has been on the plate
+  // since before this snapshot returns its own, older stamp, so easeOut has
+  // long since reached 1 and it simply stays put.
+  const bornAt = (id) => (births.has(id) ? births.get(id) : (introStart == null ? -1e9 : introStart));
+  const entrance = (id, delay, dur) => easeOut((performance.now() - bornAt(id) - delay) / dur);
+
   function setWorld(w) {
+    // A DIFFERENT PROJECT is a new plate and earns the full entrance; the same
+    // project sending its 40th snapshot of the afternoon does not.
+    const key = (w.project && w.project.root) || '';
+    if (key !== worldKey) { worldKey = key; introStart = performance.now(); births.clear(); }
     world = w;
-    introStart = performance.now();
+    stampBirths(w);
     const dated = w.stat.milestones.filter(m => m.date).map(m => +new Date(m.date + 'T12:00:00Z'));
     dateSpan = dated.length ? { min: Math.min(...dated), max: Math.max(...dated) } : null;
     retheme();
@@ -190,6 +228,27 @@ export function initOrrery(canvas) {
   }
 
   /* --------------------------------------------------------- primitives */
+
+  // A token at a chosen opacity. Canvas gradients need a colour STRING per
+  // stop — globalAlpha applies to the whole stroke and cannot fade one end of
+  // it — so a token has to be reopened rather than dimmed. Handles the two
+  // forms the stylesheet actually produces, hex and rgb/rgba, and falls back to
+  // the colour untouched rather than to a wrong one.
+  function withAlpha(c, a) {
+    const s = String(c || '').trim();
+    let r, g, b, base = 1;
+    if (s[0] === '#') {
+      const h = s.length === 4 ? s[1] + s[1] + s[2] + s[2] + s[3] + s[3] : s.slice(1, 7);
+      r = parseInt(h.slice(0, 2), 16); g = parseInt(h.slice(2, 4), 16); b = parseInt(h.slice(4, 6), 16);
+    } else {
+      const m = s.match(/rgba?\(([^)]+)\)/);
+      if (!m) return s;
+      const p = m[1].split(',').map(parseFloat);
+      r = p[0]; g = p[1]; b = p[2]; if (p.length > 3) base = p[3];
+    }
+    if (![r, g, b].every(Number.isFinite)) return s;
+    return `rgba(${r},${g},${b},${+(base * a).toFixed(3)})`;
+  }
 
   function line(x1, y1, x2, y2, stroke, w = 1, dash = null) {
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
@@ -451,6 +510,10 @@ export function initOrrery(canvas) {
     if (shows('agents')) drawAgents(t, dim);
     drawRim(T);
     flushLabels();
+    // Above the labels: a streak is the newest thing on the plate by definition,
+    // and one passing behind a name reads as a rendering fault rather than as a
+    // commit landing.
+    drawShootingStars();
     drawTransients(nowMs);
 
     ctx.restore();
@@ -468,7 +531,7 @@ export function initOrrery(canvas) {
     bodiesDrawn++;
 
     const seatIx = FLAGSHIP_SEAT[p.id] ? RING_FRACS.indexOf(FLAGSHIP_SEAT[p.id].ring) : 5;
-    const iw = easeOut((performance.now() - (introStart == null ? -1e9 : introStart) - (300 + seatIx * 90)) / 480);
+    const iw = entrance(p.id, 300 + seatIx * 90, 480);
     const faded = (dim(p.id) ? 0.32 : 1) * Math.max(0.001, iw);
     ctx.save();
     ctx.globalAlpha = faded;
@@ -532,7 +595,7 @@ export function initOrrery(canvas) {
     // moons
     const fs = featsOf(p.id);
     const shell0 = r + 8, shell1 = r + 14.5;
-    ctx.globalAlpha = faded * easeOut((performance.now() - (introStart == null ? -1e9 : introStart) - 750) / 380);
+    ctx.globalAlpha = faded * entrance(p.id, 750, 380);
     if (fs.length) circle(x, y, shell0, { stroke: css.line, w: 0.6 });
     if (fs.length > 6) circle(x, y, shell1, { stroke: css.line, w: 0.6 });
     fs.forEach((f, k) => {
@@ -709,7 +772,7 @@ export function initOrrery(canvas) {
         const freshT = pulse && (Date.now() - pulse.lastAt) < 5000;
         ctx.save();
         let na = a % TAU; if (na < 0) na += TAU;
-        ctx.globalAlpha = (dim(tl.id) ? 0.3 : 1) * Math.max(0.001, easeOut((performance.now() - (introStart == null ? -1e9 : introStart) - (600 + (na / TAU) * 550)) / 320));
+        ctx.globalAlpha = (dim(tl.id) ? 0.3 : 1) * Math.max(0.001, entrance(tl.id, 600 + (na / TAU) * 550, 320));
         ctx.translate(x, y); ctx.rotate(a + Math.PI / 4);
         ctx.beginPath(); ctx.rect(-s / 2, -s / 2, s, s);
         if (freshT) { ctx.fillStyle = css.blue; ctx.fill(); }
@@ -788,7 +851,7 @@ export function initOrrery(canvas) {
       // a dashed grey arc says the instrument cannot see it from here, which is
       // the true statement and the one the key repeats.
       const blind = !p.detect;
-      const psw = easeOut((performance.now() - (introStart == null ? -1e9 : introStart) - (850 + procs.indexOf(p) * 35)) / 450);
+      const psw = entrance(p.id, 850 + procs.indexOf(p) * 35, 450);
       if (psw > 0.01) arc(CX, CY, rr, a0, a0 + (a1 - a0) * psw, {
         // A BLIND ARC STAYS DASHED AND GREY - that is the honest reading, and it
         // must never be mistaken for amber "in use". But weight still applies to
@@ -808,6 +871,14 @@ export function initOrrery(canvas) {
       const my = CY + Math.sin(mid) * rr;
       pos.set(p.id, { x: mx, y: my, r: 13, kind: 'process', label: p.name, arc: [a0, a1, rr] });
       bodiesDrawn++;
+
+      // A process may carry a SATELLITE: a second mechanism that runs over the
+      // first one's output rather than beside it. Broken Promises reads the
+      // Features Ledger back and names the promises the product never kept, so
+      // it is drawn orbiting the ledger — the only body on the plate whose
+      // subject is another body. It cannot be a ring arc of its own, because an
+      // arc claims a process runs on the project; this one runs on the ledger.
+      if (p.satellite && psw > 0.99) drawSatellite(p, p.satellite, mid, rr, t, faded);
       // The ring's own strokes used to run straight through its labels. The tick
       // marks reach rr+5.5 and the outer guide circle sits at rr+4, and the label
       // band started at rr+13, so a name overlapped both. It now starts clear of
@@ -847,6 +918,82 @@ export function initOrrery(canvas) {
       });
       a0 = a1 + GAP;
     }
+  }
+
+  // A satellite of a ring arc: it orbits the arc's own seat, inside the ring so
+  // it can never be mistaken for a body of the project. Its whole meaning is
+  // that it AUDITS the thing it orbits, so it is drawn as a lens sweeping a
+  // circle rather than as a mark sitting still, and when it finds something it
+  // reaches for it. Being found is what a red thread means here; the moon at the
+  // other end is a feature a judge rejected after it was promised.
+  function drawSatellite(host, sat, mid, rr, t, faded) {
+    const orbit = 15.5;
+    // Inward of the ring: outward is the label band, and a body there collides
+    // with the process names on every frame.
+    const ox = CX + Math.cos(mid) * (rr - 15);
+    const oy = CY + Math.sin(mid) * (rr - 15);
+    const sweep = REDUCED ? rad(-55) : (t / 4200) % TAU;
+    const sx = ox + Math.cos(sweep) * orbit;
+    const sy = oy + Math.sin(sweep) * orbit;
+
+    ctx.save();
+    ctx.globalAlpha = faded;
+    circle(ox, oy, orbit, { stroke: css.ink28, w: 0.7, dash: [2, 3], alpha: faded * 0.75 });
+
+    // Whatever it is currently naming. A broken promise is a feature the
+    // builder claimed and a judge then rejected, which the reducer already
+    // computes as failedBy — this reads that, it does not decide it.
+    const broken = (world.stat.features || []).filter((f) => f.failedBy);
+    for (const f of broken) {
+      const target = pos.get(f.id);
+      if (!target) continue;
+      const beat = REDUCED ? 0.55 : 0.5 + 0.5 * Math.sin(t / 620);
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      const mx2 = (sx + target.x) / 2, my2 = (sy + target.y) / 2;
+      const vx = mx2 - CX, vy = my2 - CY, vl = Math.hypot(vx, vy) || 1;
+      ctx.quadraticCurveTo(mx2 + (vx / vl) * 34, my2 + (vy / vl) * 34, target.x, target.y);
+      ctx.strokeStyle = css.fault;
+      ctx.lineWidth = 1.1;
+      ctx.globalAlpha = faded * (0.22 + 0.34 * beat);
+      ctx.setLineDash([2, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = faded;
+      circle(target.x, target.y, 7.5 + beat * 2.5, { stroke: css.fault, w: 1.2, alpha: faded * (0.7 - beat * 0.3) });
+    }
+
+    // The lens: hollow, because it asserts nothing of its own — it only reports
+    // what it read back. Red only while it is holding something.
+    const hot = broken.length > 0;
+    circle(sx, sy, 3.6, { stroke: hot ? css.fault : css.ink70, w: 1.4, fill: css.paper });
+    circle(sx, sy, 1.3, { fill: hot ? css.fault : css.ink70 });
+    pos.set(sat.id, { x: sx, y: sy, r: 7, kind: 'process', label: sat.name, host: host.id });
+    bodiesDrawn++;
+
+    const nm = sat.name.toUpperCase();
+    ctx.font = '7.5px "JetBrains Mono"';
+    const nw = ctx.measureText(nm).width + nm.length * 1.1;
+    // Set on the inward side of the orbit, where there is open plate. Queued so
+    // it yields to a moon label rather than printing over one.
+    const lx = ox - Math.cos(mid) * (orbit + 7);
+    const ly = oy - Math.sin(mid) * (orbit + 7);
+    const right = Math.cos(mid) < 0;
+    queueLabel(2, {
+      box: { x: right ? lx : lx - nw, y: ly - 7, w: nw, h: 14 },
+      draw: () => {
+        ctx.save();
+        ctx.globalAlpha = faded * LBLI;
+        ctx.fillStyle = css.halo;
+        ctx.fillRect((right ? lx : lx - nw) - 3, ly - 7, nw + 6, 14);
+        text(nm, lx, ly + 3, {
+          font: '7.5px "JetBrains Mono"',
+          fill: hot ? css.fault : css.ink45, align: right ? 'left' : 'right', spacing: 1.1,
+        });
+        ctx.restore();
+      },
+    });
+    ctx.restore();
   }
 
   // Agents: angular, featureless, and threaded to whatever they are touching.
@@ -950,7 +1097,7 @@ export function initOrrery(canvas) {
       const p0 = px(Math.cos(th) * aMaj, Math.sin(th) * bMin);
       const pulse = world.pulses[w.id];
       const freshW = pulse && (Date.now() - pulse.lastAt) < 9000;
-      const faded = (dim(w.id) ? 0.3 : 1) * Math.max(0.001, easeOut((performance.now() - (introStart == null ? -1e9 : introStart) - (1000 + flows.indexOf(w) * 45)) / 420));
+      const faded = (dim(w.id) ? 0.3 : 1) * Math.max(0.001, entrance(w.id, 1000 + flows.indexOf(w) * 45, 420));
       ctx.save();
       ctx.globalAlpha = faded;
       ctx.beginPath();
@@ -1109,6 +1256,70 @@ export function initOrrery(canvas) {
     const aNow = A1 + rad(19);
 
     text(cap(e1), CX + Math.cos(aNow) * (rr - 18), CY + Math.sin(aNow) * (rr - 18) + 3, { font: '7.5px "JetBrains Mono"', fill: css.ink45, align: 'center' });
+  }
+
+  // Shooting stars: one per COMMIT landing. Every other mark on this plate is a
+  // standing thing that persists; a commit is the opposite, a single instant
+  // that is over as soon as it happens, and the rim notch it leaves behind is a
+  // record of it rather than the event itself. So it gets the one form on the
+  // plate that exists only while it is happening. It is not decoration and the
+  // key says what it is: nothing draws one but a commit arriving.
+  //
+  // History is excluded on purpose. A backlog drain replays hours of commits in
+  // seconds, and a sky full of streaks for work finished last Tuesday would say
+  // the fleet was working now, which is the exact lie the drive gauge's `pre`
+  // flag already exists to prevent.
+  const STAR_MS = 1500;
+  const stars = [];
+  const starsSeen = new Set();
+  function launchStars() {
+    const now = Date.now();
+    for (const n of (world.notches || [])) {
+      if (!n || !n.sha || n.pre) continue;
+      if (starsSeen.has(n.sha)) continue;
+      starsSeen.add(n.sha);
+      if (now - (n.at || 0) > 4000) continue;   // seeded history, not a live landing
+      const a = frac(n.sha, 3) * TAU;
+      stars.push({ at: now, a, drift: (frac(n.sha, 4) - 0.5) * 0.55, subject: n.subject || '', short: n.short || '' });
+    }
+    // Bounded, because a burst of commits must not become a permanent particle
+    // system; and the seen-set is trimmed with the notch ring buffer it mirrors.
+    if (stars.length > 8) stars.splice(0, stars.length - 8);
+    if (starsSeen.size > 400) starsSeen.clear();
+  }
+  function drawShootingStars() {
+    launchStars();
+    if (REDUCED) { stars.length = 0; return; }   // a streak IS the motion; there is no resting frame
+    const now = Date.now();
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const s = stars[i];
+      const k = (now - s.at) / STAR_MS;
+      if (k >= 1) { stars.splice(i, 1); continue; }
+      // In from beyond the rim, across the plate, out the other side. The head
+      // is bright, the tail is what the eye actually reads as direction.
+      const a = s.a + s.drift * k;
+      const rFrom = R * 1.16, rTo = R * 0.14;
+      const rr = rFrom + (rTo - rFrom) * easeOut(k);
+      const x = CX + Math.cos(a) * rr;
+      const y = CY + Math.sin(a) * rr;
+      const tailR = Math.min(rFrom, rr + 46 + 30 * (1 - k));
+      const tx = CX + Math.cos(a - s.drift * 0.35) * tailR;
+      const ty = CY + Math.sin(a - s.drift * 0.35) * tailR;
+      const fade = k < 0.12 ? k / 0.12 : (1 - k) / 0.88;
+      const g = ctx.createLinearGradient(tx, ty, x, y);
+      g.addColorStop(0, withAlpha(css.blue, 0));
+      g.addColorStop(1, withAlpha(css.blue, 0.85 * fade));
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(tx, ty); ctx.lineTo(x, y);
+      ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+      ctx.stroke();
+      circle(x, y, 2.1, { fill: css.live, alpha: fade });
+      if (k < 0.62 && s.short) {
+        text(s.short, x + 7, y - 5, { font: '8px "JetBrains Mono"', fill: css.blue, alpha: fade * 0.9 });
+      }
+      ctx.restore();
+    }
   }
 
   function drawTransients(nowMs) {

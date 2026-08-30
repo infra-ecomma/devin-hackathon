@@ -1,0 +1,404 @@
+{
+  "name": "Lantern",
+  "note": "DEMO PLAN. Invented. A small grocery-delivery app, written so an audience can read it cold: products are things a customer would name, features are parts of those things, steps are the work.",
+  "products": [
+    {
+      "id": "shop-front",
+      "name": "Shop Front",
+      "home": "app/shop",
+      "note": "What the customer sees when they arrive: the shelves, the search box, the pictures.",
+      "features": [
+        {
+          "id": "product-search",
+          "name": "Product search",
+          "note": "Type a word, get the things that match."
+        },
+        {
+          "id": "photo-gallery",
+          "name": "Photo gallery",
+          "note": "Every item shows more than one picture."
+        },
+        {
+          "id": "stock-levels",
+          "name": "Stock levels",
+          "note": "Says what is actually on the shelf right now."
+        },
+        {
+          "id": "save-for-later",
+          "name": "Save for later",
+          "note": "Put something aside without buying it yet."
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "name": "Checkout",
+      "home": "app/checkout",
+      "note": "Taking the money, and telling the customer it worked.",
+      "features": [
+        {
+          "id": "card-payment",
+          "name": "Card payment",
+          "note": "Take a card and confirm the money moved."
+        },
+        {
+          "id": "discount-codes",
+          "name": "Discount codes",
+          "note": "Type a code, watch the price drop."
+        },
+        {
+          "id": "delivery-slots",
+          "name": "Delivery slot picker",
+          "note": "Choose the hour the food arrives."
+        },
+        {
+          "id": "receipt-email",
+          "name": "Receipt email",
+          "note": "A confirmation lands in the inbox."
+        }
+      ]
+    },
+    {
+      "id": "delivery-tracker",
+      "name": "Delivery Tracker",
+      "home": "app/tracking",
+      "note": "Where the order is, right now.",
+      "features": [
+        {
+          "id": "live-map",
+          "name": "Live map",
+          "note": "A moving dot on a map of the street."
+        },
+        {
+          "id": "arrival-time",
+          "name": "Arrival estimate",
+          "note": "How many minutes until the door."
+        },
+        {
+          "id": "text-updates",
+          "name": "Text message updates",
+          "note": "A message when the driver sets off."
+        }
+      ]
+    },
+    {
+      "id": "customer-account",
+      "name": "Customer Account",
+      "home": "app/account",
+      "note": "Who the customer is, and what they told us before.",
+      "features": [
+        {
+          "id": "sign-in",
+          "name": "Sign in",
+          "note": "Get back into your own account."
+        },
+        {
+          "id": "saved-addresses",
+          "name": "Saved addresses",
+          "note": "Do not retype your street every time."
+        },
+        {
+          "id": "order-history",
+          "name": "Past orders",
+          "note": "See what you bought last week."
+        }
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "id": "phase-shelves",
+      "title": "Put the shelves up",
+      "steps": [
+        {
+          "id": "search-box",
+          "title": "Draw the search box",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "product-search"
+          }
+        },
+        {
+          "id": "search-wire",
+          "title": "Connect the search box to the product list",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "product-search"
+          }
+        },
+        {
+          "id": "search-empty",
+          "title": "Say something useful when nothing matches",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "product-search"
+          }
+        },
+        {
+          "id": "gallery-swipe",
+          "title": "Let the customer swipe between photos",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "photo-gallery"
+          }
+        },
+        {
+          "id": "gallery-zoom",
+          "title": "Make a photo bigger when it is tapped",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "photo-gallery"
+          }
+        },
+        {
+          "id": "stock-read",
+          "title": "Read the shelf count from the warehouse",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "stock-levels"
+          }
+        },
+        {
+          "id": "stock-sold-out",
+          "title": "Grey out anything that has sold out",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "stock-levels"
+          }
+        },
+        {
+          "id": "save-button",
+          "title": "Add the save-for-later button",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "save-for-later"
+          }
+        },
+        {
+          "id": "save-list",
+          "title": "Show the saved things on their own page",
+          "status": "done",
+          "produces": {
+            "of": "shop-front",
+            "feature": "save-for-later"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-till",
+      "title": "Open the till",
+      "steps": [
+        {
+          "id": "card-form",
+          "title": "Build the card form",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "card-payment"
+          }
+        },
+        {
+          "id": "card-take",
+          "title": "Take the payment and wait for the answer",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "card-payment"
+          }
+        },
+        {
+          "id": "card-declined",
+          "title": "Handle a card that gets declined",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "card-payment"
+          }
+        },
+        {
+          "id": "code-box",
+          "title": "Add the discount code box",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "discount-codes"
+          }
+        },
+        {
+          "id": "code-check",
+          "title": "Check the code is real before dropping the price",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "discount-codes"
+          }
+        },
+        {
+          "id": "slot-grid",
+          "title": "Show the free delivery hours as a grid",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "delivery-slots"
+          }
+        },
+        {
+          "id": "slot-hold",
+          "title": "Hold the chosen hour so nobody else takes it",
+          "status": "active",
+          "produces": {
+            "of": "checkout",
+            "feature": "delivery-slots"
+          }
+        },
+        {
+          "id": "receipt-send",
+          "title": "Send the receipt email",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "receipt-email"
+          }
+        },
+        {
+          "id": "receipt-content",
+          "title": "Put the actual items on the receipt",
+          "status": "done",
+          "produces": {
+            "of": "checkout",
+            "feature": "receipt-email"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-road",
+      "title": "Get it on the road",
+      "steps": [
+        {
+          "id": "map-draw",
+          "title": "Draw the map",
+          "status": "done",
+          "produces": {
+            "of": "delivery-tracker",
+            "feature": "live-map"
+          }
+        },
+        {
+          "id": "map-dot",
+          "title": "Move the driver's dot as they drive",
+          "status": "done",
+          "produces": {
+            "of": "delivery-tracker",
+            "feature": "live-map"
+          }
+        },
+        {
+          "id": "eta-calc",
+          "title": "Work out the minutes to the door",
+          "status": "done",
+          "produces": {
+            "of": "delivery-tracker",
+            "feature": "arrival-time"
+          }
+        },
+        {
+          "id": "eta-traffic",
+          "title": "Slow the estimate down when the road is busy",
+          "status": "active",
+          "produces": {
+            "of": "delivery-tracker",
+            "feature": "arrival-time"
+          }
+        },
+        {
+          "id": "text-send",
+          "title": "Send a message when the driver sets off",
+          "status": "done",
+          "produces": {
+            "of": "delivery-tracker",
+            "feature": "text-updates"
+          }
+        },
+        {
+          "id": "text-optout",
+          "title": "Let the customer turn the messages off",
+          "status": "planned",
+          "produces": {
+            "of": "delivery-tracker",
+            "feature": "text-updates"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-door",
+      "title": "Give them a key to the door",
+      "steps": [
+        {
+          "id": "signin-form",
+          "title": "Build the sign-in form",
+          "status": "done",
+          "produces": {
+            "of": "customer-account",
+            "feature": "sign-in"
+          }
+        },
+        {
+          "id": "signin-reset",
+          "title": "Let a forgotten password be reset",
+          "status": "planned",
+          "produces": {
+            "of": "customer-account",
+            "feature": "sign-in"
+          }
+        },
+        {
+          "id": "address-save",
+          "title": "Remember an address after the first order",
+          "status": "planned",
+          "produces": {
+            "of": "customer-account",
+            "feature": "saved-addresses"
+          }
+        },
+        {
+          "id": "address-pick",
+          "title": "Let the customer pick between saved addresses",
+          "status": "planned",
+          "produces": {
+            "of": "customer-account",
+            "feature": "saved-addresses"
+          }
+        },
+        {
+          "id": "history-list",
+          "title": "List the past orders newest first",
+          "status": "planned",
+          "produces": {
+            "of": "customer-account",
+            "feature": "order-history"
+          }
+        },
+        {
+          "id": "history-reorder",
+          "title": "Add a buy-it-again button",
+          "status": "planned",
+          "produces": {
+            "of": "customer-account",
+            "feature": "order-history"
+          }
+        }
+      ]
+    }
+  ]
+}

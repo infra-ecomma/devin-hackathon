@@ -17,7 +17,7 @@
 //
 // Exit code is the number of failures.
 
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';

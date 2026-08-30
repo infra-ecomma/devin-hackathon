@@ -14,7 +14,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as W from './lib/state.mjs';
 import { scanProject, watchProject, watchSessions, watchGit, sessionDirFor } from './lib/sources.mjs';
 import { discoverInstances, readInstance, discoverProjects, gitRootOf } from './lib/instances.mjs';
@@ -123,9 +123,18 @@ const OCC_ROOT = path.dirname(HERE);
 const MODE_FLAG = has('genesis') ? 'genesis' : has('universe') ? 'universe' : null;
 const modeFor = (root) => (MODE_FLAG ? MODE_FLAG === 'genesis' : path.resolve(root) !== OCC_ROOT);
 let GENESIS = modeFor(ROOT);
-const baked = JSON.parse(fs.readFileSync(path.join(HERE, 'data', 'world-static.json'), 'utf8'));
+// --world points the standing bench at a different entity graph. The demo needs
+// its own invented bench, and the alternative was editing data/world-static.json
+// in place, which is the file that describes the REAL fleet: a demo that has to
+// overwrite the truth to run is a demo that will eventually be left running.
+const WORLD_FILE = path.resolve(arg('world', path.join(HERE, 'data', 'world-static.json')));
+const baked = JSON.parse(fs.readFileSync(WORLD_FILE, 'utf8'));
 const stat = GENESIS
-  ? { genesis: true, planets: [], features: [], milestones: [], tools: baked.tools, processes: baked.processes, workflows: baked.workflows, attribution: [] }
+  // `demo` rides through genesis on purpose. Genesis rebuilds the graph from
+  // scratch and keeps only the bench, which silently dropped the flag that says
+  // this graph is invented — so the demo plate looked exactly like a real one on
+  // every project except the one it was authored on.
+  ? { genesis: true, demo: baked.demo === true, planets: [], features: [], milestones: [], tools: baked.tools, processes: baked.processes, workflows: baked.workflows, attribution: [] }
   : baked;
 let world = W.createWorld(NAME, ROOT, stat);
 world.project.startedAt = Date.now();
@@ -463,6 +472,28 @@ if (!DEMO) {
 
 const scan = bind();
 if (DEMO) runDemo((rec) => ingestRecord(rec), { speed: Number(arg('speed', 6)) });
+
+// --story runs a scripted timeline against the LIVE instrument rather than
+// against a stubbed one. It is deliberately not --demo: --demo replaces the
+// feeds so the acceptance-walk fixture stays deterministic, whereas a story has
+// to leave every real path in place. It writes the plan and the sign-off files
+// on disk and the ordinary watchers pick them up, so what an audience watches is
+// the instrument doing exactly what it does on a real project — the story only
+// supplies the inputs a working session would have supplied.
+if (arg('story', '')) {
+  const storyFile = path.resolve(arg('story', ''));
+  import(pathToFileURL(storyFile).href)
+    .then((m) => {
+      if (typeof m.run !== 'function') throw new Error('story exports no run()');
+      return m.run({
+        root: ROOT,
+        record: (rec) => ingestRecord(rec),
+        speed: Number(arg('speed', 1)) || 1,
+        loop: !has('once'),
+      });
+    })
+    .catch((e) => { console.error('story failed:', e && e.message); });
+}
 const scanMs = bound.scanMs;
 const watcher = { get watching() { return bound.watching; }, close: unbind };
 started = true;

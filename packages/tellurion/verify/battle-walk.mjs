@@ -19,7 +19,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 import * as W from '../lib/state.mjs';
 import * as P from '../lib/plan.mjs';
 
@@ -214,8 +214,16 @@ const s2 = await boot(planned);
              stale: window.__la.dossierText(),
              hub: window.__ORR_HUB };
   });
+  // Two ways this used to lie about an empty feature list. It THREW, because
+  // cards[ids[0]] is undefined and JSON.stringify(undefined) is not a string, so
+  // one failure upstream ended the run as a Node stack trace and the ~70
+  // assertions below it were never reported at all. And [].every() is true, so
+  // guarding only the throw would have made this PASS on zero features — a
+  // vacuous green on the one check that is supposed to prove features exist.
+  // The walk has declared a feature by this point; none is a failure, not a pass.
   ok('C1 every feature is a body you can point at and name',
-     probe.ids.every((id) => (probe.cards[id] || '').length > 20), JSON.stringify(probe.cards[probe.ids[0]]).slice(0, 90));
+     probe.ids.length > 0 && probe.ids.every((id) => (probe.cards[id] || '').length > 20),
+     probe.ids.length ? JSON.stringify(probe.cards[probe.ids[0]] || '').slice(0, 90) : 'no features on the plate');
   ok('C2 a feature card names WHICH PARTY signed it',
      /the builder/.test(probe.cards['step:element'] || '') && /Nobody has spoken/.test(probe.cards['step:probe'] || ''));
   // The count strip that used to say "1 in hand" is gone (a6dbc116); the state

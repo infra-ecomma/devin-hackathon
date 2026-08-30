@@ -29,6 +29,51 @@
   --amber:      #D89000;
   --card-shadow: 0 8px 28px rgba(0, 16, 51, .09), 0 1px 3px rgba(0, 16, 51, .07);
   --hairline: .75px;
+  /* The knockout the canvas paints behind a label so a ring arc cannot run
+     through a glyph. It used to be a string literal in orrery.js chosen by
+     mode name, which meant a third register was invisible to it and every
+     label sat on a patch of the wrong paper. It is a token now. */
+  --halo: rgba(245, 247, 251, .85);
+}
+
+/* Rustic light: the same engraved chart on parchment rather than on cold paper.
+   A skin is a palette swap and nothing else — every geometry, weight and rule is
+   the register above, so the plate cannot say something different here.
+
+   The role each colour plays is what had to be preserved, not the hue:
+     blue    is NOW. Fresh pulses, live arcs, the rings a judge and an operator
+             put on a moon. Indigo carries that on parchment; brass does not,
+             because brass is what the resting ring arcs are already made of.
+     amber   is a governance process at rest.
+     purple  is an agent, and a workflow cutting across the orbits.
+     pink    is the body of a moon.
+     live    is the one thing happening this second.
+   Collapsing any two of those into one hue would make the plate ambiguous, which
+   is the one thing a legend cannot fix. */
+html[data-mode="rustic"] {
+  --paper:      #EFE7D3;
+  --card:       #F7F1E2;
+  --ink:        #2C2317;
+  --ink-70:     rgba(44, 35, 23, .74);
+  --ink-45:     rgba(44, 35, 23, .58);
+  --ink-28:     rgba(44, 35, 23, .40);
+  --line:       rgba(44, 35, 23, .17);
+  --line-faint: rgba(44, 35, 23, .085);
+  --blue:       #2C4A7C;
+  --blue-deep:  #1E3557;
+  --blue-soft:  rgba(44, 74, 124, .10);
+  --blue-mid:   rgba(44, 74, 124, .42);
+  --live:       #5E8C2F;
+  --live-ink:   #3F6B1E;
+  --fault:      #9C2B1F;
+  --ghost:      rgba(44, 35, 23, .22);
+  --pink:       #9C4A52;
+  --pink-soft:  rgba(156, 74, 82, .13);
+  --purple:     #6B4A7A;
+  --purple-soft: rgba(107, 74, 122, .55);
+  --amber:      #B8823A;
+  --card-shadow: 0 8px 28px rgba(44, 35, 23, .10), 0 1px 3px rgba(44, 35, 23, .09);
+  --halo:       rgba(239, 231, 211, .88);
 }
 
 html[data-mode="observatory"] {
@@ -53,6 +98,7 @@ html[data-mode="observatory"] {
   --purple-soft: rgba(167, 139, 255, .55);
   --amber:      #FFC24D;
   --card-shadow: 0 10px 34px rgba(0, 0, 0, .5), 0 0 0 1px rgba(159, 191, 235, .07);
+  --halo:       rgba(3, 10, 28, .82);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -99,7 +145,7 @@ html[data-mode="observatory"] body {
 }
 .bar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .mark { height: 30px; width: auto; flex: 0 0 auto; }
-html[data-mode="observatory"] .mark rect:first-child { fill: #D9E6FF; }
+html[data-mode="observatory"] .mark path { fill: #57CAFB; }
 
 .census { display: flex; align-items: center; gap: 26px; position: relative; min-width: 0; }
 /* At 1280 the project subline ran straight under the census and both became
@@ -107,6 +153,15 @@ html[data-mode="observatory"] .mark rect:first-child { fill: #D9E6FF; }
    fleet-bench group folds away because it is the part that is not about him. */
 .bar-left { min-width: 0; }
 .titleblock { min-width: 0; }
+.demobadge {
+  flex: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--amber);
+  border: var(--hairline) solid var(--amber);
+  border-radius: 4px; padding: 3px 7px 2px;
+  white-space: nowrap;
+}
 .titleblock .subline { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 34ch; }
 @media (max-width: 1180px) {
   .census { gap: 16px; }
@@ -769,6 +824,10 @@ html[data-mode="observatory"] .mark rect:first-child { fill: #D9E6FF; }
 /* orrery accent glyph colors in the key */
 .key-row.k-pink svg { color: var(--pink); }
 .key-row.k-purple svg { color: var(--purple); }
+/* A satellite row goes red only while it is actually holding a broken promise,
+   matching the mark on the plate: red in the legend beside a black mark on the
+   plate would be the legend disagreeing with the picture next to it. */
+.key-row.k-fault svg, .key-row.k-fault .kr-n { color: var(--fault); }
 .key-row.k-amber svg { color: var(--amber); }
 
 

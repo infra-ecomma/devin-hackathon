@@ -14,7 +14,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 import os from 'node:os';
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const APP = path.dirname(HERE);

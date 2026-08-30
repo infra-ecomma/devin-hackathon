@@ -10,7 +10,7 @@
 //
 // Exit code is the number of failures. `totalFails` in the JSON must be 0.
 
-import { chromium } from '../../node_modules/playwright/index.mjs';
+import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, mkdtempSync } from 'node:fs';
 import os from 'node:os';

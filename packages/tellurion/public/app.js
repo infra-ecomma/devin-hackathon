@@ -130,6 +130,10 @@ function fillCensus() {
   // projects, tools, processes and workflows are no longer in the bar: they are
   // not this project, and they are what pushed it into the drive gauge
   $('cnSteps').textContent = n.steps;
+  // The entity graph says whether it is invented; the bar repeats it. Read from
+  // the data rather than from a launch flag, so the badge cannot be switched off
+  // while the demo graph is still loaded.
+  $('demoBadge').hidden = !(world && world.stat && world.stat.demo);
 }
 
 function buildKey() {
@@ -239,6 +243,22 @@ function buildKey() {
   // overstated the fleet the moment a session finished.
   const AGENT_IDLE = 4 * 60_000;
   const nAgents = Object.values(world.agents || {}).filter(a => (Date.now() - a.lastAt) < AGENT_IDLE).length;
+  // Commits this session, which is what a shooting star is drawn for. Git
+  // history carries `pre`, and history does not streak: replaying a backlog
+  // must not claim the fleet committed forty times a moment ago.
+  const nCommits = (world.notches || []).filter((x) => !x.pre).length;
+  // A process may declare a satellite: a mechanism that runs over its output.
+  // Read from the data, so adding one is a data edit and the legend follows.
+  const sats = (s.processes || []).filter((p) => p.satellite && (orrery.getBench() === 'all' || (world.usage && world.usage[p.id])));
+  const satelliteRows = () => sats.map((p) => {
+    const nBroken = fs.filter((f) => f.failedBy).length;
+    return `<div class="key-row ${nBroken ? 'k-fault' : ''}">` +
+      g(`<circle cx="13" cy="9" r="6.4" ${c} stroke-width=".6" stroke-dasharray="2 2.5" opacity=".7"/>` +
+        `<circle cx="19.4" cy="9" r="2.5" ${c} stroke-width="1.2"/><circle cx="19.4" cy="9" r=".9" fill="currentColor"/>`) +
+      `<span class="kr-name"><b>${esc(p.satellite.name)}</b> &middot; ${esc(p.satellite.plain || p.satellite.one_liner || '')}</span>` +
+      `<span class="kr-n">${nBroken}</span></div>` +
+      `<div class="key-sub">It orbits <b>${esc(p.name)}</b> because that is what it reads. A thread from it to a moon means that part was claimed done and a judge then rejected it.</div>`;
+  }).join('');
   // The rim is a date scrubber only where there are dates to scrub. In genesis
   // mode there are none and the control is inert, so the legend must not tell
   // him to drag it: an instruction for a disabled control is worse than silence.
@@ -280,7 +300,16 @@ function buildKey() {
       ? `${blindProcs.map((p) => esc(p.name)).join(' and ')} cannot be seen from a session and draw dashed, never amber. `
       : ''}${opener('proc', 'what these are')}</div>` +
     procPanel() +
+    // A satellite orbits a ring arc rather than the core, because its subject is
+    // that arc's OUTPUT rather than the project. Only drawn where a process
+    // declares one, so the row is absent rather than sitting at zero on a plate
+    // that has none.
+    satelliteRows() +
     benchRow(g(`<circle cx="19" cy="6" r="2" fill="currentColor"/><path d="M17 7.5 Q 12 11 4 13" ${c} stroke-width=".9" opacity=".6"/>`), 'comet &middot; a workflow', s.workflows, 'k-purple') +
+    // A commit is the one thing here that is over the instant it happens, so it
+    // is the one mark that exists only while it is happening. Named because the
+    // legend's whole claim is that nothing on the plate is decoration.
+    row(g(`<circle cx="19.5" cy="5.5" r="1.8" fill="currentColor"/><path d="M18 6.8 L5 13" ${c} stroke-width="1.3" opacity=".55" stroke-linecap="round"/>`), 'shooting star &middot; a commit landing', nCommits) +
     row(g(`<path d="M8 5.5 Q 13 8 18 5.5 Q 19.5 9 18 12.5 Q 13 10 8 12.5 Q 6.5 9 8 5.5 Z" ${c} stroke-width="1"/><circle cx="13" cy="9" r="1.2" fill="currentColor"/>`), 'vertebra &middot; a dated milestone', s.milestones.length) +
     `<div class="key-note">The belt, the ring arcs and the comets are the <b>standing fleet bench</b>. They are the same on every project and they are not yours to build.</div>` +
 
@@ -650,15 +679,24 @@ $('scrubReset').addEventListener('click', () => setScrub(null));
 
 /* ------------------------------------------------------------- mode */
 
+// Which LIGHT register the Observatory button returns to. There are two now
+// (plate and rustic), so a hardcoded 'plate' would silently throw the skin away
+// the first time anyone looked at the observatory and came back. Declared above
+// setMode rather than beside its listener: `let` is in the temporal dead zone
+// until its own line runs, so a setMode call from anywhere earlier would throw.
+let lightMode = 'plate';
+
 function setMode(m) {
   document.documentElement.dataset.mode = m;
-  $('modeBtn').textContent = m === 'observatory' ? 'Plate' : 'Observatory';
+  if (m !== 'observatory') lightMode = m;
+  $('modeBtn').textContent = m === 'observatory' ? (lightMode === 'rustic' ? 'Rustic' : 'Plate') : 'Observatory';
   orrery.retheme();
   spine.invalidate();
   spine.render({ scrubT: view.scrubT });
   try { localStorage.setItem('la-mode', m); } catch {}
 }
-$('modeBtn').addEventListener('click', () => setMode(document.documentElement.dataset.mode === 'observatory' ? 'plate' : 'observatory'));
+$('modeBtn').addEventListener('click', () => setMode(
+  document.documentElement.dataset.mode === 'observatory' ? lightMode : 'observatory'));
 
 /* ---------------------------------------------------------------- the View menu
    One control for what the plate draws. It replaces the project picker, which
@@ -735,7 +773,19 @@ function setBenchMode(m) {
 }
 try { setBenchMode(localStorage.getItem('tellurion-bench') || 'used'); } catch { setBenchMode('used'); }
 try { setLabelMode(localStorage.getItem('tellurion-labels') || 'hover'); } catch { setLabelMode('hover'); }
-try { const saved = localStorage.getItem('la-mode'); if (saved) setMode(saved); } catch {}
+// ?skin= wins over the saved preference and does NOT overwrite it, so opening
+// the demo link on the operator's own browser cannot leave his instrument in a
+// register he never chose. Only names the stylesheet defines are honoured.
+const SKINS = new Set(['plate', 'rustic', 'observatory']);
+const wantSkin = new URLSearchParams(location.search).get('skin');
+if (wantSkin && SKINS.has(wantSkin)) {
+  document.documentElement.dataset.mode = wantSkin;
+  if (wantSkin !== 'observatory') lightMode = wantSkin;
+  $('modeBtn').textContent = wantSkin === 'observatory' ? (lightMode === 'rustic' ? 'Rustic' : 'Plate') : 'Observatory';
+  orrery.retheme(); spine.invalidate(); spine.render({ scrubT: view.scrubT });
+} else {
+  try { const saved = localStorage.getItem('la-mode'); if (saved) setMode(saved); } catch {}
+}
 
 /* ------------------------------------------------------------- ticker + readouts */
 
@@ -958,6 +1008,11 @@ window.__la = {
   scrubTo: (dateStr) => setScrub(dateStr ? +new Date(dateStr + 'T12:00:00Z') : null),
   mode: () => document.documentElement.dataset.mode,
   setMode,
+  // Names are opt-in and live behind the View menu, which a walk would have to
+  // open and click through to reach. Both modes are reachable here so a
+  // screenshot can be taken with every body named without simulating a menu.
+  setLabels: (m) => setLabelMode(m),
+  setBench: (m) => setBenchMode(m),
   dossierText: () => (dossier.hidden ? '' : dossier.textContent),
 };
 

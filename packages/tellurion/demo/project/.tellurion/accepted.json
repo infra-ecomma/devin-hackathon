@@ -1,0 +1,39 @@
+{
+  "accepted": [
+    {
+      "step": "product-search",
+      "by": "Wassim",
+      "at": "2026-08-30T12:22:09.600Z",
+      "fp": "4xdha4",
+      "onVerdict": "2026-08-30T12:22:09.599Z"
+    },
+    {
+      "step": "photo-gallery",
+      "by": "Wassim",
+      "at": "2026-08-30T12:22:09.600Z",
+      "fp": "12205zi",
+      "onVerdict": "2026-08-30T12:22:09.600Z"
+    },
+    {
+      "step": "stock-levels",
+      "by": "Wassim",
+      "at": "2026-08-30T12:22:09.600Z",
+      "fp": "bj85no",
+      "onVerdict": "2026-08-30T12:22:09.600Z"
+    },
+    {
+      "step": "save-for-later",
+      "by": "Wassim",
+      "at": "2026-08-30T12:22:09.600Z",
+      "fp": "1n4h5hj",
+      "onVerdict": "2026-08-30T12:22:09.600Z"
+    },
+    {
+      "step": "card-payment",
+      "by": "Wassim",
+      "at": "2026-08-30T12:22:09.600Z",
+      "fp": "sv2oxg",
+      "onVerdict": "2026-08-30T12:22:09.600Z"
+    }
+  ]
+}

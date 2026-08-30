@@ -1,0 +1,6 @@
+This directory is a Tellurion DEMO project. Everything in it is invented.
+
+Its plan, its verdicts and its acceptances are rewritten by demo/story.mjs every
+time the story runs, so nothing here is worth editing by hand. The marker exists
+so that --story can refuse to run anywhere else: a story WRITES the plan, and
+pointed at a real repo it would overwrite somebody's real one.
