@@ -218,7 +218,7 @@
     <svg viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
     <span class="logo-word"><b>TBK</b>&nbsp;<i>Labs</i></span>
   </div>
-  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.4</div>
+  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.6</div>
 </header>
 
 <div class="title-block">
@@ -526,6 +526,37 @@
   the reference still survives, the invention is drawn as a dashed dormant ghost captioned "not
   declared in products; named by N steps", it is skipped by the tier rollup so it can never wear a
   badge it did not earn, and it is counted as neither a product nor a project.</p>
+
+  <div class="kicker">The law of light &middot; operator ruling, 2026-08-30</div>
+  <h3 class="claim">A body exists because work started, and it shines because a check passed.</h3>
+  <p class="prose">This amends the drawing rule above. A declared product or feature is the
+  <b>plan</b>; the sky draws only the ones whose work has <b>started</b> (a first commit, a branch,
+  or an agent mission touching it). A declared but untouched item stays a dashed row in the spine
+  and does not exist as a body. <code>applyPlan</code>'s planet-per-declared-product draw predates
+  this ruling and does not obey it yet, recorded here the same way the reducer note on the
+  components tab records code behind model.</p>
+  <p class="prose">Verification light comes in two levels, and the operator named this one of
+  Tellurion's most important features:</p>
+  <ul class="law">
+    <li><b>Feature (moon):</b> in progress is a dashed ember silhouette; a recorded check passing
+    (exit 0 at HEAD) flips it to a solid body with a halo, a change in kind, never a brightness
+    tweak. Stale evidence decays the halo to dotted amber; a failing check draws a broken red arc.
+    No hand can set any of these.</li>
+    <li><b>Product (planet):</b> while features are mixed it wears a meridian arc with the verified
+    fraction printed. When every feature is verified at HEAD and the product's own end-to-end walk
+    passes, the corona ignites and the product's orbit line lights. If anything falls back out of
+    verified, the corona retracts to a dotted ring.</li>
+  </ul>
+  <div class="kicker">One law, four skins &middot; operator ruling, 2026-08-30</div>
+  <p class="prose">The instrument ships two styles in two themes, toggled in the product:
+  <b>Futuristic</b> (the AI-made constellation look; dark is the lead skin, light is Fog and Deep
+  Navy as on the live instrument) and <b>Rustic</b> (engraved star-atlas; cream on a night plate in
+  dark, sepia ink on parchment in light). A skin changes token values and typefaces (Orbitron with
+  JetBrains Mono in Futuristic, Cinzel with Courier Prime in Rustic), never geometry or state
+  meaning, so spatial memory and the law of light survive the toggle. Verification green is a role
+  with a per-skin value, and nothing else in a skin may wear it. The full visual grammar, one
+  formula per glyph, and all four skins drawn on the same sample sky live on
+  <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.</p>
 </section>
 
 <!-- -------------------------------------------------------- CHANGELOG -->
@@ -537,6 +568,41 @@
   thing this section exists to make impossible.</p>
 
   <div class="log">
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>Bodies exist only once work starts, verification light gets two levels, and the instrument gets four skins.</h4>
+      <p>Two operator rulings from the reimagining session, both recorded on the model tab. <b>The
+      law of light:</b> a product or feature is drawn in the sky only when work on it has started;
+      declared but untouched items stay in the spine. A feature's completed verification flips its
+      moon from dashed ember to solid with a halo, and a product whose features are all verified,
+      with its own end-to-end walk passing, ignites a corona and lights its orbit, retracting if
+      anything falls back out of verified. Wassim named the two-level cue one of Tellurion's most
+      important features. <b>One law, four skins:</b> a style and theme toggle (Futuristic and
+      Rustic, dark and light; settings <code>tellurion.style</code> and <code>tellurion.theme</code>,
+      AUTO follows the editor theme); skins change tokens and typefaces only. Behind both rulings:
+      the hackathon extension (<code>infra-ecomma/devin-hackathon</code>, a 752-line scaffold whose
+      webview never parsed and whose scanner drew one planet) was reimagined through four
+      independent, adversarially critiqued design concepts (judge scores 7.5 to 8.5), synthesized
+      into the <b>Earned Light</b> direction: fourteen boards at
+      <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.
+      A first version of this entry (v1.5, commit 610f0b098) was overwritten twenty minutes later by
+      a concurrent session's re-sort working from a stale base; this v1.6 re-applies it on top of
+      that session's audit row below.</p>
+    </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>The footer caught up with the masthead, and the archive was rebaked from committed HEAD.</h4>
+      <p>An audit of this document found three staleness defects and all three are closed here.
+      <b>The footer</b> had read <code>v1.1 &middot; updated 28 Aug 2026</code> since three version bumps ago while
+      the masthead read v1.4, so the page&rsquo;s own provenance line contradicted its header; both now read
+      v1.5 &middot; 30 Aug 2026. <b>The changelog</b> broke its own most-recent-first rule at one row &mdash; the
+      2026-08-30 panel-identity entry sat below two 2026-08-29 entries &mdash; and is now in date order.
+      <b>The archive</b> at <code>tellurion-plate.html</code> had been baked 2026-08-28 18:24, two days and 24
+      source files behind, so none of the 08-29 or 08-30 work was in the thing this page calls the instrument.
+      It is rebaked from committed HEAD rather than the working tree, which carries undocumented in-flight
+      work, and now draws the declared-plan plate: 4 products, 25 features, spine 43/47, verified by rendering
+      it in real Chromium before publishing. Noted and deliberately left alone: the headline 31-planet figure
+      is a dated 2026-08-28 measurement, and a live scan today resolves 4 planets under the declared plan &mdash;
+      changing it is a content decision rather than a staleness fix.</p>
+    </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>The honest empty card, the panel that knocks before entering, and a repo of its own.</h4>
       <p>Two operator rulings today, both on panel behavior. <b>F1 (empty card):</b> the no-plan screen
@@ -552,6 +618,23 @@
       (<code>bin/mirror-repo.sh</code>) with OCC as the one source. Walks: battle 83/83, plan lifecycle
       12/12, invite 5/5, all against real Chromium after the change.</p>
     </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>The panel can never go blank again, and a 200 now names its process.</h4>
+      <p>Two failure classes closed together. A VS Code panel that framed the instrument blind: a dead
+      server, a dropped port-forward, or another project's instrument on the port all rendered as the
+      same blank square (reported three times across 2026-08-29/30). Panel and sidebar now render
+      a guard page (<code>vscode-ext/wrapper.js</code>) that probes the instrument's new
+      <code>/api/identity</code> before framing: an unreachable server gets a card naming the URL and
+      the fix, and a port serving a DIFFERENT project gets a card naming both roots — the port-thief
+      escape of 2026-08-28, now visible instead of silent. That probe caught its own false alarm on the
+      first walk: a webview-origin fetch is CORS-blocked from <code>/health</code>, so identity moved
+      to <code>/api/identity</code>, which answers CORS-open and carries nothing sensitive
+      (<code>/health</code> stays closed — it exposes the last thing typed). And <code>/health</code>
+      itself now carries <code>pid</code>, <code>version</code> and <code>startedAt</code>, so "is the
+      instrument up?" can be paired with the pid actually listening on the port — edge-walk E9
+      asserts that pairing forever. Extension 0.5.0, installed on both machines by
+      <code>build-vsix.sh</code>. Verified: <code>verification/2026-08-30-tellurion-panel-identity/</code>
+      (panel-walk 9/9, edge-walk 18/18, 217 assertions green across nine walks).</p></div></div>
     <div class="log-row"><div class="log-date">2026-08-29</div><div class="log-body">
       <h4>The plan lifecycle: three ways to a spine, editable in all of them, connected to the repo.</h4>
       <p>The operator's ruling (ADR-0134), built the same day. The empty state now offers
@@ -594,23 +677,6 @@
       occupies is still a rung. Every fix has a fail-first assertion in the new
       <code>verify/edge-walk.mjs</code> (15/15), and the full suite passes: 183 assertions across
       seven walks. Evidence: <code>verification/2026-08-29-tellurion-edge-cases/</code>.</p></div></div>
-    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
-      <h4>The panel can never go blank again, and a 200 now names its process.</h4>
-      <p>Two failure classes closed together. A VS Code panel that framed the instrument blind: a dead
-      server, a dropped port-forward, or another project's instrument on the port all rendered as the
-      same blank square (reported three times across 2026-08-29/30). Panel and sidebar now render
-      a guard page (<code>vscode-ext/wrapper.js</code>) that probes the instrument's new
-      <code>/api/identity</code> before framing: an unreachable server gets a card naming the URL and
-      the fix, and a port serving a DIFFERENT project gets a card naming both roots — the port-thief
-      escape of 2026-08-28, now visible instead of silent. That probe caught its own false alarm on the
-      first walk: a webview-origin fetch is CORS-blocked from <code>/health</code>, so identity moved
-      to <code>/api/identity</code>, which answers CORS-open and carries nothing sensitive
-      (<code>/health</code> stays closed — it exposes the last thing typed). And <code>/health</code>
-      itself now carries <code>pid</code>, <code>version</code> and <code>startedAt</code>, so "is the
-      instrument up?" can be paired with the pid actually listening on the port — edge-walk E9
-      asserts that pairing forever. Extension 0.5.0, installed on both machines by
-      <code>build-vsix.sh</code>. Verified: <code>verification/2026-08-30-tellurion-panel-identity/</code>
-      (panel-walk 9/9, edge-walk 18/18, 217 assertions green across nine walks).</p></div></div>
     <div class="log-row"><div class="log-date">2026-08-29</div><div class="log-body">
       <h4>The door out of VS Code actually opens, and the bookmark keeps its key.</h4>
       <p>Two refinements the same day, from using it. The dossier no longer pops on hover inside a
@@ -686,7 +752,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v1.1 &middot; updated 28 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v1.5 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 
