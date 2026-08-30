@@ -7,9 +7,12 @@ services:
       - "3000"
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL:-postgresql://hackathon:hackathon@db:5432/hackathon}
     restart: unless-stopped
     networks:
       - coolify
+    depends_on:
+      - db
     labels:
       - traefik.enable=true
       - traefik.http.routers.hackathon.entrypoints=http,https
@@ -17,6 +20,21 @@ services:
       - traefik.http.routers.hackathon.tls.certresolver=letsencrypt
       - traefik.http.routers.hackathon.service=hackathon
       - traefik.http.services.hackathon.loadbalancer.server.port=3000
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=hackathon
+      - POSTGRES_PASSWORD=hackathon
+      - POSTGRES_DB=hackathon
+    volumes:
+      - hackathon_db:/var/lib/postgresql/data
+    networks:
+      - coolify
+    restart: unless-stopped
+
+volumes:
+  hackathon_db:
 
 networks:
   coolify:
