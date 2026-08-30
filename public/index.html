@@ -1,976 +1,843 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-style="rustic" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tellurion — Visual Project Orrery</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;">
+<title>Tellurion</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --field: #efe7d3;
-      --panel: #f7f1e2;
-      --ink: #2c2317;
-      --sec: rgba(44,35,23,.65);
-      --dim: rgba(44,35,23,.45);
-      --verify: #2e6b34;
-      --stale: #9a7423;
-      --fail: #9c2b1f;
-      --ember: #b0763a;
-      --accent: #8a6d3b;
-      --sun: #c99f4d;
-      --font-display: Georgia, serif;
-      --font-mono: Consolas, monospace;
-      --radius: 8px;
-      --panel-shadow: 0 2px 12px rgba(44,35,23,.08);
-    }
+  /* Skin tokens. rustic light is the default and lives on bare :root; the other
+     three skins swap every token via data-style and data-theme on <html>.
+     The canvas reads these through getComputedStyle, so tokens exist only here. */
+  :root {
+    --field: #efe7d3; --panel: #f7f1e2; --ink: #2c2317;
+    --sec: rgba(44,35,23,.65); --dim: rgba(44,35,23,.45);
+    --verify: #2e6b34; --stale: #9a7423; --fail: #9c2b1f; --ember: #b0763a;
+    --accent: #8a6d3b; --sun: #c99f4d;
+    --cat-api: #23608a; --cat-frontend: #6d4586; --cat-database: #2e6b5f;
+    --cat-infra: #a05f1e; --cat-ml: #9c3a2e; --cat-auth: #96395c; --cat-default: #6b6154;
+    --font-display: Georgia, "Times New Roman", serif;
+    --font-mono: Consolas, "Courier New", monospace;
+    --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  }
+  [data-style="rustic"][data-theme="dark"] {
+    --field: #16110e; --panel: #1d1712; --ink: #e8e2d4;
+    --sec: rgba(232,226,212,.62); --dim: rgba(232,226,212,.4);
+    --verify: #7fae6a; --stale: #c9a35a; --fail: #b8453a; --ember: #8a6d3b;
+    --accent: #8a6d3b; --sun: #c9a35a;
+    --cat-api: #6fa8c9; --cat-frontend: #a97fb8; --cat-database: #5f9b8e;
+    --cat-infra: #c98a4b; --cat-ml: #c96a5f; --cat-auth: #c9738f; --cat-default: #9a9184;
+  }
+  [data-style="futuristic"] {
+    --font-display: Verdana, "Segoe UI", sans-serif;
+  }
+  [data-style="futuristic"][data-theme="dark"] {
+    --field: #05080f; --panel: rgba(12,18,32,.92); --ink: #e8edf5;
+    --sec: #8899b0; --dim: #556680;
+    --verify: #66bb6a; --stale: #ffc66b; --fail: #ff1744; --ember: #b0763a;
+    --accent: #0077FF; --sun: #ffd54f;
+    --cat-api: #4fc3f7; --cat-frontend: #ab47bc; --cat-database: #26a69a;
+    --cat-infra: #ffa726; --cat-ml: #ef5350; --cat-auth: #ec407a; --cat-default: #90a4ae;
+  }
+  [data-style="futuristic"][data-theme="light"] {
+    --field: #F5F7FB; --panel: #ffffff; --ink: #001033;
+    --sec: rgba(0,16,51,.6); --dim: rgba(0,16,51,.42);
+    --verify: #2e7d32; --stale: #b07d1d; --fail: #c62828; --ember: #a06a2c;
+    --accent: #0077FF; --sun: #f9a825;
+    --cat-api: #0288d1; --cat-frontend: #8e24aa; --cat-database: #00897b;
+    --cat-infra: #ef6c00; --cat-ml: #d32f2f; --cat-auth: #c2185b; --cat-default: #607d8b;
+  }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --field: #1a140e;
-        --panel: #241c14;
-        --ink: #e8dcc8;
-        --sec: rgba(232,220,200,.65);
-        --dim: rgba(232,220,200,.45);
-        --verify: #4a9e52;
-        --stale: #c49a2e;
-        --fail: #c4403a;
-        --ember: #c4864e;
-        --accent: #a8824a;
-        --sun: #d4a84d;
-        --panel-shadow: 0 2px 12px rgba(0,0,0,.3);
-      }
-    }
-    :root[data-theme="dark"] {
-      --field: #1a140e;
-      --panel: #241c14;
-      --ink: #e8dcc8;
-      --sec: rgba(232,220,200,.65);
-      --dim: rgba(232,220,200,.45);
-      --verify: #4a9e52;
-      --stale: #c49a2e;
-      --fail: #c4403a;
-      --ember: #c4864e;
-      --accent: #a8824a;
-      --sun: #d4a84d;
-      --panel-shadow: 0 2px 12px rgba(0,0,0,.3);
-    }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--field); color: var(--ink);
+    font-family: var(--font-display); font-size: 12px;
+  }
+  .mono { font-family: var(--font-mono); }
+  .display { font-family: var(--font-display); }
+  [data-style="futuristic"] .display { letter-spacing: .14em; text-transform: uppercase; }
+  [data-style="rustic"] .display { font-variant-caps: small-caps; letter-spacing: .05em; }
+  .hidden { display: none !important; }
 
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--field);
-      color: var(--ink);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
-      transition: background .3s, color .3s;
-    }
+  #app { display: flex; flex-direction: column; height: 100vh; }
 
-    /* ─── HEADER ─────────────────────────────────── */
-    .site-header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2.5rem;
-      background: rgba(239,231,211,.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(44,35,23,.1);
-      transition: background .3s;
-    }
-    :root[data-theme="dark"] .site-header,
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .site-header {
-        background: rgba(26,20,14,.85);
-      }
-    }
+  #topbar {
+    height: 44px; flex: none; display: flex; align-items: center; gap: 14px;
+    padding: 0 14px; background: var(--panel); border-bottom: 1px solid var(--line);
+  }
+  #wordmark { font-size: 15px; font-weight: 700; white-space: nowrap; }
+  #repoline {
+    flex: 1; min-width: 0; font-size: 10.5px; color: var(--sec);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #skinControls { display: flex; gap: 8px; }
+  .seg {
+    display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    background: var(--field);
+  }
+  .seg button {
+    background: transparent; border: none; color: var(--sec); cursor: pointer;
+    font-family: var(--font-display); font-size: 9px; letter-spacing: .08em;
+    padding: 5px 8px; white-space: nowrap;
+  }
+  .seg button.on { background: var(--accent); color: #fff; }
 
-    .wordmark {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: normal;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--ink);
-      text-decoration: none;
-    }
-    .header-actions { display: flex; align-items: center; gap: .75rem; }
+  #mid { flex: 1; display: flex; min-height: 0; }
 
-    .install-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .55rem 1.25rem;
-      background: var(--ember);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-family: 'Inter', sans-serif;
-      font-size: .82rem;
-      font-weight: 600;
-      letter-spacing: .04em;
-      cursor: pointer;
-      transition: background .2s, transform .15s;
-      text-transform: uppercase;
-    }
-    .install-btn:hover { background: var(--accent); transform: translateY(-1px); }
-    .install-btn:active { transform: translateY(0); }
+  #rail {
+    width: 264px; min-width: 264px; overflow-y: auto; overscroll-behavior: contain;
+    border-right: 1px solid var(--line); padding-bottom: 8px;
+  }
+  #railHead {
+    font-size: 10.5px; color: var(--sec); letter-spacing: .12em;
+    padding: 10px 14px 4px;
+  }
+  #planProblems { padding: 0 14px; font-size: 10px; }
+  #planProblems .probHead { color: var(--fail); letter-spacing: .1em; margin: 6px 0 2px; }
+  #planProblems .prob { color: var(--fail); line-height: 1.5; word-break: break-word; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    margin: 8px 10px 0; padding: 9px 10px 7px;
+  }
+  .cardHead { display: flex; align-items: center; gap: 8px; cursor: pointer; padding-bottom: 4px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .cardName {
+    flex: 1; min-width: 0; font-size: 12.5px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cardStatus { font-size: 9.5px; color: var(--sec); white-space: nowrap; }
+  .cardStatus .ok { color: var(--verify); }
+  .cardStatus .bad { color: var(--fail); }
+  .cardStatus .old { color: var(--stale); }
+  .feat {
+    display: flex; align-items: center; gap: 7px; padding: 4px 2px 4px 4px;
+    border-radius: 6px;
+  }
+  .feat.clickable { cursor: pointer; }
+  .feat.clickable:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+  .feat.st-not-started { opacity: .45; }
+  .glyph { width: 12px; text-align: center; font-size: 10px; flex: none; }
+  .featName {
+    flex: 1; min-width: 0; font-size: 11.5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .featMeta { font-size: 9.5px; color: var(--sec); white-space: nowrap; }
 
-    /* Install dropdown */
-    .install-dropdown {
-      position: absolute;
-      top: calc(100% + .5rem);
-      right: 0;
-      background: var(--panel);
-      border: 1px solid rgba(44,35,23,.12);
-      border-radius: var(--radius);
-      box-shadow: var(--panel-shadow);
-      padding: 1rem;
-      min-width: 300px;
-      display: none;
-      z-index: 200;
-    }
-    .install-dropdown.open { display: block; }
-    .install-dropdown h4 {
-      font-size: .75rem;
-      font-weight: 600;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: .75rem;
-    }
-    .install-card {
-      background: var(--field);
-      border: 1px solid rgba(44,35,23,.1);
-      border-radius: 6px;
-      padding: .75rem 1rem;
-      margin-bottom: .75rem;
-    }
-    .install-card:last-child { margin-bottom: 0; }
-    .install-card .platform {
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: .4rem;
-    }
-    .install-code {
-      font-family: var(--font-mono);
-      font-size: .75rem;
-      color: var(--sec);
-      background: rgba(44,35,23,.06);
-      padding: .4rem .6rem;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: .5rem;
-    }
-    .copy-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--dim);
-      padding: 0;
-      flex-shrink: 0;
-      transition: color .2s;
-    }
-    .copy-btn:hover { color: var(--ember); }
-    .copy-btn svg { display: block; }
+  #skyWrap { flex: 1; position: relative; min-width: 0; background: var(--field); }
+  #sky { position: absolute; inset: 0; display: block; }
 
-    /* Theme toggle */
-    .theme-toggle {
-      width: 36px; height: 36px;
-      background: rgba(44,35,23,.08);
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--ink);
-      transition: background .2s;
-    }
-    .theme-toggle:hover { background: rgba(44,35,23,.15); }
-    .theme-toggle svg { display: block; }
+  #dock {
+    width: 300px; min-width: 300px; background: var(--panel);
+    border-left: 1px solid var(--line); padding: 14px;
+    display: flex; flex-direction: column; gap: 9px; overflow-y: auto;
+  }
+  #dockState { font-size: 15px; font-weight: 700; letter-spacing: .1em; }
+  #dockFeature { font-size: 13px; }
+  #dockProduct { font-size: 10px; color: var(--sec); }
+  .receipt {
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+    border: 1px solid var(--line); border-radius: 8px; padding: 10px;
+    font-size: 10.5px; line-height: 1.6; display: flex; flex-direction: column; gap: 3px;
+  }
+  .receipt .wrap { word-break: break-all; }
+  .receipt .lbl { color: var(--dim); }
+  #rExit.ok { color: var(--verify); }
+  #rExit.bad { color: var(--fail); }
+  #rLog {
+    margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--line);
+    max-height: 190px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+    font-family: var(--font-mono); font-size: 10px; color: var(--sec);
+  }
+  .dockBtns { display: flex; gap: 8px; }
+  .btn {
+    border-radius: 8px; padding: 7px 12px; font-size: 10.5px; cursor: pointer;
+    font-family: var(--font-display); letter-spacing: .08em;
+  }
+  #btnRerun { background: var(--accent); color: #fff; border: 1px solid transparent; }
+  #btnRerun.off { opacity: .4; cursor: default; }
+  #btnRevoke { background: transparent; color: var(--fail); border: 1.5px solid var(--fail); }
 
-    /* ─── HERO ────────────────────────────────────── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 7rem 2rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
+  #missionlog {
+    height: 88px; flex: none; display: flex; flex-direction: column;
+    background: var(--panel); border-top: 1px solid var(--line);
+  }
+  #logHead { font-size: 9.5px; color: var(--sec); letter-spacing: .12em; padding: 4px 12px 1px; }
+  #logLines {
+    flex: 1; overflow-y: auto; overscroll-behavior: contain;
+    font-size: 10px; line-height: 1.5; padding: 0 12px 4px;
+  }
+  #logLines .lt { color: var(--dim); }
+  .k-error { color: var(--fail); }
+  .k-verify { color: var(--verify); }
+  .k-revoke { color: var(--stale); }
+  .k-check { color: var(--accent); }
+  .k-scan, .k-commit { color: var(--sec); }
 
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(3.5rem, 10vw, 8rem);
-      font-weight: normal;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 1.5rem;
-      position: relative;
-      z-index: 2;
-    }
+  #telemetry {
+    height: 26px; flex: none; display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 0 12px; background: var(--panel); border-top: 1px solid var(--line);
+    font-size: 10px; color: var(--sec);
+  }
+  #counts { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #counts .cv { color: var(--verify); }
+  #counts .cs { color: var(--stale); }
+  #counts .cx { color: var(--fail); }
+  #counts .cn { color: var(--dim); }
+  #scanned { white-space: nowrap; cursor: pointer; }
 
-    .hero-canvas-wrap {
-      position: relative;
-      width: min(480px, 90vw);
-      height: min(480px, 90vw);
-      margin: 0 auto;
-    }
-
-    #orrery-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .scroll-arrow {
-      margin-top: 2rem;
-      color: var(--dim);
-      animation: bounce 2s ease-in-out infinite;
-    }
-    .scroll-arrow svg { display: block; }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); opacity: .5; }
-      50% { transform: translateY(8px); opacity: 1; }
-    }
-
-    /* ─── SECTIONS BASE ───────────────────────────── */
-    .section {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 5rem 2rem;
-    }
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: .72rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: .75rem;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      color: var(--ink);
-      margin-bottom: 2rem;
-      font-weight: normal;
-    }
-
-    /* Scroll reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
-    }
-
-    /* ─── STATS BAR ──────────────────────────────── */
-    .stats-bar {
-      border-top: 1px solid rgba(44,35,23,.1);
-      border-bottom: 1px solid rgba(44,35,23,.1);
-      padding: 2.5rem 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      flex-wrap: wrap;
-    }
-    .stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem 3rem;
-      border-right: 1px solid rgba(44,35,23,.1);
-    }
-    .stat:last-child { border-right: none; }
-    .stat-num {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--ember);
-      line-height: 1;
-      margin-bottom: .3rem;
-    }
-    .stat-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: .65rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--dim);
-    }
-
-    /* ─── KEY WIDGET ──────────────────────────────── */
-    .key-panel {
-      background: var(--panel);
-      border: 1px solid rgba(44,35,23,.1);
-      border-radius: var(--radius);
-      box-shadow: var(--panel-shadow);
-      overflow: hidden;
-    }
-    .key-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.5rem;
-      cursor: pointer;
-      user-select: none;
-      transition: background .2s;
-    }
-    .key-header:hover { background: rgba(44,35,23,.04); }
-    .key-header h3 {
-      font-size: .85rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .key-chevron {
-      color: var(--dim);
-      transition: transform .3s;
-    }
-    .key-panel.open .key-chevron { transform: rotate(180deg); }
-    .key-body {
-      display: none;
-      padding: 1rem 1.5rem 1.5rem;
-      border-top: 1px solid rgba(44,35,23,.08);
-    }
-    .key-panel.open .key-body { display: block; }
-
-    .key-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: .75rem;
-    }
-    .key-item {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      font-size: .82rem;
-      color: var(--sec);
-    }
-    .key-circle {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .key-ring {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      border: 2px dashed rgba(44,35,23,.4);
-      flex-shrink: 0;
-      background: transparent;
-    }
-    .key-ring.solid {
-      border-style: solid;
-      border-color: var(--accent);
-    }
-    .key-dashed-row {
-      width: 22px; height: 16px;
-      border-top: 2px dashed rgba(44,35,23,.4);
-      border-bottom: 2px dashed rgba(44,35,23,.4);
-      flex-shrink: 0;
-    }
-    .key-verified { background: var(--verify); }
-    .key-stale { background: var(--stale); }
-    .key-fail { background: var(--fail); }
-    .key-ember { background: var(--ember); }
-    .key-sun { background: var(--sun); }
-    .key-ink { background: var(--ink); }
-
-    /* ─── SPINE SECTION ───────────────────────────── */
-    .spine-section { background: var(--panel); border-radius: var(--radius); padding: 2rem; box-shadow: var(--panel-shadow); }
-    .spine-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: .85rem 0;
-      border-bottom: 1px solid rgba(44,35,23,.07);
-      font-size: .88rem;
-      color: var(--sec);
-    }
-    .spine-step:last-child { border-bottom: none; }
-    .spine-step-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: .7rem;
-      color: var(--dim);
-      min-width: 1.5rem;
-      padding-top: .15rem;
-    }
-    .spine-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: .15rem .55rem;
-      border-radius: 100px;
-      font-size: .68rem;
-      font-weight: 600;
-      letter-spacing: .05em;
-      flex-shrink: 0;
-    }
-    .badge-open { background: rgba(44,35,23,.1); color: var(--dim); }
-    .badge-active { background: rgba(176,118,58,.18); color: var(--ember); }
-    .badge-done { background: rgba(46,107,52,.15); color: var(--verify); }
-    .badge-fail { background: rgba(156,43,31,.15); color: var(--fail); }
-
-    /* ─── INSTALL SECTION ────────────────────────── */
-    .install-section { padding: 5rem 2rem; }
-    .install-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    .install-card-full {
-      background: var(--panel);
-      border: 1px solid rgba(44,35,23,.12);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      box-shadow: var(--panel-shadow);
-    }
-    .install-card-full h3 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      margin-bottom: .4rem;
-      color: var(--ink);
-    }
-    .install-card-full p {
-      font-size: .8rem;
-      color: var(--dim);
-      margin-bottom: 1.25rem;
-    }
-    .install-command {
-      font-family: var(--font-mono);
-      font-size: .78rem;
-      background: rgba(44,35,23,.06);
-      padding: .65rem .85rem;
-      border-radius: 6px;
-      color: var(--ink);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: .5rem;
-      margin-bottom: 1rem;
-      border: 1px solid rgba(44,35,23,.08);
-    }
-    .install-link {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      padding: .5rem 1rem;
-      background: var(--ember);
-      color: #fff;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: .8rem;
-      font-weight: 600;
-      transition: background .2s;
-    }
-    .install-link:hover { background: var(--accent); }
-    .install-link svg { flex-shrink: 0; }
-
-    /* ─── FOOTER ────────────────────────────────── */
-    .site-footer {
-      border-top: 1px solid rgba(44,35,23,.1);
-      padding: 2rem;
-      text-align: center;
-      color: var(--dim);
-      font-size: .78rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--ink);
-      color: var(--field);
-      padding: .6rem 1.2rem;
-      border-radius: 100px;
-      font-size: .8rem;
-      font-weight: 500;
-      transition: transform .3s ease;
-      z-index: 999;
-      pointer-events: none;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-  </style>
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--ink) 16%, transparent); border-radius: 3px; }
+</style>
 </head>
-<body>
+(function () {
+  "use strict";
+  // Law of light: this webview renders only what the engine sent. It holds no
+  // sample data, invents no state, and stays honestly empty before first state.
+  var vscode = typeof acquireVsCodeApi === "function" ? acquireVsCodeApi() : null;
 
-<!-- ─── HEADER ─────────────────────────────────────── -->
-<header class="site-header">
-  <a class="wordmark" href="#">Tellurion</a>
-  <div class="header-actions">
-    <div style="position:relative">
-      <button class="install-btn" id="install-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Install Now
-      </button>
-      <div class="install-dropdown" id="install-dropdown">
-        <h4>Copy install command</h4>
-        <div class="install-card">
-          <div class="platform">VS Code</div>
-          <div class="install-code">
-            <code>code --install-extension tellurion-0.1.0.vsix</code>
-            <button class="copy-btn" onclick="copyToClipboard('code --install-extension tellurion-0.1.0.vsix')" title="Copy">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="install-card">
-          <div class="platform">Devin</div>
-          <div class="install-code">
-            <code>devin --install tellurion-0.1.0.vsix</code>
-            <button class="copy-btn" onclick="copyToClipboard('devin --install tellurion-0.1.0.vsix')" title="Copy">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
-      <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
-  </div>
-</header>
+  var lastState = null;
+  var curStyle = "rustic";
+  var curTheme = "light";
+  // The theme SETTING as the host knows it, including "auto"; the resolved
+  // theme never overwrites it, so a style click can never destroy auto.
+  var themeSetting = "light";
+  var checkingTarget = null;
+  var selected = null;
+  var T = {};
+  var hits = [];
+  var rafId = null;
 
-<!-- ─── HERO ──────────────────────────────────────── -->
-<section class="hero">
-  <h1 class="hero-title">Tellurion</h1>
-  <div class="hero-canvas-wrap">
-    <canvas id="orrery-canvas"></canvas>
-  </div>
-  <div class="scroll-arrow">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-  </div>
-</section>
+  var canvas = document.getElementById("sky");
+  var ctx = canvas.getContext("2d");
+  var skyWrap = document.getElementById("skyWrap");
+  var el = function (id) { return document.getElementById(id); };
 
-<!-- ─── STATS BAR ──────────────────────────────────── -->
-<div class="stats-bar reveal">
-  <div class="stat">
-    <div class="stat-num" data-count="1">1</div>
-    <div class="stat-label">Product</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num" data-count="12">0</div>
-    <div class="stat-label">Features</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num" data-count="9">0</div>
-    <div class="stat-label">Steps</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num" data-count="47">0</div>
-    <div class="stat-label">Tasks</div>
-  </div>
-</div>
+  function post(msg) { if (vscode) { vscode.postMessage(msg); } }
 
-<!-- ─── KEY WIDGET ─────────────────────────────────── -->
-<div class="section">
-  <p class="section-label">Reference</p>
-  <h2 class="section-title reveal">Orrrery Legend</h2>
-  <div class="key-panel reveal" id="key-panel">
-    <div class="key-header" onclick="document.getElementById('key-panel').classList.toggle('open')">
-      <h3>What does each symbol mean?</h3>
-      <div class="key-chevron">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-    </div>
-    <div class="key-body">
-      <div class="key-grid">
-        <div class="key-item">
-          <div class="key-ring solid"></div>
-          <span>Orbit ring</span>
-        </div>
-        <div class="key-item">
-          <div class="key-circle key-sun"></div>
-          <span>Sun (product)</span>
-        </div>
-        <div class="key-item">
-          <div class="key-circle key-ember"></div>
-          <span>Planet (deliverable)</span>
-        </div>
-        <div class="key-item">
-          <div class="key-circle" style="width:10px;height:10px;background:var(--ember)"></div>
-          <span>Moon (capability)</span>
-        </div>
-        <div class="key-item">
-          <div class="key-circle key-verified"></div>
-          <span>Verified</span>
-        </div>
-        <div class="key-item">
-          <div class="key-circle key-stale"></div>
-          <span>Stale</span>
-        </div>
-        <div class="key-item">
-          <div class="key-circle key-fail"></div>
-          <span>Failing</span>
-        </div>
-        <div class="key-item">
-          <div class="key-dashed-row"></div>
-          <span>Spine row (step)</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ─── SPINE SECTION ──────────────────────────────── -->
-<div class="section">
-  <p class="section-label">Workflow</p>
-  <h2 class="section-title reveal">Project Spine</h2>
-  <div class="spine-section reveal">
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">01</span>
-      <span>Discovery &amp; requirements gathering</span>
-      <span class="spine-badge badge-done">Done</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">02</span>
-      <span>Architecture &amp; component mapping</span>
-      <span class="spine-badge badge-done">Done</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">03</span>
-      <span>Core orrery engine — canvas &amp; scroll</span>
-      <span class="spine-badge badge-active">Active</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">04</span>
-      <span>VS Code extension scaffolding</span>
-      <span class="spine-badge badge-open">Open</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">05</span>
-      <span>Devin CLI integration</span>
-      <span class="spine-badge badge-open">Open</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">06</span>
-      <span>Per-project branding scanner</span>
-      <span class="spine-badge badge-open">Open</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">07</span>
-      <span>Publish to marketplace</span>
-      <span class="spine-badge badge-open">Open</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">08</span>
-      <span>Hackathon submission &amp; demo</span>
-      <span class="spine-badge badge-open">Open</span>
-    </div>
-    <div class="spine-step" data-step>
-      <span class="spine-step-num">09</span>
-      <span>Post-hackathon iteration</span>
-      <span class="spine-badge badge-open">Open</span>
-    </div>
-  </div>
-</div>
-
-<!-- ─── INSTALL SECTION ────────────────────────────── -->
-<div class="install-section">
-  <div class="section">
-    <p class="section-label">Get Started</p>
-    <h2 class="section-title reveal">Install the Extension</h2>
-    <div class="install-grid reveal">
-      <div class="install-card-full">
-        <h3>VS Code</h3>
-        <p>Install the Tellurion VS Code extension for a visual project orrery in your editor.</p>
-        <div class="install-command">
-          <code>code --install-extension tellurion-0.1.0.vsix</code>
-          <button class="copy-btn" onclick="copyToClipboard('code --install-extension tellurion-0.1.0.vsix')" title="Copy">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
-        </div>
-        <a class="install-link" href="https://github.com/infra-ecomma/devin-hackathon/releases" target="_blank" rel="noopener">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download .vsix
-        </a>
-      </div>
-      <div class="install-card-full">
-        <h3>Devin CLI</h3>
-        <p>Use Tellurion directly from the Devin terminal for automated project mapping.</p>
-        <div class="install-command">
-          <code>devin --install tellurion-0.1.0.vsix</code>
-          <button class="copy-btn" onclick="copyToClipboard('devin --install tellurion-0.1.0.vsix')" title="Copy">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
-        </div>
-        <a class="install-link" href="https://github.com/infra-ecomma/devin-hackathon/releases" target="_blank" rel="noopener">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download .vsix
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ─── FOOTER ─────────────────────────────────────── -->
-<footer class="site-footer">
-  Tellurion · hackathon.ecommatools.co · 2026
-</footer>
-
-<!-- Toast -->
-<div class="toast" id="toast">Copied!</div>
-
-<script>
-  /* ── Theme ── */
-  const toggle = document.getElementById('theme-toggle');
-  const sunIcon = document.getElementById('icon-sun');
-  const moonIcon = document.getElementById('icon-moon');
-
-  function applyTheme(dark) {
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    sunIcon.style.display = dark ? 'none' : 'block';
-    moonIcon.style.display = dark ? 'block' : 'none';
-    localStorage.setItem('tell-theme', dark ? 'dark' : 'light');
-    if (orreryCtx) drawOrrery();
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
   }
 
-  const saved = localStorage.getItem('tell-theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (saved === 'dark' || (!saved && prefersDark)) applyTheme(true);
+  // Deterministic placement: angles come from a hash of the id, stable forever.
+  function fnv(str) {
+    var h = 2166136261 >>> 0;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return h >>> 0;
+  }
+  function angleOf(id) { return (fnv(id) / 4294967296) * Math.PI * 2; }
+  // FeatureView carries no paths count, so moon size spreads 5 to 6.5 by a
+  // stable hash of the feature id. The 5px floor holds.
+  function moonRadius(id) { return 5 + (fnv(id + "/r") % 151) / 100; }
+  function planetRadius(p) {
+    return Math.min(16, 13 + Math.max(0, p.features.length - 1) * 0.75);
+  }
 
-  toggle.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    applyTheme(!isDark);
+  function parseColor(c) {
+    c = (c || "").trim();
+    if (c[0] === "#") {
+      if (c.length === 4) {
+        return [parseInt(c[1] + c[1], 16), parseInt(c[2] + c[2], 16), parseInt(c[3] + c[3], 16), 1];
+      }
+      return [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16), 1];
+    }
+    var m = c.match(/rgba?\(([^)]+)\)/);
+    if (m) {
+      var p = m[1].split(",").map(parseFloat);
+      return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];
+    }
+    return [128, 128, 128, 1];
+  }
+  function withAlpha(c, a) {
+    var p = parseColor(c);
+    return "rgba(" + p[0] + "," + p[1] + "," + p[2] + "," + +(p[3] * a).toFixed(3) + ")";
+  }
+
+  function readTokens() {
+    var cs = getComputedStyle(document.documentElement);
+    var g = function (n) { return cs.getPropertyValue(n).trim(); };
+    T = {
+      field: g("--field"), panel: g("--panel"), ink: g("--ink"),
+      sec: g("--sec"), dim: g("--dim"),
+      verify: g("--verify"), stale: g("--stale"), fail: g("--fail"), ember: g("--ember"),
+      accent: g("--accent"), sun: g("--sun"),
+      cat: {
+        api: g("--cat-api"), frontend: g("--cat-frontend"), database: g("--cat-database"),
+        infra: g("--cat-infra"), ml: g("--cat-ml"), auth: g("--cat-auth"), "default": g("--cat-default")
+      },
+      fontDisplay: g("--font-display"), fontMono: g("--font-mono")
+    };
+  }
+  function catColor(c) { return T.cat[c] || T.cat["default"]; }
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+  function hhmm(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) { return ""; }
+    return pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+  }
+  function hhmmss(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) { return ""; }
+    return pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds());
+  }
+
+  var STATE_WORD = {
+    "verified": "VERIFIED", "stale": "STALE", "failing": "FAILING",
+    "in-progress": "IN PROGRESS", "not-started": "NOT STARTED"
+  };
+  var STATE_VAR = {
+    "verified": "--verify", "stale": "--stale", "failing": "--fail",
+    "in-progress": "--ember", "not-started": "--dim"
+  };
+  var GLYPH = {
+    "verified": "●", "stale": "◑", "failing": "✕",
+    "in-progress": "◌", "not-started": "·"
+  };
+
+  // ---- skin -----------------------------------------------------------------
+  function applySkin(style, resolvedTheme, setting) {
+    curStyle = style;
+    curTheme = resolvedTheme;
+    if (setting === "dark" || setting === "light" || setting === "auto") { themeSetting = setting; }
+    document.documentElement.setAttribute("data-style", style);
+    document.documentElement.setAttribute("data-theme", resolvedTheme);
+    readTokens();
+    updateSegs();
+    requestDraw();
+  }
+  function updateSegs() {
+    var themeActive = themeSetting;
+    document.querySelectorAll("#segStyle button").forEach(function (b) {
+      b.classList.toggle("on", b.dataset.v === curStyle);
+    });
+    document.querySelectorAll("#segTheme button").forEach(function (b) {
+      b.classList.toggle("on", b.dataset.v === themeActive);
+    });
+  }
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function resolveAutoLocally() { return mq && mq.matches ? "dark" : "light"; }
+  if (mq && mq.addEventListener) {
+    mq.addEventListener("change", function () {
+      if (!vscode && themeSetting === "auto") { applySkin(curStyle, resolveAutoLocally()); }
+    });
+  }
+  el("segStyle").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) { return; }
+    post({ type: "setSkin", style: b.dataset.v, theme: themeSetting });
+    applySkin(b.dataset.v, curTheme);
+  });
+  el("segTheme").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) { return; }
+    themeSetting = b.dataset.v;
+    post({ type: "setSkin", style: curStyle, theme: themeSetting });
+    if (themeSetting === "auto") {
+      // The host resolves auto; the local fallback exists only for the
+      // plain-file test harness where no host answers.
+      if (!vscode) { applySkin(curStyle, resolveAutoLocally()); } else { updateSegs(); }
+    } else {
+      applySkin(curStyle, themeSetting);
+    }
   });
 
-  /* ── Install dropdown ── */
-  const ibtn = document.getElementById('install-btn');
-  const idrop = document.getElementById('install-dropdown');
-  ibtn.addEventListener('click', e => {
-    e.stopPropagation();
-    idrop.classList.toggle('open');
+  // ---- rail -----------------------------------------------------------------
+  function featMeta(f) {
+    if (f.state === "verified") {
+      var t = f.evidence ? hhmm(f.evidence.timestamp) : "";
+      return { text: "exit 0" + (t ? " · " + t : ""), color: "" };
+    }
+    if (f.state === "stale") { return { text: (f.behind || 0) + " behind", color: "var(--stale)" }; }
+    if (f.state === "failing") {
+      return { text: f.evidence ? "exit " + f.evidence.exitCode : "failing", color: "var(--fail)" };
+    }
+    if (f.state === "in-progress") { return { text: "in progress", color: "" }; }
+    return { text: "not in sky", color: "" };
+  }
+
+  function renderRail() {
+    var cards = el("cards");
+    var probs = el("planProblems");
+    if (!lastState) { cards.innerHTML = ""; probs.innerHTML = ""; return; }
+    el("railHead").classList.remove("hidden");
+
+    probs.innerHTML = lastState.planProblems.length
+      ? '<div class="probHead display">PLAN PROBLEMS</div>' +
+        lastState.planProblems.map(function (p) { return '<div class="prob">' + esc(p) + "</div>"; }).join("")
+      : "";
+
+    var html = "";
+    lastState.products.forEach(function (p) {
+      var n = p.features.length;
+      var failing = p.features.filter(function (f) { return f.state === "failing"; }).length;
+      var stale = p.features.filter(function (f) { return f.state === "stale"; }).length;
+      var status;
+      if (p.productVerified) {
+        status = '<span class="ok">VERIFIED ' + n + "/" + n + "</span>";
+      } else {
+        status = p.verifiedCount + "/" + n;
+        if (failing) { status += ' <span class="bad">· ' + failing + " failing</span>"; }
+        if (stale) { status += ' <span class="old">· ' + stale + " stale</span>"; }
+        if (p.walkEvidence && p.walkEvidence.exitCode !== 0) {
+          status += ' <span class="bad">· walk exit ' + p.walkEvidence.exitCode + "</span>";
+        }
+      }
+      html += '<div class="card">' +
+        '<div class="cardHead" data-pid="' + esc(p.id) + '" title="run product walk">' +
+          '<span class="dot" style="background:var(--cat-' + esc(p.category) + ')"></span>' +
+          '<span class="cardName">' + esc(p.name) + "</span>" +
+          '<span class="cardStatus mono">' + status + "</span>" +
+        "</div>";
+      p.features.forEach(function (f) {
+        var meta = featMeta(f);
+        html += '<div class="feat st-' + esc(f.state) + (f.hasCheck ? " clickable" : "") + '"' +
+          ' data-pid="' + esc(p.id) + '" data-fid="' + esc(f.id) + '"' +
+          (f.hasCheck ? ' data-check="1"' : "") + ">" +
+          '<span class="glyph" style="color:var(' + STATE_VAR[f.state] + ')">' + GLYPH[f.state] + "</span>" +
+          '<span class="featName">' + esc(f.name) + "</span>" +
+          '<span class="featMeta mono"' + (meta.color ? ' style="color:' + meta.color + '"' : "") + ">" +
+            esc(meta.text) + "</span>" +
+        "</div>";
+      });
+      html += "</div>";
+    });
+    cards.innerHTML = html;
+  }
+
+  el("cards").addEventListener("click", function (e) {
+    var head = e.target.closest(".cardHead");
+    if (head) { post({ type: "runWalk", productId: head.dataset.pid }); return; }
+    var row = e.target.closest(".feat");
+    if (row && row.dataset.check === "1") {
+      post({ type: "runCheck", productId: row.dataset.pid, featureId: row.dataset.fid });
+    }
   });
-  document.addEventListener('click', () => idrop.classList.remove('open'));
 
-  /* ── Toast ── */
-  function showToast() {
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 1800);
+  // ---- top bar and telemetry ------------------------------------------------
+  function renderChrome() {
+    if (!lastState) {
+      el("repoline").textContent = "";
+      el("counts").innerHTML = "";
+      el("scanned").textContent = "";
+      return;
+    }
+    el("repoline").textContent =
+      lastState.branch + " @ " + lastState.headSha.slice(0, 7) + ", " +
+      (lastState.clean ? "clean" : "dirty");
+
+    var v = 0, s = 0, x = 0, n = 0;
+    lastState.products.forEach(function (p) {
+      p.features.forEach(function (f) {
+        if (f.state === "verified") { v++; }
+        else if (f.state === "stale") { s++; }
+        else if (f.state === "failing") { x++; }
+        else if (f.state === "not-started") { n++; }
+      });
+    });
+    el("counts").innerHTML =
+      lastState.products.length + " products, " +
+      lastState.featuresInSky + " features in sky, " +
+      '<span class="cv">' + v + "</span> verified, " +
+      '<span class="cs">' + s + "</span> stale, " +
+      '<span class="cx">' + x + "</span> failing, " +
+      '<span class="cn">' + n + "</span> not started";
+    el("scanned").textContent = "scanned " + hhmmss(lastState.scannedAt);
   }
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(showToast);
-  }
+  el("scanned").addEventListener("click", function () { post({ type: "refresh" }); });
 
-  /* ── Scroll reveal ── */
-  const reveals = document.querySelectorAll('.reveal');
-  const ioReveal = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ioReveal.unobserve(e.target); } });
-  }, { threshold: .12 });
-  reveals.forEach(el => ioReveal.observe(el));
-
-  /* ── Stat counters ── */
-  function animateCount(el) {
-    const target = parseInt(el.dataset.count, 10);
-    let current = 0;
-    const step = Math.ceil(target / 40);
-    const iv = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current;
-      if (current >= target) clearInterval(iv);
-    }, 30);
-  }
-  const statNums = document.querySelectorAll('.stat-num[data-count]');
-  const ioStats = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { animateCount(e.target); ioStats.unobserve(e.target); } });
-  }, { threshold: .5 });
-  statNums.forEach(el => ioStats.observe(el));
-
-  /* ── Orrery canvas ── */
-  const canvas = document.getElementById('orrery-canvas');
-  const ctx = canvas.getContext('2d');
-  let dpr = window.devicePixelRatio || 1;
-  let W, H, CX, CY;
-
-  function resizeCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    W = rect.width; H = rect.height;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.scale(dpr, dpr);
-    CX = W / 2; CY = H / 2;
-    drawOrrery();
+  // ---- mission log ----------------------------------------------------------
+  function appendEvent(ev) {
+    var lines = el("logLines");
+    var d = document.createElement("div");
+    d.innerHTML = '<span class="lt">' + esc(hhmmss(ev.at)) + "</span> " +
+      '<span class="k-' + esc(ev.kind) + '">' + esc(ev.line) + "</span>";
+    lines.appendChild(d);
+    while (lines.childElementCount > 200) { lines.removeChild(lines.firstElementChild); }
+    lines.scrollTop = lines.scrollHeight;
   }
 
-  /* Scroll progress 0→1 */
-  function getScrollProgress() {
-    const hero = document.querySelector('.hero');
-    const heroH = hero.offsetHeight;
-    const scrollY = window.scrollY;
-    return Math.min(1, Math.max(0, scrollY / heroH));
+  // ---- dock -----------------------------------------------------------------
+  function findFeature(pid, fid) {
+    if (!lastState) { return null; }
+    var p = lastState.products.find(function (q) { return q.id === pid; });
+    if (!p) { return null; }
+    var f = p.features.find(function (q) { return q.id === fid; });
+    return f ? { product: p, feature: f } : null;
   }
 
-  /* Planet config */
-  const PLANETS = [
-    { orbit: 0.22, size: 8, speed: 0.6, phase: 0, moon: true, moonSize: 3, moonSpeed: 3, moonPhase: 1.2, verified: true },
-    { orbit: 0.34, size: 11, speed: 0.35, phase: 1.1, moon: true, moonSize: 4, moonSpeed: 2.2, moonPhase: 0.5, verified: true },
-    { orbit: 0.48, size: 7, speed: 0.2, phase: 2.3, moon: false, moonSize: 0, moonSpeed: 0, moonPhase: 0, verified: false },
-    { orbit: 0.58, size: 13, speed: 0.14, phase: 0.8, moon: true, moonSize: 4, moonSpeed: 1.8, moonPhase: 2.1, verified: false },
-    { orbit: 0.68, size: 9, speed: 0.09, phase: 3.5, moon: true, moonSize: 3, moonSpeed: 2.8, moonPhase: 1.8, verified: true },
-  ];
+  function renderDock() {
+    var dock = el("dock");
+    var hit = selected && selected.featureId
+      ? findFeature(selected.productId, selected.featureId) : null;
+    if (!hit || !hit.feature.evidence) { dock.classList.add("hidden"); return; }
+    var f = hit.feature, ev = f.evidence;
+    el("dockState").textContent = STATE_WORD[f.state] || f.state;
+    el("dockState").style.color = "var(" + (STATE_VAR[f.state] || "--ink") + ")";
+    el("dockFeature").textContent = f.name;
+    el("dockProduct").textContent = hit.product.name;
+    var rExit = el("rExit");
+    rExit.textContent = "exit " + ev.exitCode + ", " + ev.durationMs + "ms";
+    rExit.className = ev.exitCode === 0 ? "ok" : "bad";
+    el("rSha").innerHTML = '<span class="lbl">sha </span>' + esc(ev.sha);
+    el("rCmd").innerHTML = '<span class="lbl">$ </span>' + esc(ev.command);
+    el("rTime").innerHTML = '<span class="lbl">at </span>' + esc(ev.timestamp);
+    el("rLog").textContent = ev.logTail.join("\n");
+    el("btnRerun").classList.toggle("off", !f.hasCheck);
+    dock.classList.remove("hidden");
+  }
 
-  let orreryCtx = true;
-  let animFrame = null;
-  let t = 0;
+  el("btnRerun").addEventListener("click", function () {
+    if (!selected || !selected.featureId) { return; }
+    var hit = findFeature(selected.productId, selected.featureId);
+    if (hit && hit.feature.hasCheck) {
+      post({ type: "runCheck", productId: selected.productId, featureId: selected.featureId });
+    }
+  });
+  el("btnRevoke").addEventListener("click", function () {
+    if (!selected || !selected.featureId) { return; }
+    post({ type: "revoke", productId: selected.productId, featureId: selected.featureId });
+  });
 
-  function getThemeColors() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return {
-      sunCore: '#f5c842',
-      sunMid: '#d4a030',
-      sunGlow: 'rgba(201,159,77,0.18)',
-      orbit: isDark ? 'rgba(168,130,74,0.3)' : 'rgba(138,109,59,0.25)',
-      orbitDash: [4, 6],
-      planet: isDark ? '#c4864e' : '#b0763a',
-      planetVerified: '#4a9e52',
-      moon: isDark ? '#a8824a' : '#8a6d3b',
-      moonGlow: isDark ? 'rgba(74,158,82,0.25)' : 'rgba(46,107,52,0.2)',
-      planetGlow: isDark ? 'rgba(196,134,78,0.25)' : 'rgba(176,118,58,0.2)',
+  // ---- the sky --------------------------------------------------------------
+  function layoutCanvas() {
+    var w = skyWrap.clientWidth, h = skyWrap.clientHeight;
+    var d = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.round(w * d));
+    canvas.height = Math.max(1, Math.round(h * d));
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    requestDraw();
+  }
+  new ResizeObserver(layoutCanvas).observe(skyWrap);
+  window.addEventListener("resize", layoutCanvas);
+
+  function frame(t) {
+    rafId = null;
+    drawSky(t);
+    // The checking arc is the only continuous animation and runs only while
+    // a check is in flight.
+    if (checkingTarget) { rafId = requestAnimationFrame(frame); }
+  }
+  function requestDraw() {
+    if (rafId === null) { rafId = requestAnimationFrame(frame); }
+  }
+
+  function circle(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); }
+
+  function strokeOrbit(cx, cy, r, color, alpha, width) {
+    circle(cx, cy, r);
+    ctx.strokeStyle = withAlpha(color, alpha);
+    ctx.lineWidth = width;
+    ctx.stroke();
+    if (curStyle === "rustic") {
+      // Engraved texture: a second hairline offset 3px at 40 percent alpha.
+      circle(cx, cy, r + 3);
+      ctx.strokeStyle = withAlpha(color, alpha * 0.4);
+      ctx.lineWidth = Math.min(1, width);
+      ctx.stroke();
+    }
+  }
+
+  function drawSun(cx, cy) {
+    if (curStyle === "futuristic") {
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 64);
+      g.addColorStop(0, withAlpha(T.sun, 0.95));
+      g.addColorStop(0.35, withAlpha(T.sun, 0.38));
+      g.addColorStop(1, withAlpha(T.sun, 0));
+      circle(cx, cy, 64);
+      ctx.fillStyle = g;
+      ctx.fill();
+      circle(cx, cy, 7);
+      ctx.fillStyle = T.sun;
+      ctx.fill();
+    } else {
+      // Rustic sun is a brass ring with crosshair ticks, no glow.
+      circle(cx, cy, 22);
+      ctx.strokeStyle = T.sun;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      circle(cx, cy, 26);
+      ctx.strokeStyle = withAlpha(T.sun, 0.35);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      circle(cx, cy, 4.5);
+      ctx.fillStyle = T.sun;
+      ctx.fill();
+      ctx.strokeStyle = withAlpha(T.sun, 0.7);
+      ctx.lineWidth = 1;
+      for (var i = 0; i < 4; i++) {
+        var a = (Math.PI / 2) * i;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * 16, cy + Math.sin(a) * 16);
+        ctx.lineTo(cx + Math.cos(a) * 30, cy + Math.sin(a) * 30);
+        ctx.stroke();
+      }
+    }
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    if ("fontVariantCaps" in ctx) {
+      ctx.fontVariantCaps = curStyle === "rustic" ? "small-caps" : "normal";
+    }
+    if ("letterSpacing" in ctx) {
+      ctx.letterSpacing = curStyle === "futuristic" ? "2px" : "0.5px";
+    }
+    ctx.font = "14px " + T.fontDisplay;
+    if (lastState) {
+      ctx.fillStyle = T.ink;
+      var vn = curStyle === "futuristic" ? lastState.name.toUpperCase() : lastState.name;
+      ctx.fillText(vn, cx, cy + 50);
+    } else {
+      ctx.fillStyle = T.dim;
+      ctx.fillText("no venture loaded", cx, cy + 50);
+    }
+    if ("fontVariantCaps" in ctx) { ctx.fontVariantCaps = "normal"; }
+    if ("letterSpacing" in ctx) { ctx.letterSpacing = "0px"; }
+    if (lastState) {
+      ctx.font = "10px " + T.fontMono;
+      ctx.fillStyle = T.sec;
+      ctx.fillText(
+        lastState.productsVerified + " / " + lastState.productsInSky + " products verified",
+        cx, cy + 66
+      );
+    }
+  }
+
+  function spinArc(x, y, r, t) {
+    var a0 = ((t || 0) * 0.006) % (Math.PI * 2);
+    ctx.beginPath();
+    ctx.arc(x, y, r, a0, a0 + Math.PI / 2);
+    ctx.strokeStyle = T.accent;
+    ctx.lineWidth = 1.8;
+    ctx.lineCap = "round";
+    ctx.stroke();
+    ctx.lineCap = "butt";
+  }
+
+  function drawMoon(f, x, y, cat, t, targetKey) {
+    var mr = moonRadius(f.id);
+    var st = f.state;
+    if (st === "verified" || st === "stale") {
+      if (st === "verified") {
+        var ug = ctx.createRadialGradient(x, y, mr * 0.3, x, y, mr * 2.4);
+        ug.addColorStop(0, withAlpha(T.verify, 0.25));
+        ug.addColorStop(1, withAlpha(T.verify, 0));
+        circle(x, y, mr * 2.4);
+        ctx.fillStyle = ug;
+        ctx.fill();
+      }
+      circle(x, y, mr);
+      ctx.fillStyle = cat;
+      ctx.fill();
+      circle(x, y, mr);
+      ctx.fillStyle = withAlpha(T.verify, 0.32);
+      ctx.fill();
+      circle(x, y, mr + 3);
+      if (st === "verified") {
+        ctx.strokeStyle = T.verify;
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = T.stale;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([0.6, 3.4]);
+        ctx.lineCap = "round";
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.lineCap = "butt";
+      }
+    } else if (st === "failing") {
+      circle(x, y, mr);
+      ctx.fillStyle = withAlpha(cat, 0.55);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, y, mr + 3.5, -Math.PI / 4, Math.PI * 1.25);
+      ctx.strokeStyle = T.fail;
+      ctx.lineWidth = 1.7;
+      ctx.stroke();
+      if (f.failingCount) {
+        ctx.font = "8px " + T.fontMono;
+        ctx.fillStyle = T.fail;
+        ctx.textAlign = "left";
+        ctx.fillText(f.failingCount + "x", x + mr + 6, y - mr - 3);
+        ctx.textAlign = "center";
+      }
+    } else {
+      circle(x, y, mr);
+      ctx.fillStyle = withAlpha(cat, 0.3);
+      ctx.fill();
+      circle(x, y, mr);
+      ctx.strokeStyle = T.ember;
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([3, 2.6]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if (checkingTarget === targetKey) { spinArc(x, y, mr + 4.5, t); }
+    return mr;
+  }
+
+  function drawSky(t) {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = T.field;
+    ctx.fillRect(0, 0, w, h);
+    hits = [];
+    var cx = w / 2, cy = h / 2;
+    drawSun(cx, cy);
+    if (!lastState) { return; }
+
+    var started = lastState.products.filter(function (p) { return p.started; });
+
+    started.forEach(function (p) {
+      var R = 120 + p.orbitIndex * 78;
+      if (p.productVerified) {
+        strokeOrbit(cx, cy, R, T.verify, 0.55, 1.6);
+      } else {
+        strokeOrbit(cx, cy, R, T.ink, 0.2, 1);
+      }
+    });
+
+    var labels = [];
+    started.forEach(function (p) {
+      var R = 120 + p.orbitIndex * 78;
+      var pa = angleOf(p.id);
+      var px = cx + Math.cos(pa) * R;
+      var py = cy + Math.sin(pa) * R;
+      var pr = planetRadius(p);
+      var cat = catColor(p.category);
+      var maxMR = 0;
+
+      if (p.productVerified) {
+        var sg = ctx.createRadialGradient(px, py, 0, px, py, pr * 3.2);
+        sg.addColorStop(0, withAlpha(T.verify, 0.11));
+        sg.addColorStop(1, withAlpha(T.verify, 0));
+        circle(px, py, pr * 3.2);
+        ctx.fillStyle = sg;
+        ctx.fill();
+      }
+      circle(px, py, pr);
+      ctx.fillStyle = cat;
+      ctx.fill();
+      if (p.productVerified) {
+        circle(px, py, pr + 6);
+        ctx.strokeStyle = T.verify;
+        ctx.lineWidth = 3.2;
+        ctx.stroke();
+        circle(px, py, pr + 10);
+        ctx.strokeStyle = withAlpha(T.verify, 0.5);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(px, py - pr - 2.5);
+        ctx.lineTo(px, py - pr - 9.5);
+        ctx.strokeStyle = T.verify;
+        ctx.lineWidth = 3.2;
+        ctx.stroke();
+      }
+      hits.push({ kind: "product", productId: p.id, x: px, y: py, r: pr + 4 });
+      if (checkingTarget === p.id + "/__walk__") { spinArc(px, py, pr + 13, t); }
+
+      p.features.forEach(function (f, slot) {
+        if (f.state === "not-started") { return; }
+        var ma = angleOf(f.id);
+        var mR = 22 + slot * 11;
+        if (mR > maxMR) { maxMR = mR; }
+        var mx2 = px + Math.cos(ma) * mR;
+        var my2 = py + Math.sin(ma) * mR;
+        var mr = drawMoon(f, mx2, my2, cat, t, p.id + "/" + f.id);
+        hits.push({ kind: "feature", productId: p.id, featureId: f.id, x: mx2, y: my2, r: mr + 3 });
+      });
+
+      labels.push({ p: p, px: px, py: py, pr: pr, maxMR: maxMR });
+    });
+
+    labels.forEach(function (L) {
+      var p = L.p;
+      ctx.textAlign = "center";
+      ctx.font = "10px " + T.fontMono;
+      ctx.fillStyle = T.ink;
+      var ly = L.py + Math.max(L.pr + (p.productVerified ? 22 : 18), L.maxMR + 14);
+      ctx.fillText(p.name.toUpperCase(), L.px, ly);
+      if (p.productVerified) {
+        ctx.font = "9px " + T.fontMono;
+        ctx.fillStyle = T.verify;
+        var when = p.walkEvidence ? " " + hhmm(p.walkEvidence.timestamp) : "";
+        ctx.fillText("PRODUCT VERIFIED" + when, L.px, ly + 13);
+      } else {
+        ctx.font = "9px " + T.fontMono;
+        ctx.fillStyle = T.sec;
+        ctx.fillText(p.verifiedCount + "/" + p.features.length + " verified", L.px, ly + 13);
+      }
+    });
+  }
+
+  function hitAt(x, y) {
+    for (var i = hits.length - 1; i >= 0; i--) {
+      var hh = hits[i];
+      if (Math.hypot(x - hh.x, y - hh.y) <= hh.r + 2) { return hh; }
+    }
+    return null;
+  }
+  canvas.addEventListener("mousemove", function (e) {
+    canvas.style.cursor = hitAt(e.offsetX, e.offsetY) ? "pointer" : "default";
+  });
+  canvas.addEventListener("click", function (e) {
+    var hit = hitAt(e.offsetX, e.offsetY);
+    if (hit && hit.kind === "feature") {
+      selected = { productId: hit.productId, featureId: hit.featureId };
+    } else if (hit && hit.kind === "product") {
+      selected = { productId: hit.productId, featureId: null };
+    } else {
+      selected = null;
+    }
+    renderDock();
+  });
+
+  // ---- protocol -------------------------------------------------------------
+  function handleMessage(msg) {
+    if (!msg || typeof msg.type !== "string") { return; }
+    if (msg.type === "state") {
+      lastState = msg.state;
+      checkingTarget = null;
+      applySkin(msg.style, msg.theme, msg.themeSetting);
+      renderRail();
+      renderChrome();
+      renderDock();
+      requestDraw();
+    } else if (msg.type === "skin") {
+      applySkin(msg.style, msg.theme, msg.themeSetting);
+    } else if (msg.type === "event") {
+      appendEvent(msg.event);
+    } else if (msg.type === "checking") {
+      checkingTarget = msg.target;
+      requestDraw();
+    }
+  }
+  window.addEventListener("message", function (e) { handleMessage(e.data); });
+
+  // Test hook for the standalone render harness only; inside VS Code no
+  // injection surface ships, so pixels can only come from the host.
+  if (!vscode) {
+    window.__tellurion = {
+      get lastState() { return lastState; },
+      setState: function (fakeMsg) { handleMessage(fakeMsg); }
     };
   }
 
-  function drawOrrery() {
-    if (!ctx) return;
-    const scroll = getScrollProgress();
-    const col = getThemeColors();
-    const sunR = Math.min(W, H) * 0.065;
-    const maxOrbitR = Math.min(W, H) * 0.44;
-
-    ctx.clearRect(0, 0, W, H);
-
-    /* ── Orbit rings ── */
-    PLANETS.forEach((p, i) => {
-      const ringAlpha = Math.min(1, Math.max(0, (scroll - 0.15 - i * 0.08) / 0.12));
-      if (ringAlpha <= 0) return;
-      ctx.save();
-      ctx.globalAlpha = ringAlpha;
-      ctx.beginPath();
-      ctx.arc(CX, CY, maxOrbitR * p.orbit, 0, Math.PI * 2);
-      ctx.strokeStyle = col.orbit;
-      ctx.setLineDash(col.orbitDash);
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.restore();
-    });
-
-    /* ── Sun ── */
-    const sunAlpha = Math.min(1, scroll / 0.15);
-    if (sunAlpha > 0) {
-      ctx.save();
-      ctx.globalAlpha = sunAlpha;
-      /* outer glow */
-      const grd = ctx.createRadialGradient(CX, CY, sunR * 0.5, CX, CY, sunR * 2.8);
-      grd.addColorStop(0, col.sunGlow);
-      grd.addColorStop(1, 'transparent');
-      ctx.beginPath();
-      ctx.arc(CX, CY, sunR * 2.8, 0, Math.PI * 2);
-      ctx.fillStyle = grd;
-      ctx.fill();
-      /* sun body */
-      const sunGrd = ctx.createRadialGradient(CX - sunR * 0.3, CY - sunR * 0.3, sunR * 0.1, CX, CY, sunR);
-      sunGrd.addColorStop(0, '#fff8d0');
-      sunGrd.addColorStop(0.4, col.sunCore);
-      sunGrd.addColorStop(1, col.sunMid);
-      ctx.beginPath();
-      ctx.arc(CX, CY, sunR, 0, Math.PI * 2);
-      ctx.fillStyle = sunGrd;
-      ctx.fill();
-      ctx.restore();
-    }
-
-    /* ── Planets ── */
-    PLANETS.forEach((p, i) => {
-      const planetAlpha = Math.min(1, Math.max(0, (scroll - 0.28 - i * 0.09) / 0.15));
-      if (planetAlpha <= 0) return;
-      const angle = p.phase + t * p.speed;
-      const orbitR = maxOrbitR * p.orbit;
-      const px = CX + Math.cos(angle) * orbitR;
-      const py = CY + Math.sin(angle) * orbitR;
-      const isVerified = p.verified;
-      const planetColor = isVerified ? col.planetVerified : col.planet;
-
-      ctx.save();
-      ctx.globalAlpha = planetAlpha;
-
-      /* glow for verified */
-      if (isVerified) {
-        ctx.shadowColor = col.planetVerified;
-        ctx.shadowBlur = 12;
-      }
-
-      ctx.beginPath();
-      ctx.arc(px, py, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = planetColor;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      /* moon */
-      if (p.moon && p.moonSize > 0) {
-        const moonAngle = p.phase + p.moonPhase + t * p.moonSpeed;
-        const moonR = p.size * 2.2;
-        const mx = px + Math.cos(moonAngle) * moonR;
-        const my = py + Math.sin(moonAngle) * moonR;
-        ctx.beginPath();
-        ctx.arc(mx, my, p.moonSize, 0, Math.PI * 2);
-        ctx.fillStyle = col.moon;
-        ctx.fill();
-      }
-      ctx.restore();
-    });
-  }
-
-  function animate() {
-    t += 0.016;
-    drawOrrery();
-    animFrame = requestAnimationFrame(animate);
-  }
-
-  /* Init */
-  resizeCanvas();
-  animate();
-
-  const resizeObs = new ResizeObserver(resizeCanvas);
-  resizeObs.observe(canvas);
-
-  window.addEventListener('scroll', drawOrrery, { passive: true });
-
-  /* ── Spine step pop-in ── */
-  const spineSteps = document.querySelectorAll('[data-step]');
-  const ioSpine = new IntersectionObserver((entries) => {
-    entries.forEach((e, idx) => {
-      if (e.isIntersecting) {
-        setTimeout(() => { e.target.style.opacity = '1'; e.target.style.transform = 'translateX(0)'; }, idx * 60);
-        ioSpine.unobserve(e.target);
-      }
-    });
-  }, { threshold: .2 });
-  spineSteps.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateX(-12px)';
-    el.style.transition = 'opacity .4s ease, transform .4s ease';
-    ioSpine.observe(el);
-  });
+  readTokens();
+  updateSegs();
+  layoutCanvas();
+  post({ type: "ready" });
+})();
 </script>
 </body>
 </html>
