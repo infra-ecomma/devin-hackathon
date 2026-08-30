@@ -1,0 +1,1091 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "$generated_by": "Master-Starter-Kit/tools/generators/generate-settings-from-plugin.sh",
+  "$generated_mode": "reference",
+  "$do_not_edit_notice": "Edit HOOK-MANIFEST.json and re-run the generator. Hand edits to this file will be overwritten on next /kit-sync --refresh-settings.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/autopilot-alert-surface/hook.sh\"",
+            "timeout": 2
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/check-brief-product/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/concurrent-session-guard/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/daily-digest-build/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/dark-feature-drift-check/hook.sh\"",
+            "timeout": 4
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/dependency-drift-detector/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/evergreen-surface/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/framework-detect/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/scripts/gsd-autopilot-monitor-arm.sh\"",
+            "timeout": 2
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/kit-harvest-auto-scan.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/kit-rag-health/hook.sh\"",
+            "timeout": 4
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/model-routing-guidance/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/open-loops-surface/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/orphan-process-scanner/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/rag-auto-start/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/remaining-work-banner/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/scripts/repair-claude-skills-symlinks.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/settings-autosync/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/skill-autofire-queue/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/stale-branch-cleanup/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/structure-drift-check/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/subagent-tail-reaper/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/version-check-auto/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/war-room-auto-install/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/war-room-state-writer/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/anti-fake-pass-advisory/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/autopilot-babysit-guard.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/autopilot-supervisor-ensure.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/dev-server-health-check/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/scripts/dump-deferred-tools.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/email-delivery-interception-gate/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/git-baseline-snapshot.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/is-it-alive-sessionstart/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/kit-autopull.sh\" >/dev/null 2>&1 &",
+            "timeout": 12
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/kit-doctor-sessionstart/hook.sh\" >/dev/null 2>&1 &",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/kit-session-autosync.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/merge-debt-banner/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/normalize-line-endings/hook.sh\"",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/templates/.claude/hooks/pin-feedback-memory.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/port-collision-detector/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/port-conflict-detector/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/postmerge-catchall-branch-guard.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/program-roadmap-surface/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/rag-session-context/hook.sh\"",
+            "timeout": 12
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/session-start-context/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/settings-json-validity-gate/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/skill-injection-health-gate/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/version-check-consumer/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/gsd-preflight-gate/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/completion/pm-war-room-pulse/hook.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/security/prompt-redaction-gateway/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/completion/requirement-ledger-capture/hook.sh\"",
+            "timeout": 4
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/skill-autofire-prompt/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/slash-command-skip-detector/hook.sh\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/completion/war-room-prompt-sync/hook.sh\"",
+            "timeout": 4
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/hook-guard.sh\" \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/security/branch-protection-guard/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/hook-guard.sh\" \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/security/dangerous-bash-command-blocker/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/hook-guard.sh\" \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/security/secret-literal-precommit/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/hook-guard.sh\" \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/vault-print-guard.sh\"",
+            "timeout": 8
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__pal__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/hook-guard.sh\" \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/context/pal-west-model-guard/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/arch-anchor-check.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/async-inbox-router.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/verification/browser-verification-gate/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/browser-verify-gate.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/comms-throttle.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/component-registry-drift-check.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/cost-monitor-aggregator.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/tooling/cost-tracker/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/audits/coverage-audit-trigger/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/daily-digest-close/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/fix-phase-coverage-check/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/gsd-quality-gate-reminder/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/gsd-session-end-reminder/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/gsd-stop-guard.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/gsd-watchdog-tick/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/industry-overlay-trigger/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/kit-cost-tracker/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/kit-feedback-auto-export.sh\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/completion/merge-debt-guard/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/next-session-prompt-writer/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/openrouter-eval-canary.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/oversold-claim-guard/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/plan-change-detector/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/post-task-protocol/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/proof-artifact-stop-validator/hook.sh\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/completion/requirement-ledger-stop-gate/hook.sh\"",
+            "timeout": 4
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/session-completion-check.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/session/session-end-copyblock-gate/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/shape-gate-reminder.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/skill-autofire-queue/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/skill-goal-eval/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/skill-manifest-drift-check.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/state-freshness-check/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/stop-asking-just-act-guard/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/temp-task-dir-pruner/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/tool-fabrication-guard.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/unpushed-user-facing-gate.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/verify-trigger.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/visual-proof-before-handoff.sh\"",
+            "timeout": 6
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/war-room-state-writer/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/warden-rollup/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/completion/closeout-claim-verifier/hook.sh\"",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/feedback-loop-health-daily/hook.sh\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/session-close-orchestrator.sh\"",
+            "timeout": 300
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/single-source-of-truth-check/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/tenant-branding-readiness-check/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/worktree-leftover-guard.sh\"",
+            "timeout": 8
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/context/compact-preserve/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/context/context-watermark-handoff/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/gsd-clear-discipline/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/tools/hooks/global-scripts/gsd-compact-guard.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/kit/skill-autofire-prompt/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/subagent-stall-recover-hook/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/quality/warden-verdict/hook.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${MASTER_KIT_PATH:-$HOME/.master-kit/Master-Starter-Kit}/plugin/hooks/lifecycle/war-room-state-writer/hook.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
