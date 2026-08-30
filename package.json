@@ -1,8 +1,8 @@
 {
   "name": "tellurion",
-  "displayName": "Tellurion — Visual Project Orrery",
-  "description": "A VS Code extension for visual project planning with an astronomical orrery visualization.",
-  "version": "0.1.0",
+  "displayName": "Tellurion",
+  "description": "Products are planets, features are moons; nothing appears until work starts, and nothing glows without a recorded exit 0.",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -20,39 +20,61 @@
   "contributes": {
     "commands": [
       {
+        "command": "tellurion.openSky",
+        "title": "Tellurion: Open Sky",
+        "icon": "$(symbol-class)"
+      },
+      {
         "command": "tellurion.openOrrery",
         "title": "Tellurion: Open Orrery",
         "icon": "$(symbol-class)"
       },
       {
         "command": "tellurion.startInception",
-        "title": "Tellurion: Start Inception Workflow",
+        "title": "Tellurion: Start Inception",
         "icon": "$(play)"
       },
       {
         "command": "tellurion.refreshScan",
-        "title": "Tellurion: Refresh Project Scan",
+        "title": "Tellurion: Refresh Scan",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "tellurion.switchStyle",
+        "title": "Tellurion: Switch Style",
+        "icon": "$(paintcan)"
+      },
+      {
+        "command": "tellurion.switchTheme",
+        "title": "Tellurion: Switch Theme",
+        "icon": "$(color-mode)"
       }
     ],
+    "configuration": {
+      "title": "Tellurion",
+      "properties": {
+        "tellurion.style": {
+          "type": "string",
+          "enum": ["futuristic", "rustic"],
+          "default": "rustic",
+          "description": "Visual style of the sky."
+        },
+        "tellurion.theme": {
+          "type": "string",
+          "enum": ["dark", "light", "auto"],
+          "default": "light",
+          "description": "Sky color theme. Auto follows the active VS Code theme."
+        }
+      }
+    },
     "keybindings": [
       {
-        "command": "tellurion.openOrrery",
-        "key": "ctrl+shift+t",
-        "mac": "cmd+shift+t",
+        "command": "tellurion.openSky",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t",
         "when": "editorTextFocus"
       }
-    ],
-    "views": {
-      "tellurion": [
-        {
-          "type": "webview",
-          "id": "tellurion.orreryPanel",
-          "name": "Tellurion Orrery",
-          "visibility": "visible"
-        }
-      ]
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
