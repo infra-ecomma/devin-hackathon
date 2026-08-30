@@ -4,16 +4,200 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tellurion — Visual Project Orrery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --field: #efe7d3;
+      --panel: #f7f1e2;
+      --ink: #2c2317;
+      --sec: rgba(44,35,23,.65);
+      --dim: rgba(44,35,23,.45);
+      --verify: #2e6b34;
+      --stale: #9a7423;
+      --fail: #9c2b1f;
+      --ember: #b0763a;
+      --accent: #8a6d3b;
+      --sun: #c99f4d;
+      --font-display: Georgia, serif;
+      --font-mono: Consolas, monospace;
+      --radius: 8px;
+      --panel-shadow: 0 2px 12px rgba(44,35,23,.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --field: #1a140e;
+        --panel: #241c14;
+        --ink: #e8dcc8;
+        --sec: rgba(232,220,200,.65);
+        --dim: rgba(232,220,200,.45);
+        --verify: #4a9e52;
+        --stale: #c49a2e;
+        --fail: #c4403a;
+        --ember: #c4864e;
+        --accent: #a8824a;
+        --sun: #d4a84d;
+        --panel-shadow: 0 2px 12px rgba(0,0,0,.3);
+      }
+    }
+    :root[data-theme="dark"] {
+      --field: #1a140e;
+      --panel: #241c14;
+      --ink: #e8dcc8;
+      --sec: rgba(232,220,200,.65);
+      --dim: rgba(232,220,200,.45);
+      --verify: #4a9e52;
+      --stale: #c49a2e;
+      --fail: #c4403a;
+      --ember: #c4864e;
+      --accent: #a8824a;
+      --sun: #d4a84d;
+      --panel-shadow: 0 2px 12px rgba(0,0,0,.3);
+    }
+
+    html { scroll-behavior: smooth; }
     body {
+      background: var(--field);
+      color: var(--ink);
       font-family: 'Inter', system-ui, sans-serif;
-      background: #060a14;
-      color: #e8edf5;
       line-height: 1.6;
       min-height: 100vh;
+      transition: background .3s, color .3s;
     }
+
+    /* ─── HEADER ─────────────────────────────────── */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(239,231,211,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(44,35,23,.1);
+      transition: background .3s;
+    }
+    :root[data-theme="dark"] .site-header,
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .site-header {
+        background: rgba(26,20,14,.85);
+      }
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: normal;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .header-actions { display: flex; align-items: center; gap: .75rem; }
+
+    .install-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem 1.25rem;
+      background: var(--ember);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      text-transform: uppercase;
+    }
+    .install-btn:hover { background: var(--accent); transform: translateY(-1px); }
+    .install-btn:active { transform: translateY(0); }
+
+    /* Install dropdown */
+    .install-dropdown {
+      position: absolute;
+      top: calc(100% + .5rem);
+      right: 0;
+      background: var(--panel);
+      border: 1px solid rgba(44,35,23,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--panel-shadow);
+      padding: 1rem;
+      min-width: 300px;
+      display: none;
+      z-index: 200;
+    }
+    .install-dropdown.open { display: block; }
+    .install-dropdown h4 {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: .75rem;
+    }
+    .install-card {
+      background: var(--field);
+      border: 1px solid rgba(44,35,23,.1);
+      border-radius: 6px;
+      padding: .75rem 1rem;
+      margin-bottom: .75rem;
+    }
+    .install-card:last-child { margin-bottom: 0; }
+    .install-card .platform {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: .4rem;
+    }
+    .install-code {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--sec);
+      background: rgba(44,35,23,.06);
+      padding: .4rem .6rem;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .5rem;
+    }
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--dim);
+      padding: 0;
+      flex-shrink: 0;
+      transition: color .2s;
+    }
+    .copy-btn:hover { color: var(--ember); }
+    .copy-btn svg { display: block; }
+
+    /* Theme toggle */
+    .theme-toggle {
+      width: 36px; height: 36px;
+      background: rgba(44,35,23,.08);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .theme-toggle:hover { background: rgba(44,35,23,.15); }
+    .theme-toggle svg { display: block; }
+
+    /* ─── HERO ────────────────────────────────────── */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -21,151 +205,772 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2rem;
-      background: radial-gradient(ellipse at 50% 30%, #0d1525 0%, #060a14 60%);
+      padding: 7rem 2rem 4rem;
       position: relative;
       overflow: hidden;
     }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.3;
-    }
-    .sun {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #fffde7, #ffd54f, #ff8f00);
-      box-shadow: 0 0 60px rgba(255, 213, 79, 0.4);
-      margin-bottom: 2rem;
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: normal;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
-    h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
+
+    .hero-canvas-wrap {
+      position: relative;
+      width: min(480px, 90vw);
+      height: min(480px, 90vw);
+      margin: 0 auto;
+    }
+
+    #orrery-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .scroll-arrow {
+      margin-top: 2rem;
+      color: var(--dim);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .scroll-arrow svg { display: block; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); opacity: .5; }
+      50% { transform: translateY(8px); opacity: 1; }
+    }
+
+    /* ─── SECTIONS BASE ───────────────────────────── */
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: var(--ink);
+      margin-bottom: 2rem;
+      font-weight: normal;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ─── STATS BAR ──────────────────────────────── */
+    .stats-bar {
+      border-top: 1px solid rgba(44,35,23,.1);
+      border-bottom: 1px solid rgba(44,35,23,.1);
+      padding: 2.5rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 3rem;
+      border-right: 1px solid rgba(44,35,23,.1);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-      position: relative;
-      z-index: 1;
+      color: var(--ember);
+      line-height: 1;
+      margin-bottom: .3rem;
     }
-    h1 span { color: #4fc3f7; }
-    .tagline {
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      color: #8899b0;
-      max-width: 600px;
-      margin-bottom: 2rem;
-      position: relative;
-      z-index: 1;
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dim);
     }
-    .cta {
+
+    /* ─── KEY WIDGET ──────────────────────────────── */
+    .key-panel {
+      background: var(--panel);
+      border: 1px solid rgba(44,35,23,.1);
+      border-radius: var(--radius);
+      box-shadow: var(--panel-shadow);
+      overflow: hidden;
+    }
+    .key-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background .2s;
+    }
+    .key-header:hover { background: rgba(44,35,23,.04); }
+    .key-header h3 {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .key-chevron {
+      color: var(--dim);
+      transition: transform .3s;
+    }
+    .key-panel.open .key-chevron { transform: rotate(180deg); }
+    .key-body {
+      display: none;
+      padding: 1rem 1.5rem 1.5rem;
+      border-top: 1px solid rgba(44,35,23,.08);
+    }
+    .key-panel.open .key-body { display: block; }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: .75rem;
+    }
+    .key-item {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .82rem;
+      color: var(--sec);
+    }
+    .key-circle {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .key-ring {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px dashed rgba(44,35,23,.4);
+      flex-shrink: 0;
+      background: transparent;
+    }
+    .key-ring.solid {
+      border-style: solid;
+      border-color: var(--accent);
+    }
+    .key-dashed-row {
+      width: 22px; height: 16px;
+      border-top: 2px dashed rgba(44,35,23,.4);
+      border-bottom: 2px dashed rgba(44,35,23,.4);
+      flex-shrink: 0;
+    }
+    .key-verified { background: var(--verify); }
+    .key-stale { background: var(--stale); }
+    .key-fail { background: var(--fail); }
+    .key-ember { background: var(--ember); }
+    .key-sun { background: var(--sun); }
+    .key-ink { background: var(--ink); }
+
+    /* ─── SPINE SECTION ───────────────────────────── */
+    .spine-section { background: var(--panel); border-radius: var(--radius); padding: 2rem; box-shadow: var(--panel-shadow); }
+    .spine-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: .85rem 0;
+      border-bottom: 1px solid rgba(44,35,23,.07);
+      font-size: .88rem;
+      color: var(--sec);
+    }
+    .spine-step:last-child { border-bottom: none; }
+    .spine-step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      color: var(--dim);
+      min-width: 1.5rem;
+      padding-top: .15rem;
+    }
+    .spine-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.9rem 1.8rem;
-      background: linear-gradient(135deg, rgba(79,195,247,0.15), rgba(171,71,188,0.15));
-      border: 1px solid rgba(79,195,247,0.35);
-      border-radius: 8px;
-      color: #4fc3f7;
-      text-decoration: none;
-      font-weight: 500;
-      position: relative;
-      z-index: 1;
-      transition: all 0.2s;
+      padding: .15rem .55rem;
+      border-radius: 100px;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      flex-shrink: 0;
     }
-    .cta:hover {
-      background: linear-gradient(135deg, rgba(79,195,247,0.25), rgba(171,71,188,0.25));
-      box-shadow: 0 0 20px rgba(79,195,247,0.15);
-    }
-    .features {
+    .badge-open { background: rgba(44,35,23,.1); color: var(--dim); }
+    .badge-active { background: rgba(176,118,58,.18); color: var(--ember); }
+    .badge-done { background: rgba(46,107,52,.15); color: var(--verify); }
+    .badge-fail { background: rgba(156,43,31,.15); color: var(--fail); }
+
+    /* ─── INSTALL SECTION ────────────────────────── */
+    .install-section { padding: 5rem 2rem; }
+    .install-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
-      max-width: 900px;
-      margin: 3rem auto 0;
-      position: relative;
-      z-index: 1;
-      text-align: left;
+      margin-top: 2rem;
     }
-    .feature {
-      background: rgba(15, 22, 40, 0.6);
-      border: 1px solid rgba(79,195,247,0.1);
-      border-radius: 10px;
-      padding: 1.5rem;
+    .install-card-full {
+      background: var(--panel);
+      border: 1px solid rgba(44,35,23,.12);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--panel-shadow);
     }
-    .feature h3 {
-      color: #4fc3f7;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
+    .install-card-full h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: .4rem;
+      color: var(--ink);
     }
-    .feature p {
-      color: #8899b0;
-      font-size: 0.9rem;
+    .install-card-full p {
+      font-size: .8rem;
+      color: var(--dim);
+      margin-bottom: 1.25rem;
     }
-    .footer {
+    .install-command {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      background: rgba(44,35,23,.06);
+      padding: .65rem .85rem;
+      border-radius: 6px;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(44,35,23,.08);
+    }
+    .install-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .5rem 1rem;
+      background: var(--ember);
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 600;
+      transition: background .2s;
+    }
+    .install-link:hover { background: var(--accent); }
+    .install-link svg { flex-shrink: 0; }
+
+    /* ─── FOOTER ────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid rgba(44,35,23,.1);
       padding: 2rem;
       text-align: center;
-      color: #556680;
-      font-size: 0.85rem;
-      border-top: 1px solid rgba(79,195,247,0.08);
+      color: var(--dim);
+      font-size: .78rem;
+      font-family: 'JetBrains Mono', monospace;
     }
-    .install {
-      background: rgba(15, 22, 40, 0.8);
-      border: 1px solid rgba(79,195,247,0.15);
-      border-radius: 8px;
-      padding: 1rem 1.5rem;
-      font-family: 'SF Mono', monospace;
-      font-size: 0.85rem;
-      color: #c8d6e5;
-      margin-top: 1rem;
-      position: relative;
-      z-index: 1;
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--ink);
+      color: var(--field);
+      padding: .6rem 1.2rem;
+      border-radius: 100px;
+      font-size: .8rem;
+      font-weight: 500;
+      transition: transform .3s ease;
+      z-index: 999;
+      pointer-events: none;
     }
+    .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
-  <section class="hero">
-    <div class="sun"></div>
-    <h1>Tellu<span>rion</span></h1>
-    <p class="tagline">
-      A VS Code extension that turns your repository into a living astronomical orrery.
-      Planets are deliverables, moons are capabilities, and the spine is your project plan.
-    </p>
-    <a class="cta" href="https://github.com/infra-ecomma/devin-hackathon">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-      </svg>
-      View on GitHub
-    </a>
 
-    <div class="install">
-      code --install-extension tellurion-0.1.0.vsix
-    </div>
-
-    <div class="features">
-      <div class="feature">
-        <h3>Repository Sun</h3>
-        <p>Your codebase sits at the center. Everything orbits around it.</p>
-      </div>
-      <div class="feature">
-        <h3>Planets & Moons</h3>
-        <p>Deliverables as planets, capabilities as orbiting moons. Verified items glow; unverified ones appear as dashed silhouettes.</p>
-      </div>
-      <div class="feature">
-        <h3>Project Spine</h3>
-        <p>A vertical plan that auto-populates when you run the Inception workflow.</p>
-      </div>
-      <div class="feature">
-        <h3>Per-Project Branding</h3>
-        <p>Adapts colors, fonts, and logo by scanning the current workspace.</p>
+<!-- ─── HEADER ─────────────────────────────────────── -->
+<header class="site-header">
+  <a class="wordmark" href="#">Tellurion</a>
+  <div class="header-actions">
+    <div style="position:relative">
+      <button class="install-btn" id="install-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Install Now
+      </button>
+      <div class="install-dropdown" id="install-dropdown">
+        <h4>Copy install command</h4>
+        <div class="install-card">
+          <div class="platform">VS Code</div>
+          <div class="install-code">
+            <code>code --install-extension tellurion-0.1.0.vsix</code>
+            <button class="copy-btn" onclick="copyToClipboard('code --install-extension tellurion-0.1.0.vsix')" title="Copy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="install-card">
+          <div class="platform">Devin</div>
+          <div class="install-code">
+            <code>devin --install tellurion-0.1.0.vsix</code>
+            <button class="copy-btn" onclick="copyToClipboard('devin --install tellurion-0.1.0.vsix')" title="Copy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+      <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
 
-  <footer class="footer">
-    Built for the Collabute X TheBlock hackathon · 2026
-  </footer>
+<!-- ─── HERO ──────────────────────────────────────── -->
+<section class="hero">
+  <h1 class="hero-title">Tellurion</h1>
+  <div class="hero-canvas-wrap">
+    <canvas id="orrery-canvas"></canvas>
+  </div>
+  <div class="scroll-arrow">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<!-- ─── STATS BAR ──────────────────────────────────── -->
+<div class="stats-bar reveal">
+  <div class="stat">
+    <div class="stat-num" data-count="1">1</div>
+    <div class="stat-label">Product</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="12">0</div>
+    <div class="stat-label">Features</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="9">0</div>
+    <div class="stat-label">Steps</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="47">0</div>
+    <div class="stat-label">Tasks</div>
+  </div>
+</div>
+
+<!-- ─── KEY WIDGET ─────────────────────────────────── -->
+<div class="section">
+  <p class="section-label">Reference</p>
+  <h2 class="section-title reveal">Orrrery Legend</h2>
+  <div class="key-panel reveal" id="key-panel">
+    <div class="key-header" onclick="document.getElementById('key-panel').classList.toggle('open')">
+      <h3>What does each symbol mean?</h3>
+      <div class="key-chevron">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="key-body">
+      <div class="key-grid">
+        <div class="key-item">
+          <div class="key-ring solid"></div>
+          <span>Orbit ring</span>
+        </div>
+        <div class="key-item">
+          <div class="key-circle key-sun"></div>
+          <span>Sun (product)</span>
+        </div>
+        <div class="key-item">
+          <div class="key-circle key-ember"></div>
+          <span>Planet (deliverable)</span>
+        </div>
+        <div class="key-item">
+          <div class="key-circle" style="width:10px;height:10px;background:var(--ember)"></div>
+          <span>Moon (capability)</span>
+        </div>
+        <div class="key-item">
+          <div class="key-circle key-verified"></div>
+          <span>Verified</span>
+        </div>
+        <div class="key-item">
+          <div class="key-circle key-stale"></div>
+          <span>Stale</span>
+        </div>
+        <div class="key-item">
+          <div class="key-circle key-fail"></div>
+          <span>Failing</span>
+        </div>
+        <div class="key-item">
+          <div class="key-dashed-row"></div>
+          <span>Spine row (step)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SPINE SECTION ──────────────────────────────── -->
+<div class="section">
+  <p class="section-label">Workflow</p>
+  <h2 class="section-title reveal">Project Spine</h2>
+  <div class="spine-section reveal">
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">01</span>
+      <span>Discovery &amp; requirements gathering</span>
+      <span class="spine-badge badge-done">Done</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">02</span>
+      <span>Architecture &amp; component mapping</span>
+      <span class="spine-badge badge-done">Done</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">03</span>
+      <span>Core orrery engine — canvas &amp; scroll</span>
+      <span class="spine-badge badge-active">Active</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">04</span>
+      <span>VS Code extension scaffolding</span>
+      <span class="spine-badge badge-open">Open</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">05</span>
+      <span>Devin CLI integration</span>
+      <span class="spine-badge badge-open">Open</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">06</span>
+      <span>Per-project branding scanner</span>
+      <span class="spine-badge badge-open">Open</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">07</span>
+      <span>Publish to marketplace</span>
+      <span class="spine-badge badge-open">Open</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">08</span>
+      <span>Hackathon submission &amp; demo</span>
+      <span class="spine-badge badge-open">Open</span>
+    </div>
+    <div class="spine-step" data-step>
+      <span class="spine-step-num">09</span>
+      <span>Post-hackathon iteration</span>
+      <span class="spine-badge badge-open">Open</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── INSTALL SECTION ────────────────────────────── -->
+<div class="install-section">
+  <div class="section">
+    <p class="section-label">Get Started</p>
+    <h2 class="section-title reveal">Install the Extension</h2>
+    <div class="install-grid reveal">
+      <div class="install-card-full">
+        <h3>VS Code</h3>
+        <p>Install the Tellurion VS Code extension for a visual project orrery in your editor.</p>
+        <div class="install-command">
+          <code>code --install-extension tellurion-0.1.0.vsix</code>
+          <button class="copy-btn" onclick="copyToClipboard('code --install-extension tellurion-0.1.0.vsix')" title="Copy">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <a class="install-link" href="https://github.com/infra-ecomma/devin-hackathon/releases" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download .vsix
+        </a>
+      </div>
+      <div class="install-card-full">
+        <h3>Devin CLI</h3>
+        <p>Use Tellurion directly from the Devin terminal for automated project mapping.</p>
+        <div class="install-command">
+          <code>devin --install tellurion-0.1.0.vsix</code>
+          <button class="copy-btn" onclick="copyToClipboard('devin --install tellurion-0.1.0.vsix')" title="Copy">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <a class="install-link" href="https://github.com/infra-ecomma/devin-hackathon/releases" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download .vsix
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─────────────────────────────────────── -->
+<footer class="site-footer">
+  Tellurion · hackathon.ecommatools.co · 2026
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+  /* ── Theme ── */
+  const toggle = document.getElementById('theme-toggle');
+  const sunIcon = document.getElementById('icon-sun');
+  const moonIcon = document.getElementById('icon-moon');
+
+  function applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    sunIcon.style.display = dark ? 'none' : 'block';
+    moonIcon.style.display = dark ? 'block' : 'none';
+    localStorage.setItem('tell-theme', dark ? 'dark' : 'light');
+    if (orreryCtx) drawOrrery();
+  }
+
+  const saved = localStorage.getItem('tell-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) applyTheme(true);
+
+  toggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    applyTheme(!isDark);
+  });
+
+  /* ── Install dropdown ── */
+  const ibtn = document.getElementById('install-btn');
+  const idrop = document.getElementById('install-dropdown');
+  ibtn.addEventListener('click', e => {
+    e.stopPropagation();
+    idrop.classList.toggle('open');
+  });
+  document.addEventListener('click', () => idrop.classList.remove('open'));
+
+  /* ── Toast ── */
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1800);
+  }
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(showToast);
+  }
+
+  /* ── Scroll reveal ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const ioReveal = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ioReveal.unobserve(e.target); } });
+  }, { threshold: .12 });
+  reveals.forEach(el => ioReveal.observe(el));
+
+  /* ── Stat counters ── */
+  function animateCount(el) {
+    const target = parseInt(el.dataset.count, 10);
+    let current = 0;
+    const step = Math.ceil(target / 40);
+    const iv = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current;
+      if (current >= target) clearInterval(iv);
+    }, 30);
+  }
+  const statNums = document.querySelectorAll('.stat-num[data-count]');
+  const ioStats = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { animateCount(e.target); ioStats.unobserve(e.target); } });
+  }, { threshold: .5 });
+  statNums.forEach(el => ioStats.observe(el));
+
+  /* ── Orrery canvas ── */
+  const canvas = document.getElementById('orrery-canvas');
+  const ctx = canvas.getContext('2d');
+  let dpr = window.devicePixelRatio || 1;
+  let W, H, CX, CY;
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.scale(dpr, dpr);
+    CX = W / 2; CY = H / 2;
+    drawOrrery();
+  }
+
+  /* Scroll progress 0→1 */
+  function getScrollProgress() {
+    const hero = document.querySelector('.hero');
+    const heroH = hero.offsetHeight;
+    const scrollY = window.scrollY;
+    return Math.min(1, Math.max(0, scrollY / heroH));
+  }
+
+  /* Planet config */
+  const PLANETS = [
+    { orbit: 0.22, size: 8, speed: 0.6, phase: 0, moon: true, moonSize: 3, moonSpeed: 3, moonPhase: 1.2, verified: true },
+    { orbit: 0.34, size: 11, speed: 0.35, phase: 1.1, moon: true, moonSize: 4, moonSpeed: 2.2, moonPhase: 0.5, verified: true },
+    { orbit: 0.48, size: 7, speed: 0.2, phase: 2.3, moon: false, moonSize: 0, moonSpeed: 0, moonPhase: 0, verified: false },
+    { orbit: 0.58, size: 13, speed: 0.14, phase: 0.8, moon: true, moonSize: 4, moonSpeed: 1.8, moonPhase: 2.1, verified: false },
+    { orbit: 0.68, size: 9, speed: 0.09, phase: 3.5, moon: true, moonSize: 3, moonSpeed: 2.8, moonPhase: 1.8, verified: true },
+  ];
+
+  let orreryCtx = true;
+  let animFrame = null;
+  let t = 0;
+
+  function getThemeColors() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      sunCore: '#f5c842',
+      sunMid: '#d4a030',
+      sunGlow: 'rgba(201,159,77,0.18)',
+      orbit: isDark ? 'rgba(168,130,74,0.3)' : 'rgba(138,109,59,0.25)',
+      orbitDash: [4, 6],
+      planet: isDark ? '#c4864e' : '#b0763a',
+      planetVerified: '#4a9e52',
+      moon: isDark ? '#a8824a' : '#8a6d3b',
+      moonGlow: isDark ? 'rgba(74,158,82,0.25)' : 'rgba(46,107,52,0.2)',
+      planetGlow: isDark ? 'rgba(196,134,78,0.25)' : 'rgba(176,118,58,0.2)',
+    };
+  }
+
+  function drawOrrery() {
+    if (!ctx) return;
+    const scroll = getScrollProgress();
+    const col = getThemeColors();
+    const sunR = Math.min(W, H) * 0.065;
+    const maxOrbitR = Math.min(W, H) * 0.44;
+
+    ctx.clearRect(0, 0, W, H);
+
+    /* ── Orbit rings ── */
+    PLANETS.forEach((p, i) => {
+      const ringAlpha = Math.min(1, Math.max(0, (scroll - 0.15 - i * 0.08) / 0.12));
+      if (ringAlpha <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = ringAlpha;
+      ctx.beginPath();
+      ctx.arc(CX, CY, maxOrbitR * p.orbit, 0, Math.PI * 2);
+      ctx.strokeStyle = col.orbit;
+      ctx.setLineDash(col.orbitDash);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    });
+
+    /* ── Sun ── */
+    const sunAlpha = Math.min(1, scroll / 0.15);
+    if (sunAlpha > 0) {
+      ctx.save();
+      ctx.globalAlpha = sunAlpha;
+      /* outer glow */
+      const grd = ctx.createRadialGradient(CX, CY, sunR * 0.5, CX, CY, sunR * 2.8);
+      grd.addColorStop(0, col.sunGlow);
+      grd.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(CX, CY, sunR * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+      /* sun body */
+      const sunGrd = ctx.createRadialGradient(CX - sunR * 0.3, CY - sunR * 0.3, sunR * 0.1, CX, CY, sunR);
+      sunGrd.addColorStop(0, '#fff8d0');
+      sunGrd.addColorStop(0.4, col.sunCore);
+      sunGrd.addColorStop(1, col.sunMid);
+      ctx.beginPath();
+      ctx.arc(CX, CY, sunR, 0, Math.PI * 2);
+      ctx.fillStyle = sunGrd;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    /* ── Planets ── */
+    PLANETS.forEach((p, i) => {
+      const planetAlpha = Math.min(1, Math.max(0, (scroll - 0.28 - i * 0.09) / 0.15));
+      if (planetAlpha <= 0) return;
+      const angle = p.phase + t * p.speed;
+      const orbitR = maxOrbitR * p.orbit;
+      const px = CX + Math.cos(angle) * orbitR;
+      const py = CY + Math.sin(angle) * orbitR;
+      const isVerified = p.verified;
+      const planetColor = isVerified ? col.planetVerified : col.planet;
+
+      ctx.save();
+      ctx.globalAlpha = planetAlpha;
+
+      /* glow for verified */
+      if (isVerified) {
+        ctx.shadowColor = col.planetVerified;
+        ctx.shadowBlur = 12;
+      }
+
+      ctx.beginPath();
+      ctx.arc(px, py, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = planetColor;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      /* moon */
+      if (p.moon && p.moonSize > 0) {
+        const moonAngle = p.phase + p.moonPhase + t * p.moonSpeed;
+        const moonR = p.size * 2.2;
+        const mx = px + Math.cos(moonAngle) * moonR;
+        const my = py + Math.sin(moonAngle) * moonR;
+        ctx.beginPath();
+        ctx.arc(mx, my, p.moonSize, 0, Math.PI * 2);
+        ctx.fillStyle = col.moon;
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+  }
+
+  function animate() {
+    t += 0.016;
+    drawOrrery();
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  /* Init */
+  resizeCanvas();
+  animate();
+
+  const resizeObs = new ResizeObserver(resizeCanvas);
+  resizeObs.observe(canvas);
+
+  window.addEventListener('scroll', drawOrrery, { passive: true });
+
+  /* ── Spine step pop-in ── */
+  const spineSteps = document.querySelectorAll('[data-step]');
+  const ioSpine = new IntersectionObserver((entries) => {
+    entries.forEach((e, idx) => {
+      if (e.isIntersecting) {
+        setTimeout(() => { e.target.style.opacity = '1'; e.target.style.transform = 'translateX(0)'; }, idx * 60);
+        ioSpine.unobserve(e.target);
+      }
+    });
+  }, { threshold: .2 });
+  spineSteps.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(-12px)';
+    el.style.transition = 'opacity .4s ease, transform .4s ease';
+    ioSpine.observe(el);
+  });
+</script>
 </body>
 </html>
