@@ -1,8 +1,8 @@
 {
   "name": "tellurion",
-  "displayName": "Tellurion — Visual Project Orrery",
-  "description": "A VS Code extension that visualises your project as a living orrery: deliverables as planets, features as moons, and the plan as the spine.",
-  "version": "0.1.0",
+  "displayName": "Tellurion",
+  "description": "Products are planets, features are moons; nothing appears until work starts, and nothing glows without a recorded exit 0.",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -14,6 +14,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:tellurion.openSky",
     "onCommand:tellurion.openOrrery",
     "onCommand:tellurion.startInception",
     "onStartupFinished"
@@ -21,6 +22,11 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "tellurion.openSky",
+        "title": "Tellurion: Open Sky",
+        "icon": "$(symbol-class)"
+      },
       {
         "command": "tellurion.openOrrery",
         "title": "Tellurion: Open the instrument",
@@ -33,8 +39,18 @@
       },
       {
         "command": "tellurion.refreshScan",
-        "title": "Tellurion: Refresh scan",
+        "title": "Tellurion: Refresh Scan",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "tellurion.switchStyle",
+        "title": "Tellurion: Switch Style",
+        "icon": "$(paintcan)"
+      },
+      {
+        "command": "tellurion.switchTheme",
+        "title": "Tellurion: Switch Theme",
+        "icon": "$(color-mode)"
       },
       {
         "command": "tellurion.enrichContext",
@@ -47,11 +63,29 @@
         "icon": "$(history)"
       }
     ],
+    "configuration": {
+      "title": "Tellurion",
+      "properties": {
+        "tellurion.style": {
+          "type": "string",
+          "enum": ["futuristic", "rustic"],
+          "default": "rustic",
+          "description": "Visual style of the sky."
+        },
+        "tellurion.theme": {
+          "type": "string",
+          "enum": ["dark", "light", "auto"],
+          "default": "light",
+          "description": "Sky color theme. Auto follows the active VS Code theme."
+        }
+      }
+    },
     "keybindings": [
       {
-        "command": "tellurion.openOrrery",
-        "key": "ctrl+shift+t",
-        "mac": "cmd+shift+t"
+        "command": "tellurion.openSky",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t",
+        "when": "editorTextFocus"
       }
     ]
   },
