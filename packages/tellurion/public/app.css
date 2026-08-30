@@ -267,6 +267,43 @@ html[data-mode="observatory"] .mark rect:first-child { fill: #D9E6FF; }
   color: var(--ink-45); font-variant-numeric: tabular-nums;
 }
 .key-sep { height: var(--hairline); background: var(--line); margin: 6px 0; }
+
+/* The sub-line under a key row: the seven belt families, and the two processes
+   nothing can see. It hangs off the row above it rather than reading as its own
+   entry, so the row keeps one meaning and the detail sits beneath it. */
+.key-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 8.6px; line-height: 1.65;
+  color: var(--ink-45); padding: 0 0 3px 36px;
+}
+.key-sub b { color: var(--ink-70); font-weight: 600; }
+
+/* "i dont want it to be big, just there" - Wassim, 2026-08-30. So the opener is
+   a text button the width of its own words, on the line that raises the
+   question, and the section it reveals is folded away until asked for. */
+.kr-what {
+  font-family: 'JetBrains Mono', monospace; font-size: 8.6px; letter-spacing: .02em;
+  color: var(--blue); background: none; border: 0; border-bottom: var(--hairline) solid currentColor;
+  padding: 0; margin: 0; cursor: pointer; white-space: nowrap;
+}
+.kr-what:hover { color: var(--ink); }
+.kr-what:focus-visible { outline: 1px solid var(--blue); outline-offset: 2px; }
+.key-what { padding: 3px 0 5px 36px; }
+.kw-row { display: flex; gap: 8px; align-items: baseline; padding: 2.5px 0; }
+.kw-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-70);
+  flex: 0 0 33%; letter-spacing: .02em;
+}
+.kw-note { font-family: 'JetBrains Mono', monospace; font-size: 8.4px; line-height: 1.6; color: var(--ink-45); flex: 1; }
+.kw-note em { font-style: italic; color: var(--ink-28); }
+.kw-rule { color: var(--ink-28); }
+/* The five he called out. The same weight that widens their arc on the plate
+   names them here, so the legend and the picture cannot drift apart. */
+.kw-heavy .kw-name { color: var(--ink); font-weight: 600; }
+.kw-foot {
+  font-family: 'JetBrains Mono', monospace; font-size: 8.2px; line-height: 1.6;
+  color: var(--ink-28); padding-top: 5px;
+}
+
 .key-note {
   font-family: 'JetBrains Mono', monospace; font-size: 8.8px; line-height: 1.7;
   color: var(--ink-45); padding-top: 6px;

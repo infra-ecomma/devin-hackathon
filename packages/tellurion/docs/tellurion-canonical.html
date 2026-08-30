@@ -218,7 +218,7 @@
     <svg viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
     <span class="logo-word"><b>TBK</b>&nbsp;<i>Labs</i></span>
   </div>
-  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v2.0</div>
+  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v2.1</div>
 </header>
 
 <div class="title-block">
@@ -384,6 +384,31 @@
   per project in <code>.tellurion/usage.json</code> so it survives a restart, and a
   <b>Bench: used / all</b> toggle shows the whole kit on demand. With nothing used, neither band is
   drawn and the product region expands to take the room.</p>
+
+  <div class="kicker">The governance ring</div>
+  <h3 class="claim">The ring arcs read eleven governance processes, and name the two nothing can see.</h3>
+  <p class="prose">Until 2026-08-30 the ring could not draw at all. <code>attribute.mjs</code> had three
+  branches and no fourth, so no live event could ever return a process id, and the legend row sat at
+  <b>0 of 13</b> permanently, which reads as "this project has never shipped to shares, never filed an
+  ADR, never written a verification manifest", every one of which was false. Each process now carries
+  its own <code>detect</code> block in <code>data/world-static.json</code> (skill names, command names,
+  dispatched agent roles, the <code>TodoWrite</code> that IS the features-ledger capture, and written
+  paths) and the reducer has the fourth branch to match them. Nine of the eleven light from real
+  session events; measured against the live reducer on 2026-08-30, a decision page written, a septa
+  review run, a relay packet routed and a ledger row appended each light their own arc.</p>
+  <p class="prose">The signature is in the data and NOT derived from a process's <code>home</code>,
+  because a home is where a process is documented rather than what it leaves behind: the decision-page
+  process is homed at a template but writes into <code>decisions/</code>, and Ship to Shares is homed
+  at a URL no file path can match. <b>Two of the eleven are blind by construction</b> and are named as
+  blind rather than shown at zero: TBK-AutoSync runs on a timer outside any session, and the brand gate
+  is a pre-commit hook that leaves no tool call to match. They draw as dashed grey arcs, never amber.
+  The scope itself was chosen by the operator on 2026-08-30 (decision K3 <i>process-scope</i>), which
+  took Ship to Vault and the OCC Cascade off the plate and left eleven.</p>
+  <p class="prose"><b>The arcs are not equal.</b> Five of the eleven carry double weight and draw
+  visibly wider and darker: the decision-page to ADR flow, the features ledger, the troubleshooting
+  ledger, TBK-AutoSync and the septa review. Arc width is the operator's ordering of what matters,
+  carried as <code>weight</code> in the data, and the key says so in as many words, because an unequal
+  arc that looked measured would be the plate lying about its own numbers.</p>
 
   <div class="kicker">The plan lifecycle</div>
   <h3 class="claim">A spine you can edit, checked against the repo.</h3>
@@ -589,6 +614,20 @@
   thing this section exists to make impossible.</p>
 
   <div class="log">
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>v2.1 &middot; The governance ring took its first reading, and its arcs stopped being equal.</h4>
+      <p>Ratified by the operator the same day as decisions K1 <i>process-detection</i>, K2
+      <i>belt-label</i> and K3 <i>process-scope</i> (<code>decisions/tellurion-key-tightening-2026-08-30.html</code>).
+      Every process now carries a <code>detect</code> signature in the data and the reducer has a fourth
+      attribution branch to match it, so the row that read <b>0 of 13</b> forever now reads a real count;
+      nine of eleven light from real session events, verified through the live reducer. The scope dropped
+      from thirteen to eleven (Ship to Vault and the OCC Cascade came off, TBK-AutoSync stayed), and the
+      two that no session can reach are drawn dashed and named as blind rather than shown as unused.
+      Arc width is now a declared weight rather than an equal slice, with five processes drawn wider at
+      the operator's direction. The belt row reads <b>a standing tool</b> over a line of its seven
+      families, and both rows carry a small folded "what these are" section explaining each entry in a
+      line or two, which is where the question was being raised.</p>
+    </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>The law of light became executable: the Earned Light extension is implemented and gated by its own walk.</h4>
       <p>The reimagined VS Code extension now exists as code on branch <code>feat/earned-light</code>
@@ -848,7 +887,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v2.0 &middot; updated 30 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v2.1 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 

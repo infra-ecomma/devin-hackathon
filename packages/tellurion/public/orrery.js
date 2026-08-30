@@ -763,17 +763,43 @@ export function initOrrery(canvas) {
     if (!procs.length) return;
     const rr = PROC_R * R;
     const GAP = rad(2.6);
-    const span = (TAU - GAP * procs.length) / procs.length;
+    // THE SLICES ARE NOT EQUAL. Wassim, 2026-08-30: "this should not be equally
+    // sized... Features ledger, septa review, autosync, decision page,
+    // troubleshooting ledger, these should be a fair bit more prominent." Arc
+    // width is a WEIGHT carried in the data (processes[].weight), which is his
+    // ordering of what matters and NOT a measurement of anything. The key says
+    // that in as many words, because an unequal arc that looked measured would
+    // be the plate telling a lie about its own numbers.
+    const wOf = (p) => Math.max(1, Number(p.weight) || 1);
+    const wSum = procs.reduce((n, p) => n + wOf(p), 0);
+    const free = TAU - GAP * procs.length;
     let a0 = rad(-90) + GAP / 2;
     circle(CX, CY, rr - 4, { stroke: css.lineFaint, w: 0.7 });
     circle(CX, CY, rr + 4, { stroke: css.lineFaint, w: 0.7 });
     for (const p of procs) {
-      const a1 = a0 + span;
+      const heavy = wOf(p) > 1;
+      const a1 = a0 + free * (wOf(p) / wSum);
       const pulse = world.pulses[p.id];
       const freshP = pulse && (Date.now() - pulse.lastAt) < 5000;
       const faded = dim(p.id) ? 0.3 : 1;
+      // A BLIND PROCESS IS DRAWN AS BLIND, not as unused. TBK-AutoSync runs on a
+      // timer and the brand gate is a pre-commit hook, so nothing a session does
+      // can ever light either one. Amber would claim it is waiting to be used;
+      // a dashed grey arc says the instrument cannot see it from here, which is
+      // the true statement and the one the key repeats.
+      const blind = !p.detect;
       const psw = easeOut((performance.now() - (introStart == null ? -1e9 : introStart) - (850 + procs.indexOf(p) * 35)) / 450);
-      if (psw > 0.01) arc(CX, CY, rr, a0, a0 + (a1 - a0) * psw, { stroke: freshP ? css.blue : css.amber, w: freshP ? 2.8 : 2.1, alpha: faded });
+      if (psw > 0.01) arc(CX, CY, rr, a0, a0 + (a1 - a0) * psw, {
+        // A BLIND ARC STAYS DASHED AND GREY - that is the honest reading, and it
+        // must never be mistaken for amber "in use". But weight still applies to
+        // it: TBK-AutoSync is one of the five he called out, so a heavy blind arc
+        // gets the wider span AND a heavier stroke, rather than being flattened
+        // to a hairline by a fact about detection.
+        stroke: blind ? css.ink28 : freshP ? css.blue : css.amber,
+        w: blind ? (heavy ? 2.4 : 1.4) : freshP ? (heavy ? 3.6 : 2.8) : (heavy ? 3.2 : 2.1),
+        dash: blind ? [3, 4] : null,
+        alpha: faded,
+      });
       for (const aa of [a0, a1]) {
         line(CX + Math.cos(aa) * (rr - 5.5), CY + Math.sin(aa) * (rr - 5.5), CX + Math.cos(aa) * (rr + 5.5), CY + Math.sin(aa) * (rr + 5.5), css.ink45, 0.8);
       }
@@ -791,7 +817,7 @@ export function initOrrery(canvas) {
       const ply = CY + Math.sin(mid) * lr;
       const flipped = Math.sin(mid) > 0;
       const nm = ringLabel(p.name);
-      ctx.font = '8px "JetBrains Mono"';
+      ctx.font = (heavy ? '600 8.5px' : '8px') + ' "JetBrains Mono"';
       const nmW = ctx.measureText(nm).width + nm.length * 1.2;
       queueLabel(1, {
         // the real measured width, not a fixed 80px guess: "TROUBLESHOOTING
@@ -811,7 +837,11 @@ export function initOrrery(canvas) {
           // own arcs bleed faintly through the glyphs.
           ctx.fillStyle = css.paper;
           ctx.fillRect(-nmW / 2 - 5, -8, nmW + 10, 16);
-          text(nm, 0, 0, { font: '8px "JetBrains Mono"', fill: freshP ? css.blue : css.ink45, align: 'center', spacing: 1.2 });
+          text(nm, 0, 0, {
+            font: (heavy ? '600 8.5px' : '8px') + ' "JetBrains Mono"',
+            fill: blind ? (heavy ? css.ink45 : css.ink28) : freshP ? css.blue : heavy ? css.ink70 : css.ink45,
+            align: 'center', spacing: 1.2,
+          });
           ctx.restore();
         },
       });
