@@ -1,0 +1,17 @@
+.claude/**
+.memsearch/**
+.tellurion/**
+packages/**
+public/**
+verify/**
+verification/**
+RULES/**
+Dockerfile
+docker-compose.yml
+src/**
+tsconfig.json
+*.vsix
+.gitignore
+.mcp.json
+.kit-meta.json
+package-lock.json
