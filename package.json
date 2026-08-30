@@ -1,23 +1,48 @@
 {
   "name": "tellurion",
-  "displayName": "Tellurion — Visual Project Orrery",
+  "displayName": "Tellurion \u2014 Visual Project Orrery",
   "description": "A VS Code extension that visualises your project as a living orrery: deliverables as planets, features as moons, and the plan as the spine.",
   "version": "0.1.0",
-  "engines": { "vscode": "^1.85.0" },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
   "publisher": "tbk-labs",
   "license": "MIT",
-  "icon": "media/tellurion.svg",
-  "categories": ["Visualization", "Other"],
-  "activationEvents": ["onCommand:tellurion.openOrrery", "onCommand:tellurion.startInception", "onStartupFinished"],
+  "icon": "media/tellurion-icon.png",
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:tellurion.openOrrery",
+    "onCommand:tellurion.startInception",
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      { "command": "tellurion.openOrrery", "title": "Tellurion: Open the instrument", "icon": "$(symbol-class)" },
-      { "command": "tellurion.startInception", "title": "Tellurion: Start Inception", "icon": "$(play)" },
-      { "command": "tellurion.refreshScan", "title": "Tellurion: Refresh scan", "icon": "$(refresh)" }
+      {
+        "command": "tellurion.openOrrery",
+        "title": "Tellurion: Open the instrument",
+        "icon": "$(symbol-class)"
+      },
+      {
+        "command": "tellurion.startInception",
+        "title": "Tellurion: Start Inception",
+        "icon": "$(play)"
+      },
+      {
+        "command": "tellurion.refreshScan",
+        "title": "Tellurion: Refresh scan",
+        "icon": "$(refresh)"
+      }
     ],
     "keybindings": [
-      { "command": "tellurion.openOrrery", "key": "ctrl+shift+t", "mac": "cmd+shift+t" }
+      {
+        "command": "tellurion.openOrrery",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t"
+      }
     ]
   },
   "scripts": {
@@ -29,6 +54,7 @@
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
     "typescript": "^5.3.0"
   }
 }

@@ -1,0 +1,17 @@
+.vscode
+test-results
+node_modules
+.git
+.next
+*.tsbuildinfo
+packages
+public
+Dockerfile
+docker-compose.yml
+*.vsix
+dev_docs
+RULES
+.claude
+.gsd
+.kit
+.rag
