@@ -1,0 +1,1785 @@
+{
+  "generated": "2026-08-24",
+  "source": "recon workflow wf_69204d11-d6a over the OCC repo",
+  "entities": [
+    {
+      "name": "Ship to Shares",
+      "kind": "process",
+      "one_liner": "Publish HTML to shares.tbk-labs.dev via tbk-shares repo and Coolify, verified live",
+      "status": "live",
+      "parent": "OCC",
+      "home": "https://shares.tbk-labs.dev",
+      "evidence": "project-starter/.claude/skills/kit/ship-to-shares/SKILL.md"
+    },
+    {
+      "name": "Ship to Vault",
+      "kind": "process",
+      "one_liner": "File an artifact into its canonical OCC home with gates, approval, and cascade",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/kit/ship-to-vault/",
+      "evidence": "project-starter/.claude/skills/kit/ship-to-vault/SKILL.md"
+    },
+    {
+      "name": "Verification Protocol (Rule 36)",
+      "kind": "process",
+      "one_liner": "Independent second model judges delivery evidence; high-risk blocks, normal-risk verifies in background",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/governance/VERIFICATION-PROTOCOL.md",
+      "evidence": "project-starter/governance/VERIFICATION-PROTOCOL.md"
+    },
+    {
+      "name": "Decision Page to ADR flow (Rules 20/34)",
+      "kind": "process",
+      "one_liner": "Alignment moments become interactive HTML decision pages; ratified picks get a companion ADR",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/governance/DECISION-PAGE-TEMPLATE.html",
+      "evidence": "project-starter/governance/DECISION-PAGE-TEMPLATE.html"
+    },
+    {
+      "name": "Escape Log (Rule 38)",
+      "kind": "process",
+      "one_liner": "Append-only log of shipped work later found broken; monthly trend is quality north star",
+      "status": "live",
+      "parent": "OCC",
+      "home": "ESCAPE-LOG.md",
+      "evidence": "ESCAPE-LOG.md"
+    },
+    {
+      "name": "Features Ledger capture (Rule 39)",
+      "kind": "process",
+      "one_liner": "TodoWrite hook captures every to-do to a durable ledger so requests never drop",
+      "status": "live",
+      "parent": "OCC",
+      "home": "features-ledger/",
+      "evidence": "features-ledger/README.md"
+    },
+    {
+      "name": "Troubleshooting Ledger (Rule 45)",
+      "kind": "process",
+      "one_liner": "Every fleet fault diagnosis appends a twelve-column row to a Google Sheet via appender tool",
+      "status": "live",
+      "parent": "OCC",
+      "home": "tools/ledger/troubleshooting-ledger.py",
+      "evidence": "tools/ledger/troubleshooting-ledger.py"
+    },
+    {
+      "name": "TBK-AutoSync",
+      "kind": "process",
+      "one_liner": "Cross-machine git sync engine reconciling canon repos four times daily, fail-loud on conflict",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/governance/AUTO-SYNC.md",
+      "evidence": "project-starter/governance/AUTO-SYNC.md"
+    },
+    {
+      "name": "OCC Cascade",
+      "kind": "process",
+      "one_liner": "One-way pull cascade: primitives authored in OCC; website and Obsidian re-derive from it",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/governance/CASCADE-AND-WORKFLOW.md",
+      "evidence": "project-starter/governance/CASCADE-AND-WORKFLOW.md"
+    },
+    {
+      "name": "Delegation routing (Rule 40)",
+      "kind": "process",
+      "one_liner": "Executable gate forcing recon and mechanical work onto cheaper role-bound subagent lanes",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/governance/fleet/delegation-router.py",
+      "evidence": "project-starter/governance/fleet/delegation-router.py"
+    },
+    {
+      "name": "Penta review",
+      "kind": "process",
+      "one_liner": "Five-vendor adversarial review pipeline; halts unless all five credentials are live",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/orchestration/penta-review/",
+      "evidence": "project-starter/.claude/skills/orchestration/penta-review/SKILL.md"
+    },
+    {
+      "name": "Septa review",
+      "kind": "process",
+      "one_liner": "Seven-model, seven-lab adversarial review with distinct lenses and strict vendor gate",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/orchestration/septa-review/",
+      "evidence": "project-starter/.claude/skills/orchestration/septa-review/SKILL.md"
+    },
+    {
+      "name": "Brand gate",
+      "kind": "process",
+      "one_liner": "Pre-commit hook blocking invented TBK brand assets and non-template HTML",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/governance/hooks/brand-gate-pre-commit.sh",
+      "evidence": "project-starter/governance/hooks/brand-gate-pre-commit.sh"
+    },
+    {
+      "name": "apex",
+      "kind": "workflow",
+      "one_liner": "Multi-agent audit-and-fix loop driving a product to 9.0+ jury-scored excellence",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/workflows/orchestration/apex/",
+      "evidence": "project-starter/.claude/commands/apex.md"
+    },
+    {
+      "name": "inception",
+      "kind": "workflow",
+      "one_liner": "Seven gated stages taking a raw idea from intake to a published project on rails",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/workflows/kit/inception/",
+      "evidence": "project-starter/.claude/commands/inception/inception.md"
+    },
+    {
+      "name": "genesis",
+      "kind": "workflow",
+      "one_liner": "Zero-touch autopilot building software end-to-end across seventeen phases from one idea string",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/engine/genesis/",
+      "evidence": "project-starter/.claude/skills/engine/genesis/SKILL.md"
+    },
+    {
+      "name": "design-engine",
+      "kind": "workflow",
+      "one_liner": "Meta-orchestrator classifying design tasks and chaining the right design skills",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/orchestration/design-engine/",
+      "evidence": "project-starter/.claude/skills/orchestration/design-engine/SKILL.md"
+    },
+    {
+      "name": "deep-audit",
+      "kind": "workflow",
+      "one_liner": "21-category, 240-plus-check quality audit with evidence enforcement and re-verify cycle",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/audits/deep-audit/",
+      "evidence": "project-starter/.claude/skills/audits/deep-audit/SKILL.md"
+    },
+    {
+      "name": "real-user-walk",
+      "kind": "workflow",
+      "one_liner": "Drives a real browser through complete customer journeys, asserting on actual visible data",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/testing/real-user-walk/",
+      "evidence": "project-starter/.claude/skills/testing/real-user-walk/SKILL.md"
+    },
+    {
+      "name": "fix",
+      "kind": "workflow",
+      "one_liner": "Runs every audit and test skill in order, fixes all findings, loops to zero",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/orchestration/fix/",
+      "evidence": "project-starter/.claude/skills/orchestration/fix/SKILL.md"
+    },
+    {
+      "name": "multi-lens-audit",
+      "kind": "workflow",
+      "one_liner": "Parallel expert-lens agents synthesized into compound findings with adversarial rounds",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/audits/multi-lens-audit/",
+      "evidence": "project-starter/.claude/skills/audits/multi-lens-audit/SKILL.md"
+    },
+    {
+      "name": "init-tbk",
+      "kind": "workflow",
+      "one_liner": "Project initializer routing per-project primitives behind one decision-page approval gate",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/kit/init-tbk/",
+      "evidence": "project-starter/.claude/skills/kit/init-tbk/SKILL.md"
+    },
+    {
+      "name": "gsd-engine",
+      "kind": "workflow",
+      "one_liner": "Autonomous overnight sprint execution with multi-account rotation and pause-and-resume",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/engine/gsd-engine/",
+      "evidence": "project-starter/.claude/skills/engine/gsd-engine/SKILL.md"
+    },
+    {
+      "name": "iterate",
+      "kind": "workflow",
+      "one_liner": "Aggregates live signals, then auto-plans, executes, deploys, and loops the lifecycle",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/engine/iterate/",
+      "evidence": "project-starter/.claude/skills/engine/iterate/SKILL.md"
+    },
+    {
+      "name": "brainstorm",
+      "kind": "workflow",
+      "one_liner": "One-question-at-a-time interrogation turning a raw idea into an approved product spec",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/product/brainstorm/",
+      "evidence": "project-starter/.claude/skills/product/brainstorm/SKILL.md"
+    },
+    {
+      "name": "ux-journey-mockup",
+      "kind": "workflow",
+      "one_liner": "Clickable rendered mock-up of the ideal user journey that serves as the build spec",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/product/ux-journey-mockup/",
+      "evidence": "project-starter/.claude/skills/product/ux-journey-mockup/SKILL.md"
+    },
+    {
+      "name": "folder-architect",
+      "kind": "workflow",
+      "one_liner": "Scaffolds a standardized folder tree, canonical doc set, and project CLAUDE.md",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/skills/code/folder-architect/",
+      "evidence": "project-starter/.claude/skills/code/folder-architect/SKILL.md"
+    },
+    {
+      "name": "omega-audit",
+      "kind": "workflow",
+      "one_liner": "Heaviest 8-phase full-codebase audit ranking every service by health score",
+      "status": "live",
+      "parent": "OCC",
+      "home": "project-starter/.claude/workflows/audits/omega-audit/",
+      "evidence": "project-starter/.claude/commands/omega-audit/omega-audit.md"
+    },
+    {
+      "name": "Shakeeb (Shakeeb Anywhere)",
+      "kind": "product",
+      "one_liner": "Desktop orb that watches Wassim code, speaks when he pauses, runs sub-agent errands.",
+      "status": "live",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/06-shakeeb-anywhere/",
+      "parent": "Hermes (TBK Labs agent line)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/06-shakeeb-anywhere/README.md"
+    },
+    {
+      "name": "Zangetsu",
+      "kind": "product",
+      "one_liner": "Honesty watchdog catching false 'done' claims across Claude sessions; 478 catches, 26 projects.",
+      "status": "live",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/02-zangetsu/",
+      "parent": "Hermes (TBK Labs agent line)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/STATUS.md"
+    },
+    {
+      "name": "Yatagarasu",
+      "kind": "product",
+      "one_liner": "Scout agent feeding Wassim's knowledge notebook; its brain-scout pipeline already runs on a timer.",
+      "status": "building",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/03-yatagarasu/",
+      "parent": "Hermes (TBK Labs agent line)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/03-yatagarasu/README.md"
+    },
+    {
+      "name": "Tetsujin",
+      "kind": "product",
+      "one_liner": "First Hermes co-pilot agent with contribution tracking and approvals; preserved for later revival.",
+      "status": "dormant",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/01-main/",
+      "parent": "Hermes (TBK Labs agent line)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/03-yatagarasu/README.md"
+    },
+    {
+      "name": "Prometheus",
+      "kind": "product",
+      "one_liner": "Build-peer agent owning project foundations (brand, CI, deploys, hygiene) while Wassim codes.",
+      "status": "building",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/04-prometheus/",
+      "parent": "Hermes (TBK Labs agent line)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/project-starter/agents/Hermes/04-prometheus/README.md"
+    },
+    {
+      "name": "Sentinel",
+      "kind": "product",
+      "one_liner": "Independent judge that verifies work when an agent claims done, blocking bad verdicts.",
+      "status": "live",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/sentinel/",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/sentinel/sentinel-design.html"
+    },
+    {
+      "name": "Features Ledger",
+      "kind": "product",
+      "one_liner": "Append-only record of every requested feature, captured from to-dos so nothing falls off.",
+      "status": "live",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/README.md"
+    },
+    {
+      "name": "TBK Labs Fusion",
+      "kind": "product",
+      "one_liner": "Multi-model council proxy; fusion-council-v4 is OpenCode's default Build and Plan model.",
+      "status": "live",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/fusion/",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/fusion/HANDOFF.md"
+    },
+    {
+      "name": "Agentic Loop",
+      "kind": "product",
+      "one_liner": "Self-driving run loop for Claude Code: LOOP.md prompt plus loop.sh controller.",
+      "status": "live",
+      "home": "/home/wassim/projects/Organizing-Claude-Code/Agentic Loop/",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/CLAUDE.md"
+    },
+    {
+      "name": "Build deslop-sheet.mjs pre/post decision sheet generator",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "claimed",
+      "one_liner": "Script turning engine output into a visual pick-your-rewrites decision sheet",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Rewrite deslop SKILL.md as six-step pipeline with sheet contract",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "claimed",
+      "one_liner": "Skill doc rewritten around fixed pipeline, scope taxonomy, mandatory decision sheet",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add SLOP layer breakdown (L/S/Q/R/E) to verdict bar",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "claimed",
+      "one_liner": "Verdict bar and downloadable report show per-layer slop scores",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add inline rule highlighting in cleaned text pane",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "open",
+      "one_liner": "Highlight which rule fired on each cleaned span in the UI",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add visible preset chips below textarea on Run page",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "open",
+      "one_liner": "Preset selection chips surfaced on the main Run page",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add check-prose.mjs to build.sh for local builds",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "claimed",
+      "one_liner": "Prose quality check wired into the local build gate",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Verify live deploy state at deslop.tbk-labs.dev",
+      "kind": "feature",
+      "parent": "DeSlop",
+      "status": "open",
+      "one_liner": "Capture live CLI/API/rendered evidence and re-run the verification gate",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Console v1 delivered, ratified, verifier PASS",
+      "kind": "feature",
+      "parent": "The Brain",
+      "status": "claimed",
+      "one_liner": "New console UI with extended producer, 17/17 browser walk",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Interactive map: instrument layout, zoom/pan, per-node answers",
+      "kind": "feature",
+      "parent": "The Brain",
+      "status": "open",
+      "one_liner": "Zoomable instrumented knowledge map, needs live verify at brain.tbk-labs.dev",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Ship-script early-sync fix plus session 55 close",
+      "kind": "feature",
+      "parent": "The Brain",
+      "status": "claimed",
+      "one_liner": "Fix ship script sync ordering, close session 55 with docs (a70cce3)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build approved dashboard redesign and ship to brain.tbk-labs.dev",
+      "kind": "feature",
+      "parent": "The Brain",
+      "status": "open",
+      "one_liner": "Implement the ratified redesign direction and verify the live end state",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build collector+protocol v4 excluding v1 signatures and v3 holdout",
+      "kind": "feature",
+      "parent": "The Brain",
+      "status": "claimed",
+      "one_liner": "Next-generation eval collector with contaminated rows excluded",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Implement Sentinel Guardian heartbeat loop",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code (Sentinel)",
+      "status": "claimed",
+      "one_liner": "Cron heartbeat with selfcheck and alerting for the Sentinel detector",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Implement Sentinel Guardian receipt analysis loop",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code (Sentinel)",
+      "status": "claimed",
+      "one_liner": "Judge on tpad analyses receipts on a loop",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Fix detector core reliability: health sensor, judge budget, evidence",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code (Sentinel)",
+      "status": "claimed",
+      "one_liner": "Hardened the detection layer before adding alarms",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Cross-machine transcript collection via SSH pull",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code (Sentinel)",
+      "status": "claimed",
+      "one_liner": "Pull session transcripts from all fleet machines for analysis",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Wire dashboard auto-refresh and state rotation into timer",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code (Sentinel)",
+      "status": "claimed",
+      "one_liner": "Sentinel dashboard refreshes itself on the systemd timer",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build a pipeline dashboard for Wassim",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code",
+      "status": "open",
+      "one_liner": "Dashboard over the honesty/verification pipeline, asked 2026-08-22",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add staleness check to the canonical HTML",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code",
+      "status": "open",
+      "one_liner": "Detect when a canonical document has fallen behind the work",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add a structural honesty check",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code",
+      "status": "open",
+      "one_liner": "Check the honesty pipeline's own structure, asked 2026-08-22",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "EIDA photo: spec-conformant crop, delivered and opened on Legion",
+      "kind": "feature",
+      "parent": "wassim (personal repo)",
+      "status": "claimed",
+      "one_liner": "Produce ID-photo crop per PDF spec, file it, open on his screen",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Personal site: dashboard light theme plus sourced Ecomma wins",
+      "kind": "feature",
+      "parent": "wassim (personal repo)",
+      "status": "open",
+      "one_liner": "Light-theme dashboard page with two evidence-backed wins, render and look",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Personal site: shrink hero, ship both changes, verify live",
+      "kind": "feature",
+      "parent": "wassim (personal repo)",
+      "status": "open",
+      "one_liner": "Hero padding/title reduction shipped to shares with live curl check",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build index, classic, dashboard and timeline pages",
+      "kind": "feature",
+      "parent": "wassim (personal repo)",
+      "status": "open",
+      "one_liner": "Four-page personal site set; the ship-to-shares step was claimed",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Draft interview cheat sheet: brief, angle, likely questions",
+      "kind": "feature",
+      "parent": "wassim (personal repo)",
+      "status": "claimed",
+      "one_liner": "One-page interview prep document",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Widen desktop map fill at 1920 (67% width)",
+      "kind": "feature",
+      "parent": "fleet-deck",
+      "status": "open",
+      "one_liner": "Map layout change, newest open item (2026-08-24)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Fix edge-surface glyph noise: drop letter marks, clean hexagons",
+      "kind": "feature",
+      "parent": "fleet-deck",
+      "status": "open",
+      "one_liner": "Visual cleanup of the deck's edge surfaces (2026-08-24)",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build Cut R slice: search-gather, heartbeat strip, machine chips",
+      "kind": "feature",
+      "parent": "fleet-deck",
+      "status": "claimed",
+      "one_liner": "New deck slice with acceptance walk steps",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add boot-state smoke gate with negative control",
+      "kind": "feature",
+      "parent": "fleet-deck",
+      "status": "claimed",
+      "one_liner": "Gate that proves the deck boots, with a control that fails",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build tbk-human-at: measured human location tool",
+      "kind": "feature",
+      "parent": "fleet-deck",
+      "status": "claimed",
+      "one_liner": "Fleet tool that measures which machine Wassim is actually at",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build tbk-to-human: idempotent hash-verified file delivery",
+      "kind": "feature",
+      "parent": "fleet-deck",
+      "status": "claimed",
+      "one_liner": "Copies a deliverable to the measured machine's Downloads, MD5-verified",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build decision sheet from the canonical template",
+      "kind": "feature",
+      "parent": "Ecomma Agent",
+      "status": "claimed",
+      "one_liner": "Rule-20 style decision sheet inside the agent's flow",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add Ratify / Ratify-with-edits / Dismiss-with-comment semantics",
+      "kind": "feature",
+      "parent": "Ecomma Agent",
+      "status": "claimed",
+      "one_liner": "Explicit three-way approval semantics on agent proposals",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Implement mention-only in groups in slack-inbound.ts",
+      "kind": "feature",
+      "parent": "Ecomma Agent",
+      "status": "open",
+      "one_liner": "Agent only responds in group channels when mentioned",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build Windows exe on Legion, NSIS install, verify mtime",
+      "kind": "feature",
+      "parent": "Ecomma Agent",
+      "status": "open",
+      "one_liner": "Windows build and install of the agent app on Legion",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Ship new-stakeholder creation flow (ST23)",
+      "kind": "feature",
+      "parent": "Ecomma Agent",
+      "status": "open",
+      "one_liner": "Recommend-and-ask or working add path for unknown stakeholders",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Implement greeting primitives and target kind in slack-send.ts",
+      "kind": "feature",
+      "parent": "Maximus-Desktop",
+      "status": "claimed",
+      "one_liner": "Slack sender knows greeting style and target type",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Implement mention-only trigger and stamped replies in slack-inbound.ts",
+      "kind": "feature",
+      "parent": "Maximus-Desktop",
+      "status": "claimed",
+      "one_liner": "Inbound Slack handler replies only on mention, stamps its replies",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Make attended+auto update additive, never drop old meetings",
+      "kind": "feature",
+      "parent": "Maximus-Desktop",
+      "status": "claimed",
+      "one_liner": "Meeting updates fold on top of old facts; full rebuild is separate",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Ship new-stakeholder creation flow: module, route, UI",
+      "kind": "feature",
+      "parent": "Maximus-Desktop",
+      "status": "claimed",
+      "one_liner": "ST23 stakeholder-add path across backend and UI",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build Windows installer on Legion from the new commit",
+      "kind": "feature",
+      "parent": "Maximus-Desktop",
+      "status": "open",
+      "one_liner": "Fresh installer build; install needs the app closed",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add vision-leg assertion to check-verification-parity.mjs",
+      "kind": "feature",
+      "parent": "mission-control-unified",
+      "status": "claimed",
+      "one_liner": "Parity check now proven to catch the vision-leg defect",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build Windows installer with ABI carve-check PASS v140",
+      "kind": "feature",
+      "parent": "mission-control-unified",
+      "status": "claimed",
+      "one_liner": "CI-built installer whose native-module ABI was verified",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build the app and install on Legion",
+      "kind": "feature",
+      "parent": "mission-control-unified",
+      "status": "open",
+      "one_liner": "Install the built app on the primary workstation",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Launch app on Zeph with schedule registered and catch-up scan",
+      "kind": "feature",
+      "parent": "mission-control-unified",
+      "status": "claimed",
+      "one_liner": "App running on Zeph with its scout schedule live",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build screen_difficulty.py held-out-model difficulty screen",
+      "kind": "feature",
+      "parent": "Vault (eval program)",
+      "status": "claimed",
+      "one_liner": "Keeps only mid-band eval items using a held-out model",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add spec-silent defect class to defect_lib CLASS_BAND",
+      "kind": "feature",
+      "parent": "Vault (eval program)",
+      "status": "claimed",
+      "one_liner": "New defect class in the eval defect library",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build collector.py aggregating results into state.json",
+      "kind": "feature",
+      "parent": "Vault (eval program)",
+      "status": "open",
+      "one_liner": "Aggregate all result files with derived insights and narrative",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build server.py plus systemd units for tailnet endpoint",
+      "kind": "feature",
+      "parent": "Vault (eval program)",
+      "status": "open",
+      "one_liner": "Live tailnet-reachable results endpoint",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build blind independent grader for 80 eval-pairs",
+      "kind": "feature",
+      "parent": "Vault (eval program)",
+      "status": "open",
+      "one_liner": "Opus 5 as off-council grader with randomized A/B",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add marketing opt-in via legalConsentOptions on forms",
+      "kind": "feature",
+      "parent": "Reimagined-Code",
+      "status": "claimed",
+      "one_liner": "Forms API consent options plus fail-open stamp on CRM forms",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build CookieConsentBanner with Accept/Reject/Customize",
+      "kind": "feature",
+      "parent": "Reimagined-Code",
+      "status": "claimed",
+      "one_liner": "Cookie banner component plus footer reopen link",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build consent lib with EEA detection and consent state",
+      "kind": "feature",
+      "parent": "Reimagined-Code",
+      "status": "claimed",
+      "one_liner": "Consent core using the CF-IPCountry header",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Add server-side consent log endpoint",
+      "kind": "feature",
+      "parent": "Reimagined-Code",
+      "status": "open",
+      "one_liner": "Persist consent decisions server-side",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build 2-page branded Word document with visuals",
+      "kind": "feature",
+      "parent": "Reimagined-Code",
+      "status": "claimed",
+      "one_liner": "Branded two-pager deliverable",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Implement traffic counter end to end",
+      "kind": "feature",
+      "parent": "equire",
+      "status": "claimed",
+      "one_liner": "Migration, schema, repo, endpoint, component, admin page, nav, accessibility",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Make /agreement read each partner's own track rates",
+      "kind": "feature",
+      "parent": "equire",
+      "status": "verified",
+      "one_liner": "Replaced hardcoded seller rates; closed with evidence",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build supplier outreach kit: catalogue method, brand email, scorecard",
+      "kind": "feature",
+      "parent": "Keyboards & Co",
+      "status": "claimed",
+      "one_liner": "Outreach package for supplier sourcing",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build landed-cost model and verify its arithmetic",
+      "kind": "feature",
+      "parent": "Keyboards & Co",
+      "status": "claimed",
+      "one_liner": "Cost model for imported keyboards with checked math",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build rule-20 decision page for dashboard direction, open on Legion",
+      "kind": "feature",
+      "parent": "The Brain (decisions)",
+      "status": "claimed",
+      "one_liner": "Interactive decision page served and opened on his screen; ratification record still open",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/tbk-forge.jsonl"
+    },
+    {
+      "name": "Build Features Ledger capture hook (TodoWrite PostToolUse)",
+      "kind": "feature",
+      "parent": "Organizing-Claude-Code (Features Ledger)",
+      "status": "open",
+      "one_liner": "The ledger's own bootstrap capture hook, logged from Strix 2026-07-06",
+      "evidence": "/home/wassim/projects/Organizing-Claude-Code/features-ledger/logs/TBK-ROG-Strix.jsonl"
+    },
+    {
+      "name": "tbk-attention",
+      "kind": "tool",
+      "one_liner": "Reads every fleet machine's verification-attention log in one command",
+      "status": "live",
+      "home": "tools/attention/tbk-attention.mjs",
+      "evidence": "tools/attention/README.md"
+    },
+    {
+      "name": "auth-fetch (auth-broker)",
+      "kind": "tool",
+      "one_liner": "Fetches login-gated pages by attaching the right machine credential per host",
+      "status": "live",
+      "home": "tools/auth-broker/auth-fetch.sh",
+      "evidence": "tools/auth-broker/README.md"
+    },
+    {
+      "name": "troubleshooting-ledger.py",
+      "kind": "tool",
+      "one_liner": "Appends and reads rule-45 Troubleshooting Ledger Google Sheet from any machine",
+      "status": "live",
+      "home": "tools/ledger/troubleshooting-ledger.py",
+      "evidence": "tools/ledger/README.md"
+    },
+    {
+      "name": "cf-rule.mjs (standing-auth)",
+      "kind": "tool",
+      "one_liner": "Standing-authorized Cloudflare DNS and redirect edits on tbk-labs.dev, ledgered",
+      "status": "live",
+      "home": "tools/standing-auth/cf-rule.mjs",
+      "evidence": "tools/standing-auth/README.md"
+    },
+    {
+      "name": "kamini-reader",
+      "kind": "tool",
+      "one_liner": "Polls Kamini's inbox on Zeph and files each handoff item autonomously",
+      "status": "live",
+      "home": "tools/kamini-reader/kamini-reader.mjs",
+      "evidence": "tools/kamini-reader/README.md"
+    },
+    {
+      "name": "kamini-reader.sh",
+      "kind": "tool",
+      "one_liner": "Systemd runner wrapping kamini-reader with a single-flight lock",
+      "status": "live",
+      "home": "tools/kamini-reader/kamini-reader.sh",
+      "evidence": "tools/kamini-reader/kamini-reader.sh"
+    },
+    {
+      "name": "setup-inbox-keys.mjs",
+      "kind": "tool",
+      "one_liner": "One-time idempotent setup of Kamini inbox crypto keys and config",
+      "status": "live",
+      "home": "tools/kamini-reader/setup-inbox-keys.mjs",
+      "evidence": "tools/kamini-reader/setup-inbox-keys.mjs"
+    },
+    {
+      "name": "tbk-forge-winkeys.sh",
+      "kind": "tool",
+      "one_liner": "Windows-style keyboard mapping on the tbk-forge Mac via Synergy",
+      "status": "retired",
+      "home": "tools/tbk-forge-winkeys.sh",
+      "evidence": "tools/tbk-forge-winkeys.sh (targets the Mac retired in the 2026-07 migration per global CLAUDE.md)"
+    },
+    {
+      "name": "ai-setup-doctor.sh",
+      "kind": "tool",
+      "one_liner": "Drift detector for the one-chassis-many-brains AI setup, per host or fleet-wide",
+      "status": "live",
+      "home": "project-starter/governance/fleet/ai-setup-doctor.sh",
+      "evidence": "project-starter/governance/fleet/ai-setup-doctor.sh"
+    },
+    {
+      "name": "battle-test.mjs",
+      "kind": "tool",
+      "one_liner": "Proves every mechanism the global rulebook names actually fires here",
+      "status": "live",
+      "home": "project-starter/governance/fleet/battle-test.mjs",
+      "evidence": "project-starter/governance/fleet/battle-test.mjs"
+    },
+    {
+      "name": "cf-access-proxy",
+      "kind": "tool",
+      "one_liner": "SSH ProxyCommand routing through Cloudflare Access tunnel, Tailscale-independent",
+      "status": "live",
+      "home": "project-starter/governance/fleet/cf-access-proxy",
+      "evidence": "project-starter/governance/fleet/cf-access-proxy"
+    },
+    {
+      "name": "cf-setup.py",
+      "kind": "tool",
+      "one_liner": "Builds the Cloudflare Tunnel SSH escape hatch for one fleet node",
+      "status": "live",
+      "home": "project-starter/governance/fleet/cf-setup.py",
+      "evidence": "project-starter/governance/fleet/cf-setup.py"
+    },
+    {
+      "name": "delegation-router.py",
+      "kind": "tool",
+      "one_liner": "Executable rule-40 delegation guard hooked into Claude Code sessions",
+      "status": "live",
+      "home": "project-starter/governance/fleet/delegation-router.py",
+      "evidence": "project-starter/governance/fleet/delegation-router.py"
+    },
+    {
+      "name": "install-delegation-router.py",
+      "kind": "tool",
+      "one_liner": "Installs the delegation router into hook registrations",
+      "status": "live",
+      "home": "project-starter/governance/fleet/install-delegation-router.py",
+      "evidence": "project-starter/governance/fleet/install-delegation-router.py"
+    },
+    {
+      "name": "delegation-router-gate.py",
+      "kind": "tool",
+      "one_liner": "Contract gate verifying delegation-router roles and behavior",
+      "status": "live",
+      "home": "project-starter/governance/fleet/delegation-router-gate.py",
+      "evidence": "project-starter/governance/fleet/delegation-router-gate.py"
+    },
+    {
+      "name": "delegation-router-continuity-gate.py",
+      "kind": "tool",
+      "one_liner": "Regression gate: routing must advise without blocking session continuity",
+      "status": "live",
+      "home": "project-starter/governance/fleet/delegation-router-continuity-gate.py",
+      "evidence": "project-starter/governance/fleet/delegation-router-continuity-gate.py"
+    },
+    {
+      "name": "engine-badge",
+      "kind": "tool",
+      "one_liner": "SessionStart hook printing the engine badge, detects cross-model resume",
+      "status": "live",
+      "home": "project-starter/governance/fleet/engine-badge",
+      "evidence": "project-starter/governance/fleet/engine-badge"
+    },
+    {
+      "name": "engine-badge-gate.py",
+      "kind": "tool",
+      "one_liner": "Hermetic regression gate for engine-badge resume detection",
+      "status": "live",
+      "home": "project-starter/governance/fleet/engine-badge-gate.py",
+      "evidence": "project-starter/governance/fleet/engine-badge-gate.py"
+    },
+    {
+      "name": "engine-set",
+      "kind": "tool",
+      "one_liner": "Switches a project's Claude Code engine between qwen, kimi, claude and others",
+      "status": "live",
+      "home": "project-starter/governance/fleet/engine-set",
+      "evidence": "project-starter/governance/fleet/engine-set"
+    },
+    {
+      "name": "engine-set-gate.py",
+      "kind": "tool",
+      "one_liner": "Hermetic regression gate covering every engine-set branch",
+      "status": "live",
+      "home": "project-starter/governance/fleet/engine-set-gate.py",
+      "evidence": "project-starter/governance/fleet/engine-set-gate.py"
+    },
+    {
+      "name": "ensure-host-identity.sh",
+      "kind": "tool",
+      "one_liner": "Self-healing timer script keeping host-identity hooks installed everywhere",
+      "status": "live",
+      "home": "project-starter/governance/fleet/ensure-host-identity.sh",
+      "evidence": "project-starter/governance/fleet/ensure-host-identity.sh"
+    },
+    {
+      "name": "forge-agent-reaper.sh",
+      "kind": "tool",
+      "one_liner": "Reaps provably abandoned Claude Code agent sessions on Forge",
+      "status": "live",
+      "home": "project-starter/governance/fleet/forge-agent-reaper.sh",
+      "evidence": "project-starter/governance/fleet/forge-agent-reaper.sh"
+    },
+    {
+      "name": "forge-vscode-reaper.sh",
+      "kind": "tool",
+      "one_liner": "Reclaims RAM from abandoned vscode-servers on Forge, fail-safe",
+      "status": "live",
+      "home": "project-starter/governance/fleet/forge-vscode-reaper.sh",
+      "evidence": "project-starter/governance/fleet/forge-vscode-reaper.sh"
+    },
+    {
+      "name": "forge-provision-server.sh",
+      "kind": "tool",
+      "one_liner": "Provisions a per-project vscode-server on Forge with extensions copied",
+      "status": "live",
+      "home": "project-starter/governance/fleet/forge-provision-server.sh",
+      "evidence": "project-starter/governance/fleet/forge-provision-server.sh"
+    },
+    {
+      "name": "governance-checks.sh",
+      "kind": "tool",
+      "one_liner": "Three mechanical recurrence checks on the global rulebook and hook parity",
+      "status": "live",
+      "home": "project-starter/governance/fleet/governance-checks.sh",
+      "evidence": "project-starter/governance/fleet/governance-checks.sh"
+    },
+    {
+      "name": "mirror-project-rules.sh",
+      "kind": "tool",
+      "one_liner": "Generates AGENTS.md from CLAUDE.md for harnesses that only read AGENTS.md",
+      "status": "live",
+      "home": "project-starter/governance/fleet/mirror-project-rules.sh",
+      "evidence": "project-starter/governance/fleet/mirror-project-rules.sh"
+    },
+    {
+      "name": "qwen-meter",
+      "kind": "tool",
+      "one_liner": "Operator's live view of metered AI plan caps and spend per host",
+      "status": "live",
+      "home": "project-starter/governance/fleet/qwen-meter",
+      "evidence": "project-starter/governance/fleet/qwen-meter"
+    },
+    {
+      "name": "qwen-relay",
+      "kind": "tool",
+      "one_liner": "Local subscription router holding vendor keys, seat rotation and budget wall",
+      "status": "live",
+      "home": "project-starter/governance/fleet/qwen-relay.py",
+      "evidence": "project-starter/governance/fleet/qwen-relay.py"
+    },
+    {
+      "name": "qwen-relay-gate.py",
+      "kind": "tool",
+      "one_liner": "Hermetic budget-wall test gate for the qwen-relay",
+      "status": "live",
+      "home": "project-starter/governance/fleet/qwen-relay-gate.py",
+      "evidence": "project-starter/governance/fleet/qwen-relay-gate.py"
+    },
+    {
+      "name": "session-start-host",
+      "kind": "tool",
+      "one_liner": "SessionStart hook injecting which fleet machine the session runs on",
+      "status": "live",
+      "home": "project-starter/governance/fleet/session-start-host.sh",
+      "evidence": "project-starter/governance/fleet/session-start-host.sh (mjs twin for Windows alongside)"
+    },
+    {
+      "name": "userprompt-host",
+      "kind": "tool",
+      "one_liner": "Every-turn hook re-asserting the session host so it survives compaction",
+      "status": "live",
+      "home": "project-starter/governance/fleet/userprompt-host.sh",
+      "evidence": "project-starter/governance/fleet/userprompt-host.sh (mjs twin for Windows alongside)"
+    },
+    {
+      "name": "sync-windows-clone.sh",
+      "kind": "tool",
+      "one_liner": "Fast-forwards the Windows-native OCC clone from WSL canon, non-destructive",
+      "status": "live",
+      "home": "project-starter/governance/fleet/sync-windows-clone.sh",
+      "evidence": "project-starter/governance/fleet/sync-windows-clone.sh"
+    },
+    {
+      "name": "tbk-human-at",
+      "kind": "tool",
+      "one_liner": "Measures which fleet machine the human is actually sitting at",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-human-at",
+      "evidence": "project-starter/governance/fleet/tbk-human-at"
+    },
+    {
+      "name": "tbk-open",
+      "kind": "tool",
+      "one_liner": "Opens a URL on the human's actual screen, rerouting from headless hosts",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-open",
+      "evidence": "project-starter/governance/fleet/tbk-open"
+    },
+    {
+      "name": "tbk-open-file",
+      "kind": "tool",
+      "one_liner": "Opens a file or folder in its default app on the human's screen, verified",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-open-file",
+      "evidence": "project-starter/governance/fleet/tbk-open-file"
+    },
+    {
+      "name": "tbk-open-file-worker.ps1",
+      "kind": "tool",
+      "one_liner": "In-session Windows worker that opens the file and reads back the window title",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-open-file-worker.ps1",
+      "evidence": "project-starter/governance/fleet/tbk-open-file-worker.ps1"
+    },
+    {
+      "name": "tbk-open-file-task.ps1",
+      "kind": "tool",
+      "one_liner": "One-time registration of the interactive tbk-open-file task per workstation",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-open-file-task.ps1",
+      "evidence": "project-starter/governance/fleet/tbk-open-file-task.ps1"
+    },
+    {
+      "name": "tbk-open-task.ps1",
+      "kind": "tool",
+      "one_liner": "One-time registration of the interactive tbk-open URL task per workstation",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-open-task.ps1",
+      "evidence": "project-starter/governance/fleet/tbk-open-task.ps1"
+    },
+    {
+      "name": "tbk-to-human",
+      "kind": "tool",
+      "one_liner": "Copies a file into the measured human machine's Downloads, MD5-verified",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-to-human",
+      "evidence": "project-starter/governance/fleet/tbk-to-human"
+    },
+    {
+      "name": "tbk-whoami",
+      "kind": "tool",
+      "one_liner": "Resolves which fleet machine this shell is on, marker then hostname",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-whoami.sh",
+      "evidence": "project-starter/governance/fleet/tbk-whoami.sh"
+    },
+    {
+      "name": "tbk-wsl-interop",
+      "kind": "tool",
+      "one_liner": "Finds the live WSL interop socket so Windows binaries launch again",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-wsl-interop",
+      "evidence": "project-starter/governance/fleet/tbk-wsl-interop"
+    },
+    {
+      "name": "tbk-ship-shares.sh",
+      "kind": "tool",
+      "one_liner": "The only sanctioned shipper to shares.tbk-labs.dev, verifies served bytes",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-ship-shares.sh",
+      "evidence": "project-starter/governance/fleet/tbk-ship-shares.sh"
+    },
+    {
+      "name": "tbk-shares-inbox.sh",
+      "kind": "tool",
+      "one_liner": "Drains a Windows inbox folder into tbk-shares and publishes each file",
+      "status": "live",
+      "home": "project-starter/governance/fleet/tbk-shares-inbox.sh",
+      "evidence": "project-starter/governance/fleet/tbk-shares-inbox.sh"
+    },
+    {
+      "name": "wsl-memwatch.sh",
+      "kind": "tool",
+      "one_liner": "Logs what is resident when Forge WSL nears its memory ceiling",
+      "status": "live",
+      "home": "project-starter/governance/fleet/wsl-memwatch.sh",
+      "evidence": "project-starter/governance/fleet/wsl-memwatch.sh"
+    },
+    {
+      "name": "make-project-shortcuts.ps1",
+      "kind": "tool",
+      "one_liner": "Builds a Desktop folder of VS Code shortcuts, one per project",
+      "status": "live",
+      "home": "project-starter/governance/fleet/make-project-shortcuts.ps1",
+      "evidence": "project-starter/governance/fleet/make-project-shortcuts.ps1"
+    },
+    {
+      "name": "run-in-console-session.ps1",
+      "kind": "tool",
+      "one_liner": "Runs a PowerShell script inside the logged-in desktop session from SSH",
+      "status": "live",
+      "home": "project-starter/governance/fleet/run-in-console-session.ps1",
+      "evidence": "project-starter/governance/fleet/run-in-console-session.ps1"
+    },
+    {
+      "name": "wsl-windows-access.ps1",
+      "kind": "tool",
+      "one_liner": "Maps a Windows drive letter onto the WSL filesystem, no sync copy",
+      "status": "live",
+      "home": "project-starter/governance/fleet/wsl-windows-access.ps1",
+      "evidence": "project-starter/governance/fleet/wsl-windows-access.ps1"
+    },
+    {
+      "name": "codex-feedback-guard.mjs",
+      "kind": "tool",
+      "one_liner": "Rule 47 feedback-completeness Stop hook ported to the Codex harness",
+      "status": "live",
+      "home": "project-starter/governance/fleet/codex-hooks/codex-feedback-guard.mjs",
+      "evidence": "project-starter/governance/fleet/codex-hooks/codex-feedback-guard.mjs"
+    },
+    {
+      "name": "codex-verification-gate.mjs",
+      "kind": "tool",
+      "one_liner": "Rule 36 verification Stop hook ported to the Codex harness",
+      "status": "live",
+      "home": "project-starter/governance/fleet/codex-hooks/codex-verification-gate.mjs",
+      "evidence": "project-starter/governance/fleet/codex-hooks/codex-verification-gate.mjs"
+    },
+    {
+      "name": "tracker_logrow.py",
+      "kind": "tool",
+      "one_liner": "Canonical appender of one Log row to TBK-Skill-Tracker.xlsx",
+      "status": "live",
+      "home": "project-starter/Resources/tools/tracker_logrow.py",
+      "evidence": "project-starter/Resources/tools/README.md"
+    },
+    {
+      "name": "tracker_append.py",
+      "kind": "tool",
+      "one_liner": "Supporting tracker workbook appender, path-portable across machines",
+      "status": "live",
+      "home": "project-starter/Resources/tools/tracker_append.py",
+      "evidence": "project-starter/Resources/tools/tracker_append.py"
+    },
+    {
+      "name": "tracker_checklast.py",
+      "kind": "tool",
+      "one_liner": "Prints tracker workbook integrity and the last logged row",
+      "status": "live",
+      "home": "project-starter/Resources/tools/tracker_checklast.py",
+      "evidence": "project-starter/Resources/tools/tracker_checklast.py"
+    },
+    {
+      "name": "tracker_inspect.py",
+      "kind": "tool",
+      "one_liner": "Inspects tracker workbook sheets and internal structure",
+      "status": "live",
+      "home": "project-starter/Resources/tools/tracker_inspect.py",
+      "evidence": "project-starter/Resources/tools/tracker_inspect.py"
+    },
+    {
+      "name": "tracker_verify.py",
+      "kind": "tool",
+      "one_liner": "Verifies tracker workbook zip integrity; hardcoded C:\\dev path limits it",
+      "status": "dormant",
+      "home": "project-starter/Resources/tools/tracker_verify.py",
+      "evidence": "project-starter/Resources/tools/tracker_verify.py (hardcoded Windows path unlike its repaired siblings)"
+    },
+    {
+      "name": "deploy-apex.sh",
+      "kind": "tool",
+      "one_liner": "Installs the /apex Excellence Engine from OCC into ~/.claude",
+      "status": "live",
+      "home": "project-starter/Resources/tools/deploy-apex.sh",
+      "evidence": "project-starter/Resources/tools/deploy-apex.sh"
+    },
+    {
+      "name": "lint-linux-ready.mjs",
+      "kind": "tool",
+      "one_liner": "Pre-cascade lint catching Windows-only paths in skills and hooks",
+      "status": "live",
+      "home": "project-starter/Resources/tools/lint-linux-ready.mjs",
+      "evidence": "project-starter/Resources/tools/lint-linux-ready.mjs"
+    },
+    {
+      "name": "superpowers-dashboard-gen.mjs",
+      "kind": "tool",
+      "one_liner": "Recomputes superpowers dashboard metrics and deploys to shares on change",
+      "status": "live",
+      "home": "project-starter/Resources/tools/superpowers-dashboard-gen.mjs",
+      "evidence": "project-starter/Resources/tools/superpowers-dashboard-gen.mjs"
+    },
+    {
+      "name": "run-hidden.vbs",
+      "kind": "tool",
+      "one_liner": "Runs any command with no visible window, preserving exit code",
+      "status": "live",
+      "home": "project-starter/Resources/tools/run-hidden.vbs",
+      "evidence": "project-starter/Resources/tools/run-hidden.vbs"
+    },
+    {
+      "name": "sp-gen-launch.vbs",
+      "kind": "tool",
+      "one_liner": "Hidden launcher for the superpowers dashboard generator",
+      "status": "live",
+      "home": "project-starter/Resources/tools/sp-gen-launch.vbs",
+      "evidence": "project-starter/Resources/tools/sp-gen-launch.vbs"
+    },
+    {
+      "name": "wsl-keepalive.vbs",
+      "kind": "tool",
+      "one_liner": "Boots and holds the WSL2 VM up at logon so timers fire",
+      "status": "live",
+      "home": "project-starter/Resources/tools/wsl-keepalive.vbs",
+      "evidence": "project-starter/Resources/tools/wsl-keepalive.vbs"
+    }
+  ],
+  "milestones": [
+    {
+      "product": "Features Ledger",
+      "label": "First verified delivery; TodoWrite hook captures every to-do",
+      "date": "2026-07-06",
+      "status": "done",
+      "evidence": "verification/2026-07-06-features-ledger"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Standing authorization for reversible infrastructure actions shipped",
+      "date": "2026-07-09",
+      "status": "done",
+      "evidence": "verification/2026-07-09-standing-auth"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Verification gate hardened: reliability fixes, then session-cwd anchor",
+      "date": "2026-07-12",
+      "status": "done",
+      "evidence": "verification/2026-07-07-gate-reliability-fixes, 2026-07-12-verification-gate-cwd-anchor"
+    },
+    {
+      "product": "Apex",
+      "label": "Foundations, independent-labeling protocol, Kimi K3 recalibration verified in seven walks",
+      "date": "2026-07-19",
+      "status": "done",
+      "evidence": "seven verification/2026-07-19-apex-* folders"
+    },
+    {
+      "product": "Apex",
+      "label": "Authority-commissioning decision ratified",
+      "date": "2026-07-20",
+      "status": "done",
+      "evidence": "verification/2026-07-20-apex-authority-commissioning-decision"
+    },
+    {
+      "product": "Fix",
+      "label": "Canonical evaluation foundation, control plane, operationalization, v22 anatomy published",
+      "date": "2026-07-19",
+      "status": "done",
+      "evidence": "four verification/2026-07-19-fix-* folders"
+    },
+    {
+      "product": "Research Arsenal",
+      "label": "14 arsenal-autonomy cycles verified, 2026-07-03 through 2026-08-06",
+      "date": "2026-08-06",
+      "status": "done",
+      "evidence": "verification/*-arsenal-autonomy-cycle folders"
+    },
+    {
+      "product": "Fusion",
+      "label": "WS0 measurement verified",
+      "date": "2026-07-22",
+      "status": "done",
+      "evidence": "verification/2026-07-22-fusion-ws0-measurement"
+    },
+    {
+      "product": "Fusion",
+      "label": "v4 two-speed architecture verified",
+      "date": "2026-08-06",
+      "status": "done",
+      "evidence": "verification/2026-08-06-fusion-v4-two-speed"
+    },
+    {
+      "product": "Fusion",
+      "label": "v4 task series: repair ladder, controller, harness, advisor methodology",
+      "date": "2026-08-07",
+      "status": "done",
+      "evidence": "verification/2026-08-07-fusion-v4-* and 2026-08-08-fusion-task* folders"
+    },
+    {
+      "product": "Fusion",
+      "label": "v4 quality-default ratified; task-018 frozen on runner 1361",
+      "date": "2026-08-09",
+      "status": "done",
+      "evidence": "verification/2026-08-08-fusion-v4-quality-default, 2026-08-09-fusion-runner1361-task018-freeze"
+    },
+    {
+      "product": "Features Ledger",
+      "label": "Freshness fix; daily 08:00 artifact refresh cron running since",
+      "date": "2026-08-10",
+      "status": "done",
+      "evidence": "verification/2026-08-10-features-ledger-freshness-fix; daily commits e.g. af0a1ab2"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Rule 48 broadened: every handoff arrives executable",
+      "date": "2026-08-10",
+      "status": "done",
+      "evidence": "verification/2026-08-10-executable-handoff-rule-broadened"
+    },
+    {
+      "product": "Yatagarasu",
+      "label": "Brain-scout pipeline adopted from The Brain; agent gets its name",
+      "date": "2026-08-10",
+      "status": "done",
+      "evidence": "verification/2026-08-10-yatagarasu-assumes-brain-scout; CLAUDE.md canonical list"
+    },
+    {
+      "product": "Yatagarasu",
+      "label": "Feed-doc rotation handoff verified",
+      "date": "2026-08-12",
+      "status": "done",
+      "evidence": "verification/2026-08-12-yatagarasu-doc-rotation-handoff"
+    },
+    {
+      "product": "Yatagarasu",
+      "label": "delivery.py, llm.py edits plus new doc_creator.py in flight, uncommitted",
+      "date": "2026-08-24",
+      "status": "in-progress",
+      "evidence": "git status: modified brain_scout files, untracked doc_creator.py"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Relock execution verified",
+      "date": "2026-08-10",
+      "status": "done",
+      "evidence": "verification/2026-08-10-sentinel-relock-execution"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Phase 0: Judge service, linters, verifier account, tripwire built",
+      "date": "2026-08-11",
+      "status": "done",
+      "evidence": "six verification/2026-08-11-sentinel-* folders"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Asset fingerprinting landed",
+      "date": "2026-08-12",
+      "status": "done",
+      "evidence": "verification/2026-08-12-sentinel-asset-fingerprint"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Seven acceptance, mode, and watcher walks recorded over two days",
+      "date": "2026-08-14",
+      "status": "done",
+      "evidence": "verification/2026-08-13/14-sentinel-* walk folders"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Claim-trigger wired; progress audit passed",
+      "date": "2026-08-16",
+      "status": "done",
+      "evidence": "verification/2026-08-16-sentinel-claim-trigger, -progress-audit"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Contrast calibration warns internal, blocks public; session-scope gate; shebang dispatch",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "commits 16d61615, ec53c7e6, e4d162e3; verification/2026-08-21-sentinel-session-scope-gate"
+    },
+    {
+      "product": "Sentinel",
+      "label": ".sql checker shipped after two wrong approaches, evidence captured",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commits 853fc6b3, cf08d8d5; verification/2026-08-22-sentinel-sql-checker"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Eight open findings triaged; two checker false positives fixed",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commit 4fa64cff; verification/2026-08-23-sentinel-triage"
+    },
+    {
+      "product": "Sentinel",
+      "label": "Five acceptance walks failing, now visible instead of silent",
+      "date": "2026-08-23",
+      "status": "in-progress",
+      "evidence": "handoff.md 2026-08-23 entry, STATUS.md Open section"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "Canonical spec ratified and merged; v0.5 voice errand delivered",
+      "date": "2026-08-15",
+      "status": "done",
+      "evidence": "verification/2026-08-15-shakeeb-anywhere-* folders"
+    },
+    {
+      "product": "Shikigami",
+      "label": "First summon",
+      "date": "2026-08-15",
+      "status": "done",
+      "evidence": "verification/2026-08-15-shikigami-first-summon"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.6.0 memory arsenal",
+      "date": "2026-08-16",
+      "status": "done",
+      "evidence": "verification/2026-08-16-shakeeb-v060-memory-arsenal"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.7.9 brains and voice wired",
+      "date": "2026-08-17",
+      "status": "done",
+      "evidence": "verification/2026-08-17-shakeeb-v079-brains-voice"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.8.0 to v0.8.3: console live, token-locked, permanent link",
+      "date": "2026-08-17",
+      "status": "done",
+      "evidence": "verification/2026-08-17-shakeeb-v080-console through -v083-permanent-link"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.8.4 daemon autostarts on Legion; orb ruled opt-in",
+      "date": "2026-08-17",
+      "status": "done",
+      "evidence": "STATUS.md Shakeeb section; console at shakeeb.tbk-labs.dev"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "Task-launched orb dies ~15s in; quiet-launch design unverified",
+      "date": "2026-08-17",
+      "status": "in-progress",
+      "evidence": "STATUS.md Known open"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.23 deep-audit release, repaired and redeployed same day",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "commit a93981b2; verification/2026-08-21-shakeeb-v0923-repair-and-deploy"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.24-27: Qwen enterprise lane, reasoner lane, chat-voice dials, tokened settings",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commits fe3bd5b5, 6864e6fc, 68c10111, 6519aac7"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.28 close-out: PTT rekey, 31-check e2e harness green",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commit 6125f0c6"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.30: pixel fallback lane reads via WinRT OCR",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commit dd4ac652"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.31: bounded operator-started screen-watch sessions; Console Watch card",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commits e164620c, cde2b9a0, d421713b"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.32: word-writer speaks; qwen3.8-max composes orb spoken lines",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commit 67b9d88e; live e2e 21/21"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.33-37: pad-speed detection, PadLatch, draggable panel, single-instance mutex",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commits 2062bd7f, 0bda3675, 0e49d913, 1de42d22"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.38-40: mic-eating typing guard fixed, two-tap toggle, pad binding proven",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commits 302bbb29, 9cf5a87f, 04dd9c7c"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.41-43: thumb-key rebind, screen OCR subcommand, 3s guard grace",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commits 9a34f371, 2fa9a8f6, 8f46fd43"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.45: single-button control, one toggle, four pad gestures",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commit f220ee82"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.46: silence gate drops no-speech clips before paid Whisper call",
+      "date": "2026-08-24",
+      "status": "done",
+      "evidence": "commit e4eca2f9; 38/38 gate tests"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "v0.9.47: canonical-lag guard; page cannot silently lag the daemon",
+      "date": "2026-08-24",
+      "status": "done",
+      "evidence": "commit 292a7cf4; verification/2026-08-24-shakeeb-v0947-canonical-lag-guard"
+    },
+    {
+      "product": "Shakeeb",
+      "label": "STT drop-watch cron armed; step 4 deferred by design",
+      "date": "2026-08-24",
+      "status": "in-progress",
+      "evidence": "commit 755e6651 handoff"
+    },
+    {
+      "product": "Zangetsu",
+      "label": "Moved off Fusion",
+      "date": "2026-08-19",
+      "status": "done",
+      "evidence": "verification/2026-08-19-zangetsu-off-fusion"
+    },
+    {
+      "product": "Zangetsu",
+      "label": "Guardian loops live; warden unblocked, 13 catches; 1,195 dead lines removed",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commits 3f5168eb, da156b15, 1aeb5861; verification/2026-08-23-zangetsu-audit"
+    },
+    {
+      "product": "Zangetsu",
+      "label": "Own hook caught sentinel-checks false-done; checker rewritten, fixture-proven",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commit 8aa2e1df; ESCAPE-LOG row class never-worked"
+    },
+    {
+      "product": "Zangetsu",
+      "label": "BLIND alarm at 26%; root cause upstream Claude Code transcript deletion",
+      "date": "2026-08-23",
+      "status": "in-progress",
+      "evidence": "STATUS.md and handoff.md Open sections"
+    },
+    {
+      "product": "Zangetsu",
+      "label": "Decide 3 claim-source failures: real overclaims or over-tight checker",
+      "status": "planned",
+      "evidence": "handoff.md 2026-08-23 Next action"
+    },
+    {
+      "product": "Qwen relay",
+      "label": "Content-block chain fix, stateless cache ladder, tool canonicalization",
+      "date": "2026-08-20",
+      "status": "done",
+      "evidence": "verification/2026-08-20-qwen-* folders"
+    },
+    {
+      "product": "Qwen relay",
+      "label": "Inspection refusal recovered on both wire forms; contract-rate meter; 61-check gate",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "STATUS.md 2026-08-21; verification/2026-08-21-qwen-inspection-recovery"
+    },
+    {
+      "product": "Qwen relay",
+      "label": "Anonymous conversation attribution via cid; 76-check gate, zero behavior change",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commit 4689be26; ADR-0121"
+    },
+    {
+      "product": "Qwen relay",
+      "label": "DeepSeek Flash cost sensor; true enterprise spend visible, 79 checks",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commit a0bbd375; verification/2026-08-22-qwen-deepseek-cost-sensor"
+    },
+    {
+      "product": "Qwen relay",
+      "label": "Single-prompt inspection recovery keeps root task plus 32-message tail",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commit 8b99813d; verification/2026-08-22-qwen-single-prompt-recovery"
+    },
+    {
+      "product": "Qwen relay",
+      "label": "Rank conversation cost by cid once attributed rows accumulate",
+      "status": "planned",
+      "evidence": "handoff.md 2026-08-22 Next action"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Enterprise Kimi K3 relay engine added",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "commit 43b6e193"
+    },
+    {
+      "product": "AutoSync",
+      "label": "Legion STUCK root-caused; whole fleet syncing again",
+      "date": "2026-08-17",
+      "status": "done",
+      "evidence": "verification/2026-08-16-autosync-legion-stuck-root-cause, 2026-08-17-autosync-fleet-all-syncing"
+    },
+    {
+      "product": "AutoSync",
+      "label": "Fleet audit: 7 stuck repos cleared, 100MB jam class fixed at root",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "verification/2026-08-21-autosync-audit-unblock; STATUS.md"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Close block bounded (ADR-0119) after buried-answer measurement of 282 replies",
+      "date": "2026-08-20",
+      "status": "done",
+      "evidence": "verification/2026-08-20-buried-answer-diagnosis; rule 42 amendment"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Quality-first engine-aware role routing ratified; engine-correct roles enforced",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "commits 801376a5, ce4992bc, 9fcfe076"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Nested routing: nearest ancestor settings wins; operational scout lane added",
+      "date": "2026-08-22",
+      "status": "done",
+      "evidence": "commits 61600db6, 03dfab10; verification/2026-08-22-nested-engine-routing"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Engine switch matrix verified; resume model-mismatch surfaced and fixed",
+      "date": "2026-08-24",
+      "status": "done",
+      "evidence": "commit 35600c4c; verification/2026-08-22-engine-switch-matrix, 2026-08-24-engine-resume-model-mismatch"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Delegation router made advisory; tool continuity restored without task restarts",
+      "date": "2026-08-24",
+      "status": "done",
+      "evidence": "commit f1d69a27; verification/2026-08-24-tool-continuity"
+    },
+    {
+      "product": "OCC/governance",
+      "label": "Brand-gate third check for bare inline TBK mark",
+      "status": "planned",
+      "evidence": "handoff.md 2026-08-24 Next action; hole re-proven, Fleet Deck finding ee50e1bfb971"
+    },
+    {
+      "product": "live-artifact",
+      "label": "Orrery of what gets built plus plan spine, live",
+      "date": "2026-08-24",
+      "status": "done",
+      "evidence": "commit 3c1f4815; verification/2026-08-24-live-artifact-orrery-spine"
+    },
+    {
+      "product": "Tetsujin",
+      "label": "WhatsApp daily-report channel retired; reporting via tablet and canonical page",
+      "date": "2026-08-23",
+      "status": "done",
+      "evidence": "commit b6938041"
+    },
+    {
+      "product": "Tetsujin",
+      "label": "Decoy _tetsujin_ref.html marked; canonical refs point at tbk-shares source",
+      "date": "2026-08-24",
+      "status": "done",
+      "evidence": "commit 289ce8a2"
+    },
+    {
+      "product": "Research Arsenal",
+      "label": "Current-state audit; false-done escape row filed",
+      "date": "2026-08-21",
+      "status": "done",
+      "evidence": "commits caf8d8ca, c4269113; verification/2026-08-21-research-arsenal-audit"
+    }
+  ]
+}

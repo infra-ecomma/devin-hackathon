@@ -1,0 +1,137 @@
+{
+  "when": "2026-08-30T08:02:18.534Z",
+  "steps": [
+    {
+      "n": 1,
+      "name": "empty state offers the draft button, the hand edit, the shared birth, and no invented products",
+      "ok": true,
+      "detail": "\n      No plan declared yet\n      The spine draws the plan you declare, and the "
+    },
+    {
+      "n": 2,
+      "name": "edit-by-hand opens the editor on an empty plan",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 3,
+      "name": "hand edit writes .tellurion/plan.json with the product, phase and step",
+      "ok": true,
+      "detail": "{\"products\":1,\"steps\":1}"
+    },
+    {
+      "n": 4,
+      "name": "connection report connects the declared home to the repo",
+      "ok": true,
+      "detail": "Every product connects to this repo.Walk Product → dashboard (declared home)"
+    },
+    {
+      "n": 5,
+      "name": "the spine draws the declared product after the save",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 6,
+      "name": "a rename in the editor lands in the file",
+      "ok": true,
+      "detail": "Walk the renamed step"
+    },
+    {
+      "n": 7,
+      "name": "draft over an existing plan is refused without force",
+      "ok": true,
+      "detail": "409"
+    },
+    {
+      "n": 8,
+      "name": "force re-draft answers 202 immediately",
+      "ok": true,
+      "detail": "202"
+    },
+    {
+      "n": 9,
+      "name": "the harness draft lands and reports done",
+      "ok": true,
+      "detail": "{\"d\":{\"state\":\"done\",\"at\":\"2026-08-30T07:57:41.840Z\",\"steps\":12,\"products\":3},\"totals\":{\"products\":3,\"phases\":4,\"phasesDone\":1,\"steps\":12,\"s"
+    },
+    {
+      "n": 10,
+      "name": "the drafted plan declares real products with honest statuses",
+      "ok": true,
+      "detail": "3 products, 4 phases"
+    },
+    {
+      "n": 11,
+      "name": "the spine draws the drafted products (the watcher lifted the file)",
+      "ok": true,
+      "detail": "Invoice API, Ledger Dashboard, Invoice PDF Export"
+    },
+    {
+      "n": 12,
+      "name": "reconcile answers with proposals or an honest all-connected note",
+      "ok": true,
+      "detail": "{\"ok\":true,\"proposals\":[{\"id\":\"invoice-pdf-export\",\"home\":null,\"why\":\"No PDF code exists anywhere in the repo; api/ and dashboard/ are empty"
+    },
+    {
+      "n": 13,
+      "name": "init-tbk: a harness following the skill writes a valid .tellurion/plan.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 14,
+      "name": "init-tbk: the panel draws the skill-born plan without any hand edit",
+      "ok": true,
+      "detail": "Storefront web UI, Order sync workers"
+    },
+    {
+      "n": 15,
+      "name": "init-tbk: the skill-born plan gets a connection report",
+      "ok": true,
+      "detail": "[{\"product\":{\"id\":\"storefront-web\",\"name\":\"Storefront web UI\"},\"matched\":true,\"via\":\"home\",\"home\":\"web\"},{\"product\":{\"id\":\"order-sync\",\"name"
+    },
+    {
+      "n": 16,
+      "name": "inception: propose-plan turns the approved spec into .tellurion/plan.json",
+      "ok": true,
+      "detail": "  written  : .tellurion/plan.json"
+    },
+    {
+      "n": 17,
+      "name": "inception: every spec product lands with its id and note, homes verified against the tree",
+      "ok": true,
+      "detail": "reader@lib/reader, plate@public/plate, ghost"
+    },
+    {
+      "n": 18,
+      "name": "inception: the build story lands in story order with every binding intact",
+      "ok": true,
+      "detail": "Foundation:2, Join:2"
+    },
+    {
+      "n": 19,
+      "name": "inception: a newborn project is honestly all-planned, and the note cites the spec",
+      "ok": true,
+      "detail": "Drafted by propose-plan on 2026-08-30. EDIT THIS: products and the build story came from docs/PRODUCT-SPEC.md "
+    },
+    {
+      "n": 20,
+      "name": "inception: the panel draws the spec-born plan — 3 products, 2 phases, 4 steps, nothing invented",
+      "ok": true,
+      "detail": "{\"products\":3,\"phases\":2,\"phasesDone\":0,\"steps\":4,\"stepsDone\":0,\"stepsActive\":0}"
+    },
+    {
+      "n": 21,
+      "name": "inception: the spine shows the story the operator approved, product and step names verbatim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 22,
+      "name": "inception: the connection report connects every homed product to the real tree",
+      "ok": true,
+      "detail": "[\"reader:ok\",\"plate:ok\",\"ghost:open\"]"
+    }
+  ]
+}

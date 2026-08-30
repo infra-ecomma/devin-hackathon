@@ -1,0 +1,13 @@
+{
+  "name": "live-artifact",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Live Artifact: an orrery of what gets built and a spine of the plan, rendered in real time from a working Claude Code session.",
+  "bin": { "live-artifact": "./bin/live-artifact" },
+  "scripts": {
+    "start": "node server.mjs",
+    "demo": "node demo/replay.mjs",
+    "walk": "node verify/walk.mjs"
+  }
+}

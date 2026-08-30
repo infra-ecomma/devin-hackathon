@@ -1,0 +1,146 @@
+{
+  "at": "2026-08-29T19:47:48.552Z",
+  "port": 8782,
+  "totalSteps": 23,
+  "totalFails": 0,
+  "steps": [
+    {
+      "n": 1,
+      "name": "server answers /health with the full entity census",
+      "ok": true,
+      "detail": "{\"planets\":25,\"features\":61,\"tools\":60,\"processes\":13,\"workflows\":15,\"milestones\":70}"
+    },
+    {
+      "n": 2,
+      "name": "page paints the instrument chrome (plate, spine, mark, key)",
+      "ok": true,
+      "detail": "{\"canvas\":true,\"spine\":true,\"mark\":true,\"key\":22}"
+    },
+    {
+      "n": 3,
+      "name": "SSE snapshot delivers the same world the server holds",
+      "ok": true,
+      "detail": "{\"planets\":25,\"features\":61,\"tools\":60,\"processes\":13,\"workflows\":15,\"milestones\":70}"
+    },
+    {
+      "n": 4,
+      "name": "header census is the project alone: products, features, milestones, and no bench cells",
+      "ok": true,
+      "detail": "{\"products\":\"10\",\"features\":\"61\",\"milestones\":\"70\",\"benchCells\":0}"
+    },
+    {
+      "n": 5,
+      "name": "header and spine agree on how many products this project has",
+      "ok": true,
+      "detail": "{\"header\":10,\"secs\":10}"
+    },
+    {
+      "n": 6,
+      "name": "the orrery draws every product plus the bench it uses: 88 >= 27",
+      "ok": true,
+      "detail": "drawn=88 usedBench=2"
+    },
+    {
+      "n": 7,
+      "name": "the spine stands every product milestone as a vertebra",
+      "ok": true,
+      "detail": "vb=59 record=59"
+    },
+    {
+      "n": 8,
+      "name": "done vertebrae match the product record exactly",
+      "ok": true,
+      "detail": "drawn=52 record=52"
+    },
+    {
+      "n": 9,
+      "name": "the cord is lit down to the real frontier",
+      "ok": true,
+      "detail": "{\"lit\":true,\"frontier\":2855.625}"
+    },
+    {
+      "n": 10,
+      "name": "hovering Shakeeb opens its dossier with the real milestone score",
+      "ok": true,
+      "detail": "Product\n      Shakeeb\n      live\n      Desktop orb that watches Wassim code, speaks when h"
+    },
+    {
+      "n": 11,
+      "name": "the hovered product heats its spine segment across the divide",
+      "ok": true,
+      "detail": "hot=shakeeb"
+    },
+    {
+      "n": 12,
+      "name": "scrubbing to Jul 20 shows exactly the record as it stood then",
+      "ok": true,
+      "detail": "shown=6 record=6"
+    },
+    {
+      "n": 13,
+      "name": "releasing the scrub returns to now",
+      "ok": true,
+      "detail": "shown=52 floor=52"
+    },
+    {
+      "n": 14,
+      "name": "the map view branches every product the spine carries",
+      "ok": true,
+      "detail": "nodes=10 segs=10"
+    },
+    {
+      "n": 15,
+      "name": "switching back restores the full record view",
+      "ok": true,
+      "detail": "rows=59 floor=59"
+    },
+    {
+      "n": 16,
+      "name": "demo activity pulses the real entities it touches (sentinel, zangetsu, features-ledger)",
+      "ok": true,
+      "detail": "{\"sentinel\":true,\"zangetsu\":true,\"ledger\":true,\"keys\":8}"
+    },
+    {
+      "n": 17,
+      "name": "the event ticker is running",
+      "ok": true,
+      "detail": "entries=28"
+    },
+    {
+      "n": 18,
+      "name": "a used workflow flies on the plate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "n": 19,
+      "name": "genesis mode grows planets and a live plan from nothing",
+      "ok": true,
+      "detail": "planets=4 plan=4"
+    },
+    {
+      "n": 20,
+      "name": "the newborn instrument counts its DECLARED products under its own name",
+      "ok": true,
+      "detail": "{\"products\":0,\"ms\":0,\"name\":\"newborn\",\"drawn\":0}"
+    },
+    {
+      "n": 21,
+      "name": "plate mode rendered and captured",
+      "ok": true,
+      "detail": "plate-mode.png"
+    },
+    {
+      "n": 22,
+      "name": "observatory mode switches the whole instrument",
+      "ok": true,
+      "detail": "observatory-mode.png"
+    },
+    {
+      "n": 23,
+      "name": "no console errors during the whole walk",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

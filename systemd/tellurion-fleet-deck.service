@@ -1,0 +1,52 @@
+# Tellurion (Fleet Deck) — systemd user unit for FORGE WSL.
+# The SECOND instrument: same server.mjs, watching ~/projects/fleet-deck in
+# genesis mode, on port 8768.
+#
+# Install:
+#   cp live-artifact/systemd/tellurion-fleet-deck.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now tellurion-fleet-deck
+#
+# Why a second explicit unit rather than a systemd template: the two instruments
+# differ in project, name AND port, and a template instance carries only one
+# parameter. Two files match how every other long-running user service on this
+# host is written (fleet-deck.service, hermes-dash.service, meridian-operator).
+#
+# Port 8768 is this instrument's, and 8769 is the OCC one's (tellurion.service).
+# They were briefly the SAME port: on 2026-08-28 this instance was found holding
+# 8768 while the OCC instance sat alive with no listening socket at all, having
+# lost the bind race with nothing supervising either of them. Keep them apart.
+#
+# A restart is invisible to an open page: public/app.js:587-592 reconnects its
+# EventSource on error with 800ms backoff, so the ~3s cutover self-heals.
+
+[Unit]
+Description=Tellurion (Fleet Deck) — live instrument for the fleet-deck repo
+Documentation=https://shares.tbk-labs.dev/tbk/tellurion.html
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+# A server-spawned Initialize draft inherits no session env, so the harness fell
+# to the account-default model, which this account cannot run (found 2026-08-29).
+# Pin the draft model and its relay route (operator picked GLM 5.3 on the
+# flat-rate subscription, 2026-08-30); plan-llm.mjs passes it as --model.
+# The route credential is minted per-service by tbk_relay_route.environment_for_route.
+Environment=TELLURION_DRAFT_MODEL=glm-5.3[1m]
+EnvironmentFile=-%h/.config/tellurion/draft.env
+# QUOTED name: the value contains a space. Unquoted, systemd splits it and the
+# parser (server.mjs arg()) takes only "Fleet", leaving "Deck" as a stray arg it
+# silently ignores — which is exactly what the hand-started process had been doing,
+# booting as project=Fleet. Same trap brain-scout.service documents for its path.
+ExecStart=/home/wassim/.local/share/fnm/aliases/default/bin/node live-artifact/server.mjs --project /home/wassim/projects/fleet-deck --name "Fleet Deck" --port 8768 --host 0.0.0.0
+WorkingDirectory=/home/wassim/projects/Organizing-Claude-Code
+# ALWAYS, not on-failure: server.mjs exits 0 on SIGTERM, so an external kill is
+# indistinguishable from a clean stop and on-failure would leave it dead.
+Restart=always
+RestartSec=3
+# shutdown() hard-exits after 1500ms (server.mjs:588-596), so 10s is generous.
+TimeoutStopSec=10
+
+[Install]
+WantedBy=default.target

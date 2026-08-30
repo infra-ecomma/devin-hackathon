@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" data-mode="plate">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tellurion</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230F1722'/%3E%3Cg%20transform='translate(8,7)%20skewX(-25)'%3E%3Crect%20x='0'%20y='0'%20width='4.5'%20height='18'%20fill='%23ffffff'/%3E%3Crect%20x='6.5'%20y='0'%20width='4.5'%20height='18'%20fill='%230077FF'/%3E%3Crect%20x='13'%20y='10'%20width='4.5'%20height='8'%20fill='%230077FF'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app.css" />
+<script>
+// Framed inside an editor panel, the full layout has no room: at panel width the
+// bar's groups print over each other. An iframe gets the plan alone, plus the
+// door out to the full instrument in a browser. Set before first paint so the
+// embed rules in app.css apply without a flash of the full layout.
+if (window.self !== window.top) document.documentElement.dataset.embed = '1';
+</script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-left">
+    <svg class="mark" viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
+    <div class="titleblock">
+      <div class="eyebrow">Tellurion</div>
+    </div>
+  </div>
+
+  <!-- Two groups, ruled apart on purpose. Four of these seven numbers describe
+       the standing fleet bench and not the project on screen, and presenting all
+       seven in one row put "60 tools" beside "2 products" as though both were
+       counts of his new project. -->
+  <!-- Three numbers, all of them about THIS project. It used to carry seven:
+       products, projects, features, milestones, tools, processes, workflows.
+       Four of those describe the standing fleet bench and one describes OTHER
+       projects, none of which is what this screen is for, and together they
+       overflowed the bar and ran under the drive gauge. The bench counts live
+       in the KEY panel, which is where a legend belongs. -->
+  <div class="census" id="census" title="This project.">
+    <div class="cn"><b id="cnProducts">&ndash;</b><span>products</span></div>
+    <div class="cn"><b id="cnFeatures">&ndash;</b><span>features</span></div>
+    <div class="cn cn-ms"><b id="cnMilestones">&ndash;</b><span>milestones</span></div>
+  </div>
+
+  <div class="bar-right">
+    <!-- The instrument's own door out. Every Tellurion carries the link to itself
+         on the network, so a panel framing it is one click from the full page in
+         a browser, and the browser page is one right-click from a bookmark. -->
+    <a class="mode" id="openBtn" target="_blank" rel="noopener" href="/"
+       title="Open the full instrument in your browser. The link carries this instrument's key; bookmark the page it lands on.">Browser &#8599;</a>
+    <div class="gauge" title="Drive tempo. Every live event injects energy; energy decays; the mechanism turns at the rate the fleet is working.">
+      <div class="gauge-num" id="rpm">0.42</div>
+      <div class="gauge-lab">drive &middot; rev / min</div>
+    </div>
+    <!-- An instance is TIED to one project, so there is no picker. What was the
+         project chooser is now the one control that decides what the plate shows,
+         because "I should be able to remove a workflow or workflows in general". -->
+    <div class="viewwrap">
+      <button class="mode" id="viewBtn" title="Choose what this plate draws.">View &#9662;</button>
+      <div class="viewmenu" id="viewMenu" hidden></div>
+    </div>
+    <button class="mode" id="modeBtn" title="Plate is ink on paper. Observatory is the same instrument, lit from behind.">Observatory</button>
+    <div class="live" id="liveDot"><i></i><span id="liveTxt">connecting</span></div>
+  </div>
+</header>
+
+<div class="inst-panel" id="instPanel" hidden role="dialog" aria-label="Choose a project">
+  <div class="inst-head">
+    <div><b>Follow a project</b><span id="instSub">A project is a codebase and every editor chat on it. Live first.</span></div>
+    <button class="inst-x" id="instClose" aria-label="Close">&times;</button>
+  </div>
+  <div class="inst-list" id="instList"></div>
+  <div class="inst-foot" id="instFoot"></div>
+</div>
+
+
+<main class="stage">
+  <section class="plate" id="plateWrap">
+    <canvas id="plate"></canvas>
+
+    <div class="plate-title">
+      <div class="pt-t">The Orrery</div>
+    </div>
+
+    <div class="scrub-readout" id="scrubReadout" hidden>
+      <span class="sr-lab">replaying</span>
+      <b id="scrubDate">&ndash;</b>
+      <button id="scrubReset" title="Return to now">now</button>
+    </div>
+
+    <div class="key closed" id="key">
+      <div class="key-head"><span>Key</span><button id="keyBtn" title="Open the key">+</button></div>
+      <div class="key-body" id="keyBody"></div>
+    </div>
+
+    <div class="dossier" id="dossier" hidden></div>
+    <div class="tip" id="tip" hidden></div>
+  </section>
+
+  <aside class="spinewrap" id="spineWrap">
+    <div class="spine-head">
+      <div>
+        <div class="eyebrow">The Spine</div>
+        <div class="view-tabs" id="viewTabs">
+          <button class="vt on" data-view="record">Record</button>
+          <button class="vt" data-view="map">Map</button>
+          <button class="vt" data-view="logic">Logic</button>
+        </div>
+      </div>
+      <div class="spine-score">
+        <div class="ss-num"><b id="spineDone">0</b><span class="ss-of">/</span><span id="spineTotal">0</span></div>
+        <div class="ss-lab">milestones done</div>
+      </div>
+    </div>
+    <div class="spine-rule"><i id="spineFill"></i></div>
+    <div class="spine-body" id="spineBody">
+      <div id="spineList"></div>
+      <svg class="sminimap" id="sminimap"></svg>
+    </div>
+  </aside>
+
+  <svg class="nerves" id="nerves" aria-hidden="true"></svg>
+</main>
+
+<footer class="ticker" id="ticker"><div class="tick-track" id="tickTrack"></div></footer>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+# Tellurion — systemd user unit for FORGE WSL (Ubuntu-24.04).
+# Serves the universe-mode instrument for THIS repo (Organizing-Claude-Code).
+#
+# Install (lingering is what makes it start with WSL rather than with a login shell):
+#   loginctl enable-linger wassim
+#   mkdir -p ~/.config/systemd/user
+#   cp live-artifact/systemd/tellurion.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now tellurion
+#
+# PORT 8769, not 8768. 8768 is the port the memory and the README name, but on
+# 2026-08-28 it was found held by a SECOND Tellurion instance watching fleet-deck,
+# while the OCC instance sat alive with no listening socket for three days —
+# it had lost the bind race and nothing noticed. Two instruments, one port, no
+# supervisor. This unit is the fix for the OCC side; Fleet Deck keeps 8768.
+#
+# Node path is absolute because fnm only resolves inside a login shell, and a
+# systemd unit does not get one. This is Forge's fnm default alias.
+
+[Unit]
+Description=Tellurion — live instrument for Organizing-Claude-Code (universe mode)
+Documentation=https://shares.tbk-labs.dev/tbk/tellurion.html
+# The scan is local disk only, but the HTTP bind wants a usable stack.
+After=network-online.target
+Wants=network-online.target
+# A bad flag or a taken port exits fast; cap restarts so it cannot crash-loop
+# forever. Five tries per minute, then the unit stops and says so.
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+# A server-spawned Initialize draft inherits no session env, so the harness fell
+# to the account-default model, which this account cannot run (found 2026-08-29).
+# Pin the draft model and its relay route (operator picked GLM 5.3 on the
+# flat-rate subscription, 2026-08-30); plan-llm.mjs passes it as --model.
+# The route credential is minted per-service by tbk_relay_route.environment_for_route.
+Environment=TELLURION_DRAFT_MODEL=glm-5.3[1m]
+EnvironmentFile=-%h/.config/tellurion/draft.env
+ExecStart=/home/wassim/.local/share/fnm/aliases/default/bin/node live-artifact/server.mjs --project /home/wassim/projects/Organizing-Claude-Code --port 8769 --host 0.0.0.0 --name Organizing-Claude-Code
+WorkingDirectory=/home/wassim/projects/Organizing-Claude-Code
+# ALWAYS, not on-failure. server.mjs handles SIGTERM with a graceful shutdown that
+# calls process.exit(0), so an external kill is indistinguishable from a clean stop
+# and on-failure would leave it dead. An explicit `systemctl --user stop` is still
+# honoured under always, so this costs nothing.
+Restart=always
+RestartSec=3
+# shutdown() ends the SSE streams, closes the watcher, then hard-exits after 1500ms
+# (server.mjs:588-596), so the default 90s stop timeout is 60x longer than needed.
+TimeoutStopSec=10
+# Deliberately NO OOMScoreAdjust. Fleet Deck sets -900 because a monitor that dies
+# with the box cannot report the box dying; Tellurion is an instrument, not a
+# monitor, and Restart=always brings it back. It watches 3249 directories and holds
+# a real file-scan footprint, so it is a fair earlyoom target rather than a protected
+# one. Revisit only if a measured OOM kill actually costs something here.
+
+[Install]
+WantedBy=default.target
