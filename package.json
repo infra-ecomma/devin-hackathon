@@ -2,7 +2,7 @@
   "name": "tellurion",
   "displayName": "Tellurion",
   "description": "Products are planets, features are moons; nothing appears until work starts, and nothing glows without a recorded exit 0.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -55,13 +55,20 @@
       "properties": {
         "tellurion.style": {
           "type": "string",
-          "enum": ["futuristic", "rustic"],
+          "enum": [
+            "futuristic",
+            "rustic"
+          ],
           "default": "rustic",
           "description": "Visual style of the sky."
         },
         "tellurion.theme": {
           "type": "string",
-          "enum": ["dark", "light", "auto"],
+          "enum": [
+            "dark",
+            "light",
+            "auto"
+          ],
           "default": "light",
           "description": "Sky color theme. Auto follows the active VS Code theme."
         }
