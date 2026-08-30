@@ -32,126 +32,102 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
 
   function setWorld(w) {
     world = w;
+
+    // Record milestones, kept by the thing they belong to. The chat's to-do list
+    // is not the plan: it dies with the chat and dates every row the day it was
+    // typed, so it stays out of the spine entirely.
     const byEnt = new Map();
     for (const m of w.stat.milestones) {
-      // The chat's to-do list is not the plan. It dies with the chat and dates
-      // every row the day it was typed, so it is kept out of the spine entirely
-      // once a declared plan exists to take its place.
       if (m.entity === 'plan') continue;
       if (!byEnt.has(m.entity)) byEnt.set(m.entity, []);
       byEnt.get(m.entity).push(m);
     }
-    // ONE SECTION PER PRODUCT, and the same set of products the header counts and
-    // the plate draws. It used to be one section per thing that HAD A MILESTONE,
-    // which is a different set entirely: on this repo it added four projects the
-    // header excludes and dropped two products with no milestones yet, so the bar
-    // read 14 products beside a spine listing 16. Three surfaces, three answers,
-    // one screen.
-    const products = w.stat.planets.filter((pl) => pl.tier === 'flagship' && pl.declared !== false);
-    segs = products.map((p) => {
-      const ms = (byEnt.get(p.id) || []).slice();
-      ms.sort((a, b) => (a.date || '9999') < (b.date || '9999') ? -1 : 1);
-      return { id: p.id, name: p.name, tier: p.tier, status: p.status, ms, feats: w.stat.features.filter(f => f.parent === p.id) };
-    });
-    segs.sort((a, b) => {
-      const fa = a.ms.find(m => m.date), fb = b.ms.find(m => m.date);
-      return ((fa && fa.date) || '9999') < ((fb && fb.date) || '9999') ? -1 : 1;
+    for (const list of byEnt.values()) list.sort((a, b) => ((a.date || '9999') < (b.date || '9999') ? -1 : 1));
+
+    // THE SPINE IS THE PLAN, LED BY PRODUCT, AND A PRODUCT IS MADE OF FEATURES.
+    // It used to list a product's STEPS here, because `stat.features` was every
+    // plan step under a different name. A step is work and reads as a verb
+    // ("Resolve a project to its git root"); a feature is a part of the product
+    // and reads as a noun ("Project discovery"). Features are declared on the
+    // product now, so this lists what the product IS and the steps sit one level
+    // down, inside the feature they build.
+    const rowOfFeature = (f) => {
+      const n = (f.steps || []).length, d = f.stepsDone || 0;
+      // Progress and custody are two different axes and they get two different
+      // marks: how much of the work is done, and who has signed for it.
+      const status = n ? (d === n ? 'done' : (d || f.inHand) ? 'in-progress' : 'planned')
+                       : (f.status !== 'open' ? 'done' : 'planned');
+      return {
+        id: f.id, kind: 'feature', featureId: f.feature, label: f.name,
+        plain: f.plain || f.name, date: '', status, tier: f.status, inHand: f.inHand,
+        staleVerdict: f.staleVerdict, staleAccept: f.staleAccept,
+        failedBy: f.failedBy, failedNote: f.failedNote, inherited: f.inherited,
+        steps: f.steps || [], stepsDone: d, stepsTotal: n,
+      };
+    };
+    const rowOfMs = (m) => ({
+      id: 'ms:' + (m.id || m.label), kind: 'milestone', label: m.label,
+      plain: m.plain || m.label, date: m.date || '',
+      status: m.status === 'done' ? 'done' : m.status === 'in-progress' ? 'in-progress' : 'planned',
     });
 
-    // THE SPINE IS THE PROJECT PLAN, LED BY PRODUCT.
-    // It used to be led by PHASE (`pl.phases.map(... id: 'phase:' + ph.id)`),
-    // which is why it never read as a project: a phase is how the work was
-    // sequenced, not what the project IS. Wassim, repeatedly and finally on
-    // 2026-08-28: "It needs to be product, and then under it, when you expand
-    // the product, it is feature."
-    //
-    // Every step already declares its product through `produces.of`, and the
-    // plan already lists `products`, so the grouping key was the only thing
-    // wrong. Sections are COLLAPSED by default: a product is a headline, and its
-    // features are what you open when you want them.
+    const featsOf = (pid) => (w.stat.features || []).filter((f) => f.parent === pid && String(f.id).startsWith('feat:'));
+    const planets = w.stat.planets || [];
     const pl = w.plan;
+    const declared = [];
+    const seen = new Set();
+
     if (pl && pl.products && pl.products.length) {
-      const rowsOf = new Map(pl.products.map((pr) => [pr.id, []]));
-      const orphans = [];
-      let ix = 0;
-      for (const ph of (pl.phases || [])) {
-        for (const st of (ph.steps || [])) {
-          const row = {
-            id: 'step:' + ph.id + ':' + st.id,
-            stepId: st.id,
-            entity: null,
-            label: st.title,
-            plain: st.note || st.title,
-            date: '',
-            status: st.status === 'done' ? 'done' : st.status === 'active' ? 'in-progress' : 'planned',
-            at: 0,
-            kind: 'feature',
-            order: ix++,
-          };
-          const of = st.produces && st.produces.of;
-          if (of && rowsOf.has(of)) { row.entity = 'product:' + of; rowsOf.get(of).push(row); }
-          else orphans.push(row);
-        }
-      }
-      // A product's milestones belong under it, between its features: they are
-      // the thing the features earn.
-      const allMs = (w.stat && w.stat.milestones) || [];
-      const planSegs = pl.products.map((pr) => {
-        const rows = rowsOf.get(pr.id) || [];
-        for (const m of allMs.filter((x) => x.entity === pr.id || x.entity === 'plan:' + pr.id)) {
-          rows.push({
-            id: 'ms:' + (m.id || m.label), stepId: null, entity: 'product:' + pr.id,
-            label: m.label, plain: m.plain || m.label, date: m.date || '',
-            status: m.status === 'done' ? 'done' : m.status === 'in-progress' ? 'in-progress' : 'planned',
-            at: 0, kind: 'milestone', order: ix++,
-          });
-        }
-        const done = rows.filter((r) => r.status === 'done').length;
-        return {
-          id: 'product:' + pr.id,
-          name: pr.name,
-          tier: 'product',
-          status: pr.declared === false ? 'dormant' : !rows.length ? 'planned' : done === rows.length ? 'done' : 'live',
-          plan: true,
-          ms: rows,
-          feats: [],
-        };
-      });
-      if (orphans.length) {
-        planSegs.push({
-          // NOT a product, and it must not look like one: the header counts
-          // products and this is a holding area for steps that name none, so a
-          // section styled like the others would read as a miscount.
-          id: 'product:__unassigned', name: 'Not yet under a product', tier: 'holding',
-          status: 'planned', plan: true, ms: orphans, feats: [],
+      // The plan lists its products in an order and that order is a statement,
+      // so the spine follows it rather than re-sorting by date.
+      for (const pr of pl.products) {
+        const pid = 'plan:' + pr.id;
+        seen.add(pid);
+        const planet = planets.find((x) => x.id === pid);
+        const feats = featsOf(pid);
+        const loose = (planet && planet.loose) || [];
+        declared.push({
+          id: pid, name: pr.name, kind: 'product', plan: true,
+          declared: pr.declared !== false,
+          status: pr.declared === false ? 'dormant' : (planet ? planet.status : 'building'),
+          note: pr.note || '', feats, loose,
+          ms: byEnt.get(pr.id) || [],
+          rows: feats.map(rowOfFeature),
+          // A plan written before features existed declares none. Counting
+          // features then reports 0/0 against a plan with 25 steps and 21 of
+          // them done, which is a worse answer than the one it replaced. Until
+          // such a plan is migrated the fraction falls back to its steps, so
+          // progress is still said. Display is unaffected: these are counted,
+          // never drawn as features.
+          countRows: feats.length ? feats.map(rowOfFeature) : loose.map((st) => ({
+            id: 'step:' + st.id, kind: 'step', label: st.title, plain: st.title, date: '',
+            status: st.planStatus === 'done' ? 'done' : st.planStatus === 'active' ? 'in-progress' : 'planned',
+          })),
         });
       }
-      // A plan product IS one of the plate's planets (id `plan:<id>`), so its
-      // rows are merged into that section rather than prepended as a second copy
-      // of the same product under a different key.
-      const byId = new Map(segs.map((sg) => [sg.id, sg]));
-      const extra = [];
-      for (const ps of planSegs) {
-        const target = byId.get('plan:' + ps.id.slice('product:'.length));
-        if (target) { target.ms = ps.ms.concat(target.ms); target.plan = true; }
-        else extra.push(ps);
-      }
-      segs = extra.concat(segs);
+    }
 
-      // SEQUENCE. "This needs to represent the actual project plan, which often
-      // has a sequence." The plan lists its products in an order and that order
-      // is a statement, so the spine follows it. Products the plan does not
-      // declare keep their existing order behind the declared ones, and the
-      // holding area sits last because it is not part of the plan.
-      const order = new Map(pl.products.map((pr, i) => ['plan:' + pr.id, i]));
-      segs.sort((x, y) => {
-        const hx = x.id === 'product:__unassigned' ? 2 : order.has(x.id) ? 0 : 1;
-        const hy = y.id === 'product:__unassigned' ? 2 : order.has(y.id) ? 0 : 1;
-        if (hx !== hy) return hx - hy;
-        if (hx === 0) return order.get(x.id) - order.get(y.id);
-        return 0;
+    // Directories the instrument noticed activity in. These are NOT products
+    // anybody declared, and drawing them identically to declared ones is why the
+    // header's product count and this list disagreed. They keep their record and
+    // their own group (decision D4, 2026-08-30); nothing is hidden.
+    const discovered = [];
+    for (const p of planets) {
+      if (seen.has(p.id) || String(p.id).startsWith('plan:') || p.tier !== 'flagship') continue;
+      const ms = byEnt.get(p.id) || [];
+      if (!ms.length) continue;
+      discovered.push({
+        id: p.id, name: p.name, kind: 'discovered', plan: false, declared: false,
+        status: p.status, note: '', feats: [], loose: [], ms,
+        rows: ms.map(rowOfMs), countRows: ms.map(rowOfMs),
       });
     }
+    discovered.sort((a, b) => (b.ms.length - a.ms.length));
+
+    // With no plan at all the record is all there is, so it leads rather than
+    // sitting under a heading that says it is the leftovers.
+    segs = declared.length ? declared.concat(discovered) : discovered;
+
     // A draft the operator asked for has landed: the sky already drew itself;
     // open the editor on the new plan so the read-and-fix pass starts now. The
     // `at` marker keeps an OLD plan's steps from passing for the new draft's.
@@ -168,23 +144,34 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
   const isDoneAt = (m, T) => m.status === 'done' && (T == null || m.date === '' || (msTime(m) != null && msTime(m) <= T));
   const isFuture = (m, T) => T != null && m.date !== '' && (msTime(m) == null || msTime(m) > T);
 
-  // When a plan is declared the headline counts THE PLAN, and nothing else. It
-  // used to add the record's milestones into the same figure while keeping the
-  // words "plan steps done", so one screen read "76/90 plan steps done" beside a
-  // core ring reading 15/20 — the same quantity, two answers, three inches apart.
-  const scope = () => (world && world.plan && world.plan.totals && world.plan.totals.steps
-    ? segs.filter((s) => s.plan) : segs);
+  // The headline counts what the spine LISTS, which is features once a plan
+  // declares them. It used to count plan steps while the header three inches
+  // away counted every feature-ish thing discovered anywhere, so one screen gave
+  // two answers to the same question (decision D5, 2026-08-30).
+  const scope = () => (segs.some((s) => s.plan) ? segs.filter((s) => s.plan) : segs);
   function doneCount(T) {
     let n = 0;
-    for (const s of scope()) for (const m of s.ms) if (isDoneAt(m, T)) n++;
+    for (const s of scope()) for (const m of (s.countRows || s.rows)) if (isDoneAt(m, T)) n++;
     return n;
   }
-  const total = () => scope().reduce((a, s) => a + s.ms.length, 0);
+  const total = () => scope().reduce((a, s) => a + (s.countRows || s.rows).length, 0);
 
   // A product is a headline; its features are what you open. Collapsed by
   // default is what stops the spine being a wall of text, which is the other
   // half of the same complaint.
   const openSegs = new Set();
+  // A feature opens to show its steps; the discovered group opens to show the
+  // directories nobody declared. Both closed by default: collapsed is what keeps
+  // an expanded product legible rather than a wall.
+  const openFeats = new Set();
+  let showDiscovered = false;
+  try { showDiscovered = localStorage.getItem('tellurion-show-discovered') === '1'; } catch {}
+  function toggleFeat(id) {
+    if (openFeats.has(id)) openFeats.delete(id); else openFeats.add(id);
+    try { localStorage.setItem('tellurion-open-feats', JSON.stringify([...openFeats])); } catch {}
+    lastKey = ''; render({});
+  }
+  try { for (const id of JSON.parse(localStorage.getItem('tellurion-open-feats') || '[]')) openFeats.add(id); } catch {}
   function toggleSeg(id) {
     if (openSegs.has(id)) openSegs.delete(id); else openSegs.add(id);
     try { localStorage.setItem('tellurion-open-segs', JSON.stringify([...openSegs])); } catch {}
@@ -218,7 +205,8 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
 
   function render({ scrubT = null } = {}) {
     if (!world) return;
-    const key = [viewMode, scrubT || 'now', total(), (world.project && world.project.draft && world.project.draft.state) || ''].join(':');
+    const key = [viewMode, scrubT || 'now', total(), openSegs.size, openFeats.size, showDiscovered,
+      (world.project && world.project.draft && world.project.draft.state) || ''].join(':');
     if (key === lastKey) return;
     lastKey = key;
     if (viewMode === 'map') { renderMap(scrubT); return; }
@@ -256,84 +244,120 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
     let rowIx = 0;
     let lastDoneRow = null;
 
+    let groupDrawn = false;
     for (const s of segs) {
-      const sec = div('sseg' + (s.id === hot ? ' hot' : '') + (s.tier === 'holding' ? ' holding' : ''), wrap);
+      // The discovered group gets one heading, once, and opens on click. Before
+      // this the two kinds of section were indistinguishable.
+      if (s.kind === 'discovered' && !groupDrawn) {
+        groupDrawn = true;
+        const n = segs.filter((x) => x.kind === 'discovered').length;
+        const gh = div('sgroup' + (showDiscovered ? ' open' : ''), wrap);
+        gh.innerHTML = `<span class="sgroup-caret">${showDiscovered ? '&#9662;' : '&#9656;'}</span>` +
+          `<b>Also seen in this repo</b><span class="sgroup-n">${n} not in the plan</span>`;
+        gh.addEventListener('click', () => {
+          showDiscovered = !showDiscovered;
+          try { localStorage.setItem('tellurion-show-discovered', showDiscovered ? '1' : '0'); } catch {}
+          lastKey = ''; render({ scrubT });
+        });
+      }
+      if (s.kind === 'discovered' && !showDiscovered) continue;
+
+      const sec = div('sseg' + (s.id === hot ? ' hot' : '') + (s.kind === 'discovered' ? ' found' : ''), wrap);
       sec.dataset.seg = s.id;
 
-      const doneN = s.ms.filter(m => isDoneAt(m, scrubT)).length;
-      const isProduct = true; // every section is a headline you open
+      const doneN = s.rows.filter((m) => isDoneAt(m, scrubT)).length;
       const open = openSegs.has(s.id);
-      const h = div('sseg-h' + (s.status === 'dormant' ? ' dormant' : '') + (isProduct ? ' clickable' : '') + (open ? ' open' : ''), sec);
+      const h = div('sseg-h' + (s.status === 'dormant' ? ' dormant' : '') + ' clickable' + (open ? ' open' : ''), sec);
       div('sa', h);
-      if (isProduct) div('sseg-caret', h, open ? '&#9662;' : '&#9656;');
+      div('sseg-caret', h, open ? '&#9662;' : '&#9656;');
       const nameEl = div('sseg-name', h, esc(s.name));
-      nameEl.title = s.name;
-      // "0/0 features" on fifteen rows says nothing fifteen times. A product with
-      // nothing under it yet says so once, quietly.
-      if (!s.ms.length) div('sseg-score empty', h, 'nothing yet');
-      else div('sseg-score', h, `<b>${doneN}</b>/${s.ms.length}`);
+      nameEl.title = s.note || s.name;
+      // A product with nothing under it says so once, quietly. "0/0 features" on
+      // fifteen rows says nothing fifteen times.
+      if (!s.rows.length) div('sseg-score empty', h, s.kind === 'product' ? 'no features yet' : 'nothing yet');
+      else div('sseg-score', h, `<b>${doneN}</b>/${s.rows.length}`);
       headerEls.set(s.id, h);
       h.addEventListener('pointerenter', () => onHoverSeg(s.id));
       h.addEventListener('pointerleave', () => onHoverSeg(null));
-      if (isProduct) { h.style.cursor = 'pointer'; h.addEventListener('click', () => toggleSeg(s.id)); }
+      h.style.cursor = 'pointer';
+      h.addEventListener('click', () => toggleSeg(s.id));
 
-      for (const m of (open ? s.ms : [])) {
+      for (const m of (open ? s.rows : [])) {
         const future = isFuture(m, scrubT);
         const cls = m.status === 'done' ? 'done' : m.status === 'in-progress' ? 'progress' : 'planned';
-        const row = div('srow vb ' + cls + (future ? ' future' : ''), sec);
+        const isFeat = m.kind === 'feature';
+        const fOpen = isFeat && openFeats.has(m.id);
+        const row = div('srow vb ' + cls + (future ? ' future' : '') + (isFeat ? ' feat' : '') + (fOpen ? ' fopen' : ''), sec);
         row.style.setProperty('--i', Math.min(rowIx, 34));
         rowIx++;
         const node = div('snode', row);
         node.appendChild(nodeSvg(future && m.status === 'done' ? 'planned' : cls === 'done' ? 'done' : cls === 'progress' && !future ? 'progress' : 'planned'));
-        // A plan step has no date and is not "next": it has a status. Printing
-        // "next" against every one of them said the same untrue thing eight
-        // times and buried which step is actually in hand.
-        div('sdate', row, m.date ? fmtDate(m.date)
-          : (m.status === 'done' ? 'done' : m.status === 'in-progress' ? 'now' : ''));
-        const plain = m.plain || m.label;
-        const tx = div('stext', row, esc(plain));
+        // A feature carries how much of it is done. A milestone carries its date.
+        // Neither is "next": printing that against every row said the same untrue
+        // thing eight times and buried which one is actually in hand.
+        div('sdate', row, isFeat
+          ? (m.stepsTotal ? `${m.stepsDone}/${m.stepsTotal}` : (m.status === 'done' ? 'done' : ''))
+          : (m.date ? fmtDate(m.date) : (m.status === 'done' ? 'done' : m.status === 'in-progress' ? 'now' : '')));
+        const tx = div('stext', row, esc(m.plain || m.label));
         if (m.plain && m.plain !== m.label) div('stech', tx, esc(m.label));
-        // The custody mark, on the row. The whole ladder lived in two-pixel moon
-        // rings on the plate, and this panel — the one he actually reads — said
-        // nothing about who had signed anything. A row IS a step IS a moon, so
-        // it wears the same grammar.
-        if (m.stepId) {
-          const f = (world.stat.features || []).find((x) => x.id === 'step:' + m.stepId);
-          if (f) {
-            const t = f.failedBy ? 'failed' : f.inHand ? 'in-hand' : f.status;
-            const mark = document.createElement('i');
-            mark.className = 'stier t-' + t;
-            mark.title = f.failedBy
-              ? `${f.failedBy} failed this${f.failedNote ? ': ' + f.failedNote : ''}`
-              : t === 'in-hand' ? 'in hand right now'
-              : t === 'open' ? 'nobody has spoken for this'
-              : t === 'claimed' ? 'the builder claims it' + (f.staleVerdict ? ' — an earlier version was judged' : '')
-              : t === 'verified' ? 'a judge passed it' + (f.staleAccept ? ' — you accepted an earlier version' : '')
-              : 'you accepted it';
-            row.appendChild(mark);
+
+        // The custody mark, on the row. This is the cue the whole instrument is
+        // for: a feature that has been verified has to be visible as verified
+        // from across the room (decision D3, 2026-08-30).
+        if (isFeat) {
+          const t = m.failedBy ? 'failed' : m.inHand ? 'in-hand' : m.tier;
+          const mark = document.createElement('i');
+          mark.className = 'stier t-' + t;
+          mark.title = m.failedBy
+            ? `${m.failedBy} failed this${m.failedNote ? ': ' + m.failedNote : ''}`
+            : t === 'in-hand' ? 'in hand right now'
+            : t === 'open' ? 'nobody has spoken for this'
+            : t === 'claimed' ? 'the builder claims it' + (m.staleVerdict ? ' — an earlier version was judged' : '')
+            : t === 'verified' ? 'a judge passed it' + (m.inherited ? ', inherited from its steps' : '') + (m.staleAccept ? ' — you accepted an earlier version' : '')
+            : 'you accepted it';
+          row.appendChild(mark);
+          headerEls.set(m.id, row);
+          if (m.steps.length) {
+            row.classList.add('has-steps');
+            row.addEventListener('click', (ev) => { ev.stopPropagation(); toggleFeat(m.id); });
           }
         }
-        if (m.stepId) headerEls.set('step:' + m.stepId, row);
         row.addEventListener('pointerenter', (ev) => onHoverVb(m, s, ev.clientX, ev.clientY));
         row.addEventListener('pointerleave', () => onHoverVb(null));
         if (m.status === 'done' && !future) lastDoneRow = row;
+
+        // THE STEPS, one level down and closed by default. They are the long
+        // sentences, and putting them at the top level is what made the spine a
+        // wall of text. Custody still lives here too, so nothing left the panel.
+        if (isFeat && fOpen) {
+          for (const st of m.steps) {
+            const scls = st.planStatus === 'done' ? 'done' : st.planStatus === 'active' ? 'progress' : 'planned';
+            const sr = div('sstep ' + scls, sec);
+            div('sstep-dot', sr);
+            div('sstep-txt', sr, esc(st.title));
+            const smk = document.createElement('i');
+            smk.className = 'stier small t-' + (st.failedBy ? 'failed' : st.inHand ? 'in-hand' : st.status);
+            smk.title = st.failedBy ? `${st.failedBy} failed this` : st.inHand ? 'in hand right now' : st.status;
+            sr.appendChild(smk);
+            headerEls.set('step:' + st.id, sr);
+          }
+        }
       }
 
-      if (open && s.feats.length) {
-        const strip = div('sfeat-strip', sec);
-        for (const f of s.feats) {
-          const i = document.createElement('i');
-          // one class per tier, so the strip cannot say fewer things than the plate
-          i.className = f.inHand ? 'in-hand' : f.status === 'fully-verified' ? 'accepted' : f.status === 'verified' ? 'verified' : f.status === 'open' ? 'open' : 'claimed';
-          i.title = f.plain || f.name;
-          strip.appendChild(i);
+      // Steps that name this product but no feature. They are not dressed up as
+      // features, which is the whole point of the change; they are said plainly
+      // so the gap is visible and can be closed in the plan.
+      if (open && s.loose.length) {
+        const lh = div('sloose-h', sec, `${s.loose.length} step${s.loose.length === 1 ? '' : 's'} not under a feature yet`);
+        lh.title = 'These name the product but no feature. Give each a produces.feature in the plan and they join one.';
+        for (const st of s.loose) {
+          const sr = div('sstep loose ' + (st.planStatus === 'done' ? 'done' : st.planStatus === 'active' ? 'progress' : 'planned'), sec);
+          div('sstep-dot', sr);
+          div('sstep-txt', sr, esc(st.title));
         }
-        const o = s.feats.filter(f => f.status === 'open').length;
-        const sp = document.createElement('span');
-        sp.textContent = `${s.feats.length} feature${s.feats.length === 1 ? '' : 's'}${o ? ' · ' + o + ' open' : ''}`;
-        strip.appendChild(sp);
       }
     }
+
 
     vbCount = total();
 
@@ -450,13 +474,15 @@ export function initSpine(listEl, minimapEl, { onHoverSeg = () => {}, onHoverVb 
     const bar = div('splan-edit', host);
     const b = document.createElement('button');
     b.textContent = 'Edit plan';
-    b.title = 'The plan is yours to change; the spine follows it.';
+    // The path used to sit beside the button as a code chip. It is noise on a
+    // panel that is read constantly and says nothing the button does not, so it
+    // lives on the button's own tooltip: available when wanted, invisible when not.
+    b.title = 'The plan is yours to change; the spine follows it. (.tellurion/plan.json)';
     b.addEventListener('click', () => openPlanEditor());
     bar.appendChild(b);
     const dr = (world.project && world.project.draft) || null;
     if (dr && dr.state === 'running') div('splan-edit-note', bar, 'a draft is running; the file it lands will replace what you see.');
     else if (dr && dr.state === 'failed') div('splan-edit-note bad', bar, 'the last draft failed: ' + esc(dr.error || 'unknown'));
-    div('splan-edit-path', bar, '<code>.tellurion/plan.json</code>');
   }
 
   async function openPlanEditor(planData, connections) {

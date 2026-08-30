@@ -94,16 +94,45 @@ export class AcceptRefused extends Error {
 // than performed as a silent no-op. It used to answer ok:true for a step that
 // was not in the plan at all, and for one no judge had passed — both wrote a row
 // and changed nothing on screen, which reads as the instrument being broken.
+// What an id addresses. Custody moved to FEATURES on 2026-08-30 (decision D3),
+// so acceptance has to resolve a feature id as readily as a step id, and both
+// have to produce the same shape or the fingerprint written here will not match
+// the one state.mjs computes when it reads the row back.
+//
+// A feature is claimed when every step under it is done; a feature nobody has
+// written a step for yet falls back to its own declared status. Steps keep
+// resolving exactly as before, so an older row addressed to one still applies.
+export function resolveTarget(plan, id) {
+  const wanted = clean(id, 60);
+  if (!plan || !wanted) return null;
+  const steps = (plan.phases || []).flatMap((ph) => ph.steps || []);
+  for (const pr of (plan.products || [])) {
+    const f = (pr.features || []).find((x) => x.id === wanted);
+    if (!f) continue;
+    const mine = steps.filter((st) => st.produces && st.produces.feature === wanted);
+    return {
+      kind: 'feature', id: f.id, title: f.name,
+      claimed: mine.length ? mine.every((st) => st.status === 'done') : f.status === 'done',
+      what: `feature "${f.name}"`,
+    };
+  }
+  const st = steps.find((x) => x.id === wanted);
+  if (st) return { kind: 'step', id: st.id, title: st.title, claimed: st.status === 'done', what: `"${st.title}"` };
+  return null;
+}
+
 export function accept(root, { step, by, note, force = false, plan = null, verdicts = null }) {
   const stepId = clean(step, 60);
   const who = clean(by, 60);
   if (!stepId) throw new AcceptRefused('accept needs a step', 'no-step');
   if (!who) throw new AcceptRefused('accept needs a name: the top tier is a person putting their name to it', 'no-name');
+  let target = null;
   if (plan) {
-    const st = (plan.phases || []).flatMap((ph) => ph.steps || []).find((x) => x.id === stepId);
-    if (!st) throw new AcceptRefused(`no step "${stepId}" in this project's plan`, 'unknown-step');
-    if (st.status !== 'done' && !force) {
-      throw new AcceptRefused(`"${st.title}" is not claimed done yet, so there is nothing to accept`, 'not-claimed');
+    target = resolveTarget(plan, stepId);
+    if (!target) throw new AcceptRefused(`nothing called "${stepId}" in this project's plan`, 'unknown-step');
+    const st = target;
+    if (!target.claimed && !force) {
+      throw new AcceptRefused(`${target.what} is not claimed done yet, so there is nothing to accept`, 'not-claimed');
     }
     if (verdicts && !verdicts.get(stepId) && !force) {
       throw new AcceptRefused(
@@ -119,7 +148,7 @@ export function accept(root, { step, by, note, force = false, plan = null, verdi
   // Record WHAT was accepted and WHICH verdict it rode on. Without both, the row
   // outlives the thing it signed: flipping a step back and forth restored the
   // operator's own tier without him, and a re-judgement never invalidated it.
-  const stepRec = plan ? (plan.phases || []).flatMap((ph) => ph.steps || []).find((x) => x.id === stepId) : null;
+  const stepRec = target ? { id: target.id, title: target.title } : null;
   const v = verdicts ? verdicts.get(stepId) : null;
   next.push({
     step: stepId, by: who, at: new Date().toISOString(),
@@ -187,9 +216,16 @@ export function readSignoffs(root) {
 // deleted or renumbered. Silently ignoring it is how a stale row later lands on
 // a brand new step that happens to reuse the id.
 export function orphanSignoffs(plan, signoffs) {
-  const live = new Set((plan && plan.phases || []).flatMap((ph) => (ph.steps || []).map((s) => s.id)));
+  // FEATURES COUNT AS LIVE. Custody moved to features on 2026-08-30, so a set
+  // built from step ids alone reported every correctly addressed sign-off as
+  // pointing at deleted work — the panel led with four false alarms about the
+  // only rows that were right.
+  const live = new Set([
+    ...((plan && plan.phases) || []).flatMap((ph) => (ph.steps || []).map((s) => s.id)),
+    ...((plan && plan.products) || []).flatMap((pr) => (pr.features || []).map((f) => f.id)),
+  ]);
   const out = [];
-  for (const [id, v] of (signoffs && signoffs.verdicts) || []) if (!live.has(id)) out.push(`a verdict by ${v.by} points at step "${id}", which is not in the plan`);
-  for (const [id, a] of (signoffs && signoffs.accepted) || []) if (!live.has(id)) out.push(`your acceptance of step "${id}" points at a step that is not in the plan`);
+  for (const [id, v] of (signoffs && signoffs.verdicts) || []) if (!live.has(id)) out.push(`a verdict by ${v.by} points at "${id}", which is not a feature or a step in the plan`);
+  for (const [id, a] of (signoffs && signoffs.accepted) || []) if (!live.has(id)) out.push(`your acceptance of "${id}" points at something that is not in the plan`);
   return out;
 }

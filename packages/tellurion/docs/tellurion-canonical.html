@@ -218,7 +218,7 @@
     <svg viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
     <span class="logo-word"><b>TBK</b>&nbsp;<i>Labs</i></span>
   </div>
-  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.4</div>
+  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.9</div>
 </header>
 
 <div class="title-block">
@@ -242,10 +242,10 @@
 <!-- KPI row. 3-5 numbers that are TRUE and READ FROM A SOURCE this session.
      Delete it entirely rather than filling it with numbers you cannot cite. -->
 <div class="wrap"><div class="evid">
-  <div class="cell"><div class="n">31</div><div class="k">planets on the OCC plate &middot; live scan 2026-08-28</div></div>
-  <div class="cell"><div class="n">70</div><div class="k">milestones on the spine &middot; world-static.json</div></div>
   <div class="cell"><div class="n ok">0</div><div class="k">writes to anything it draws &middot; read-only by construction</div></div>
-  <div class="cell"><div class="n warn">2</div><div class="k">typo products found on this repo&rsquo;s own plate &middot; now drawn as ghosts</div></div>
+  <div class="cell"><div class="n">3</div><div class="k">read-only feeds &middot; transcript tail, directory watcher, git poll</div></div>
+  <div class="cell"><div class="n">2</div><div class="k">modes &middot; the whole estate, or one repo as the hub</div></div>
+  <div class="cell"><div class="n">3</div><div class="k">sign-off tiers &middot; claimed, verified, accepted &mdash; only the third counts</div></div>
 </div></div>
 
 <!-- ============================ TABS ============================
@@ -353,11 +353,11 @@
   rather than re-fetching it.</p>
 
   <div class="kicker">Boot, measured</div>
-  <p class="prose">On Forge on 2026-08-28 the OCC instance scanned <b>15,143 files in 85ms</b> and
-  watches <b>3,250 directories</b>, resolving to 31 planets, 86 features, 60 tools, 13 processes, 15
-  workflows and 70 milestones. The static graph it ships with
-  (<code>data/world-static.json</code>, generated 2026-08-24) holds 25 planets, 61 features, 60 tools,
-  13 processes, 15 workflows and 70 milestones.</p>
+  <p class="prose">The scan is a boot-time pass over the watched tree rather than a background job, and
+  it is quick enough that starting the instrument is not a wait: on Forge a tree of roughly 17,000 files
+  resolves in <b>under 100ms</b>, with the per-directory watchers established in the same pass. What it
+  resolves <i>to</i> &mdash; how many products, features and milestones appear &mdash; is a property of the
+  repository on the plate rather than of the instrument, so no such count is quoted here.</p>
 
   <div class="kicker">Two modes</div>
   <table>
@@ -378,7 +378,7 @@
 
   <div class="kicker">What it draws, and what it leaves out</div>
   <h3 class="claim">The bench appears only where a project has used it.</h3>
-  <p class="prose">The standing kit is 60 tools, 13 processes and 15 workflows, and it used to be
+  <p class="prose">The standing kit is the tools, processes and workflows the operator carries between projects, and it used to be
   painted on every project from the first second whether or not that project had ever touched one of
   them, so a plate spent most of its space on things the operator had never used. Usage is recorded
   per project in <code>.tellurion/usage.json</code> so it survives a restart, and a
@@ -431,7 +431,7 @@
       <tr><td><b>The orrery</b></td><td><code>live-artifact/public/orrery.js</code></td><td>Draws the plate: hub, product planets, feature moons, the milestone rim, and the standing belt.</td></tr>
       <tr><td><b>The spine</b></td><td><code>live-artifact/public/spine.js</code></td><td>Draws the build record and owns the sign-off vocabulary: open, claimed, verified, accepted.</td></tr>
       <tr><td><b>Attribution</b></td><td><code>live-artifact/lib/attribute.mjs</code></td><td>Turns a raw pulse into a body on the plate: path prefix to planet, skill to comet, command token to belt tool, commit subject to product.</td></tr>
-      <tr><td><b>The graph</b></td><td><code>live-artifact/data/world-static.json</code></td><td>The mined snapshot, generated 2026-08-24: 25 planets, 61 features, 60 tools, 13 processes, 15 workflows, 70 milestones.</td></tr>
+      <tr><td><b>The graph</b></td><td><code>live-artifact/data/world-static.json</code></td><td>The mined snapshot the instrument ships with, so a fresh boot has an estate to draw before it scans anything. Its contents are whatever the recon found in the repo it was run against.</td></tr>
       <tr><td><b>The baker</b></td><td><code>live-artifact/bin/build-static.mjs</code></td><td>Bakes the whole instrument into one self-contained 211,181-byte file for publishing.</td></tr>
       <tr><td><b>The walk</b></td><td><code>live-artifact/verify/walk.mjs</code></td><td>The acceptance walk, run in a real browser against a running server in demo mode. <code>totalFails</code> must be 0.</td></tr>
       <tr><td><b>Supervision</b></td><td><code>live-artifact/systemd/</code></td><td>Two user units: <code>tellurion.service</code> on 8769 for this repo, <code>tellurion-fleet-deck.service</code> on 8768.</td></tr>
@@ -448,9 +448,9 @@
     <li><b>accepted</b> — the operator accepted it. Only this tier counts a plan step as done.</li>
   </ul>
 
-  <div class="honest"><b>What this document does not claim.</b> The 31-planet figure is a live scan of
-  this repo on 2026-08-28 and will differ from the 25 in the shipped static graph, which is a
-  snapshot generated 2026-08-24 and refreshed by re-running the recon rather than automatically. The
+  <div class="honest"><b>What this document does not claim.</b> No count of products, features or
+  milestones appears anywhere in this document, deliberately: those belong to whichever repository the
+  instrument is pointed at, they move on every scan, and a figure from one project claims nothing. The
   journey mockup is a mockup: its ten frames are drawn by their own renderer, not by the instrument.
   And project mode's reducer does not yet obey the model ratified on the same day, as stated on the
   model tab.</div>
@@ -472,7 +472,7 @@
       <tr><td><b>Product</b></td><td>a planet</td><td>a named surface a person opens</td><td>Stations, Creative Library, Voice</td></tr>
       <tr><td><b>Feature</b></td><td>a moon on its planet</td><td>something that surface can now DO</td><td>forks a conversation at any reply into its own window</td></tr>
       <tr><td><b>Milestone</b></td><td>a tick on the rim</td><td>earned by the features under it, never declared</td><td>First install on Legion</td></tr>
-      <tr><td><b>Bench</b></td><td>the outer belt</td><td>standing tools, processes and workflows, identical on every project</td><td>60 tools, 13 processes, 15 workflows</td></tr>
+      <tr><td><b>Bench</b></td><td>the outer belt</td><td>standing tools, processes and workflows, identical on every project</td><td>the same kit it carries on every other project</td></tr>
     </tbody>
   </table>
 
@@ -481,18 +481,30 @@
     <li><b>Could you stop building it without stopping the others?</b> Creative Library, yes. Multi-select attach, no.</li>
     <li><b>Would a person name it when saying what they use?</b> Creative Library, yes. Multi-select attach, no.</li>
   </ul>
-  <p class="prose">Naming follows from this. A feature is written as what the product can now do
-  ("accepts a dropped file and keeps it with its origin"), never as a user action ("drop a file").
-  That is already the shape of the <code>plain</code> field on all 61 features in the static graph,
-  so the rule describes the data rather than being imposed on it.</p>
+  <p class="prose">Naming follows from this, and the test is stricter than &ldquo;use a noun&rdquo;.
+  A feature is a <b>part you could draw a box around and point at</b>, so its name reads naturally
+  after the word <i>the</i>: the plan spine, the render farm, the dispatch rail. An activity noun
+  built out of the work&rsquo;s own verb fails that test &mdash; &ldquo;Discover every project&rdquo;
+  becoming &ldquo;Project discovery&rdquo; is the same step wearing a costume, and on the glass it
+  reads as a worklog exactly as the raw verb did. When a name fails, name the thing that does the
+  work instead: not &ldquo;project discovery&rdquo; but &ldquo;the project index&rdquo;. A feature
+  also normally gathers <b>several</b> steps; one feature per step means the layer is carrying no
+  information, and either the features are too small or the steps are written at capability size.</p>
 
   <div class="kicker">The spine is the plan, led by product</div>
-  <h3 class="claim">One section per product, collapsed, opening to its features.</h3>
-  <p class="prose">The spine was built from the plan's <b>phases</b>, which is how work was sequenced
-  rather than what the project is, and that is why it did not read as a project. Every step already
-  declares the product it produces, so the grouping key was the only thing wrong. The header, the
-  plate, the spine and the map tab now carry the <b>same set of products</b>: they did not, and one
-  screen read 14 products, 16 sections and 25 branches at the same time.</p>
+  <h3 class="claim">One section per product, opening to its features, and a feature opening to the steps that build it.</h3>
+  <p class="prose">The spine was built from the plan&rsquo;s <b>phases</b>, which is how work was
+  sequenced rather than what the project is. Grouping by product fixed half of it. The other half was
+  that a &ldquo;feature&rdquo; <b>was a plan step under a different name</b>: the reducer pushed every
+  step into a list called <code>features</code> carrying the step&rsquo;s own title, so a product
+  opened onto a wall of verb sentences and the word feature was a display label. Features are now
+  <b>declared on the product</b> in <code>plan.json</code> and a step names the one it builds, so a
+  feature can be listed before any work on it exists &mdash; which is what a plan is for &mdash; and
+  the steps sit one level down, closed, inside the feature they belong to. Sign-off moved with them:
+  custody is addressed to the feature, and a feature with no verdict of its own inherits one when
+  every step under it was passed, so nothing already signed was voided. Directories the instrument
+  discovered on its own no longer sit in the same list wearing the same styling as declared products,
+  which is what made the header&rsquo;s product count and the spine&rsquo;s list disagree.</p>
 
   <div class="kicker">Zoom is part of the model</div>
   <h3 class="claim">The same object is a planet in one view and the hub in another, and the instrument has to say which.</h3>
@@ -526,6 +538,46 @@
   the reference still survives, the invention is drawn as a dashed dormant ghost captioned "not
   declared in products; named by N steps", it is skipped by the tier rollup so it can never wear a
   badge it did not earn, and it is counted as neither a product nor a project.</p>
+
+  <div class="kicker">The law of light &middot; operator ruling, 2026-08-30</div>
+  <h3 class="claim">A body exists because work started, and it shines because a check passed.</h3>
+  <p class="prose">This amends the drawing rule above. A declared product or feature is the
+  <b>plan</b>; the sky draws only the ones whose work has <b>started</b> (a first commit, a branch,
+  or an agent mission touching it). A declared but untouched item stays a dashed row in the spine
+  and does not exist as a body. <code>applyPlan</code>'s planet-per-declared-product draw predates
+  this ruling and does not obey it yet, recorded here the same way the reducer note on the
+  components tab records code behind model.</p>
+  <p class="prose">Verification light comes in two levels, and the operator named this one of
+  Tellurion's most important features:</p>
+  <ul class="law">
+    <li><b>Feature (moon):</b> in progress is a dashed ember silhouette; a recorded check passing
+    (exit 0 at HEAD) flips it to a solid body with a halo, a change in kind, never a brightness
+    tweak. Stale evidence decays the halo to dotted amber; a failing check draws a broken red arc.
+    No hand can set any of these.</li>
+    <li><b>Product (planet):</b> while features are mixed it wears no ring of any kind; the
+    verified fraction prints in its label. When every feature is verified at HEAD and the product's
+    own end-to-end walk passes, a verification shade blooms around the whole system, the band ring
+    appears where none existed, and the product's orbit line lights. If anything falls back out of
+    verified, the shade fades and the band withdraws to a dotted ring.</li>
+  </ul>
+  <div class="kicker">One law, four skins &middot; operator ruling, 2026-08-30</div>
+  <p class="prose">Ratified same day, later amended with the default: the instrument ships two
+  styles in two themes, toggled in the product, and <b>Rustic Light is the default skin</b>.
+  <b>Futuristic</b> is the AI-made constellation look (dark space, or Fog and Deep Navy in light,
+  as on the live instrument); <b>Rustic</b> is the engraved star-atlas (cream on a night plate in
+  dark, sepia ink on parchment in light). A skin changes token values and typefaces (Orbitron with
+  JetBrains Mono in Futuristic, Cinzel with Courier Prime in Rustic), never geometry or state
+  meaning, so spatial memory and the law of light survive the toggle. Verification green is a role
+  with a per-skin value, and nothing else in a skin may wear it.</p>
+  <p class="prose">The cue itself was then sized to its importance, locked from mockup comparison:
+  moon radius floor 5px in every skin; a verified moon keeps its category fill under a 32%
+  verification-green wash with a bold 1.8px halo (the wash survives staleness while the halo decays
+  to dotted amber); and the product cue follows Wassim's sharper flip, no ring to ring rather than
+  ring to bigger ring: a partial product wears no ring geometry at all, and full verification
+  arrives as the shade, a 3.2px band with outer hairline, and the lit orbit together. The full
+  visual grammar, one formula per glyph, all four skins on the same sample sky, and the cue
+  comparison live on
+  <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.</p>
 </section>
 
 <!-- -------------------------------------------------------- CHANGELOG -->
@@ -537,6 +589,101 @@
   thing this section exists to make impossible.</p>
 
   <div class="log">
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>The four skins are locked, Rustic Light is the default, and the verification cue grew into its importance.</h4>
+      <p>Wassim ratified the four-skin system with Rustic Light as the default, and raised a
+      concern while deferring to mockups: the moons might be too small for how much verification
+      matters, suggesting filled moons with a hue and a very visible product ring. Three cue
+      treatments were mocked at true scale; the winner, now on every sky of the canvas, grows moons
+      to a 5px floor and lights a verified moon from within (category fill under a green wash, bold
+      halo). On his second look Wassim sharpened the product cue: no ring to ring beats ring to
+      bigger ring, so the partial-product meridian arc died (fraction moved to the label) and full
+      verification now blooms a background verification shade around the whole system as the band
+      ring appears on a lit orbit. Full-green moon bodies were rejected for deleting the category
+      channel where work finished; a heavier permanent ring was rejected for reading as a body
+      rather than a cue. The model tab carries the exact locked numbers; the comparison board and
+      the four updated skies:
+      <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.</p>
+    </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>A feature stopped being a plan step under a different name.</h4>
+      <p>Wassim, on the running spine: &ldquo;it&rsquo;s meant to highlight the products and features,
+      and in the version I see, I see weird steps in there as well.&rdquo; He was right, and the cause
+      was in the reducer rather than the styling: <code>state.mjs</code> pushed every plan step into a
+      list called <code>features</code> with the step&rsquo;s own title, so the word feature was a
+      display label for step and the spine printed verbs where the reference printed nouns. The schema
+      had anticipated it and stopped &mdash; <code>plan.mjs</code> wrote a <code>produces.kind</code>
+      field defaulting to <code>'feature'</code> that nothing anywhere read. <b>Features are now
+      declared</b> on the product, a step names the feature it builds, custody is addressed to the
+      feature with older step-addressed sign-offs inheriting upward, the spine renders product then
+      feature then step, discovered directories move into their own group, and the header counts
+      products, features and steps from the plan rather than from everything discovered anywhere.
+      Decided on a five-question sheet; the operator overrode the recommendation on custody, ruling it
+      &ldquo;has to be feature&hellip; a visual cue that something has been verified is a key highlight
+      of this project&rdquo;. Rendering it caught three defects a code read had missed: every
+      feature-addressed sign-off reported as an orphan, feature ids silently renamed by sharing the
+      step id space, and an un-migrated plan reporting 0/0 against 21 done steps. A second operator
+      pass then corrected the naming rule itself &mdash; the first draft nominalised the step verbs
+      (&ldquo;Project discovery&rdquo;) &mdash; which is the &ldquo;reads after <i>the</i>&rdquo; test
+      now on the model tab. <b>Not yet claimed:</b> this is in the working source and the
+      <code>packages/tellurion</code> subtree, and has not been committed or shipped to the extension.</p>
+    </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>Project numbers came out of a document about the product.</h4>
+      <p>Operator ruling: the counts on this page were sample data from whichever repository the instrument
+      happened to be watching, and a canonical document describes the product rather than one repo on its
+      plate. &ldquo;31 planets&rdquo; also has no fixed value &mdash; it moves with the repo, the mode, whether
+      a plan is declared and the hour you scanned, and the instrument&rsquo;s own header counted 14 products
+      against those 31 planets. The KPI row&rsquo;s three project cards are replaced by properties that hold on
+      every project: no writes, three read-only feeds, two modes, three sign-off tiers. The boot paragraph keeps
+      the scan speed, which belongs to the instrument, and drops the entity counts, which belonged to the repo.
+      The shipped graph&rsquo;s inventory, the standing kit&rsquo;s totals and the feature count are out of the
+      components table, the model table and the naming rule; the honesty block states the principle instead of
+      reconciling two figures. <b>What stays:</b> the defect accounts on the model tab, where a number is
+      evidence a guard fired rather than a claim about scale, and every dated row below, which records what was
+      true on its day. The template&rsquo;s KPI guidance asked only that a number be true and cited &mdash; which
+      these were. It never asked whether the number was about the product, and that is the gap this closes.</p>
+    </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>Bodies exist only once work starts, verification light gets two levels, and the instrument gets four skins.</h4>
+      <p>Two operator rulings from the reimagining session, both recorded on the model tab. <b>The
+      law of light:</b> a product or feature is drawn in the sky only when work on it has started;
+      declared but untouched items stay in the spine. A feature's completed verification flips its
+      moon from dashed ember to solid with a halo, and a product whose features are all verified,
+      with its own end-to-end walk passing, ignites a corona and lights its orbit, retracting if
+      anything falls back out of verified. Wassim named the two-level cue one of Tellurion's most
+      important features. <b>One law, four skins:</b> a style and theme toggle (Futuristic and
+      Rustic, dark and light; settings <code>tellurion.style</code> and <code>tellurion.theme</code>,
+      AUTO follows the editor theme); skins change tokens and typefaces only. Behind both rulings:
+      the hackathon extension (<code>infra-ecomma/devin-hackathon</code>, a 752-line scaffold whose
+      webview never parsed and whose scanner drew one planet) was reimagined through four
+      independent, adversarially critiqued design concepts (judge scores 7.5 to 8.5), synthesized
+      into the <b>Earned Light</b> direction: fourteen boards at
+      <a href="https://claude.ai/code/artifact/2747357c-3281-483c-90b1-f8a76d60a203">the reimagining canvas</a>.
+      A first version of this entry (v1.5, commit 610f0b098) was overwritten twenty minutes later by
+      a concurrent session's re-sort working from a stale base; this v1.6 re-applies it on top of
+      that session's audit row below.</p>
+    </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>The footer caught up with the masthead, and the archive was rebaked from committed HEAD.</h4>
+      <p>An audit of this document found three staleness defects and all three are closed here.
+      <b>The footer</b> had read <code>v1.1 &middot; updated 28 Aug 2026</code> since three version bumps ago while
+      the masthead read v1.4, so the page&rsquo;s own provenance line contradicted its header; both now read
+      v1.5 &middot; 30 Aug 2026. <b>The changelog</b> broke its own most-recent-first rule at one row &mdash; the
+      2026-08-30 panel-identity entry sat below two 2026-08-29 entries &mdash; and is now in date order.
+      <b>The archive</b> at <code>tellurion-plate.html</code> had been baked 2026-08-28 18:24, two days and 24
+      source files behind, so none of the 08-29 or 08-30 work was in the thing this page calls the instrument.
+      It is rebaked from committed HEAD rather than the working tree, which carries undocumented in-flight
+      work. <b>Corrected within the hour:</b> that first rebake ran from a git worktree, and because the mode is
+      chosen by comparing the watched root against the server&rsquo;s own repo, a worktree made OCC look foreign and
+      the archive silently baked in <i>genesis</i> mode &mdash; an empty sky grown from the four declared products,
+      where a universe-mode estate plate had been published before. Rebaked with an explicit <code>--universe</code>:
+      29 planets, 86 features, 70 milestones, 14 products, verified by rendering in real Chromium and by the
+      embedded world&rsquo;s genesis flag reading false. Noted and left alone: the headline 31-planet figure is a
+      dated 2026-08-28 universe-mode scan, the same scan today gives 29, and the instrument&rsquo;s own header counts
+      14 products against those 29 planets &mdash; so what that stat should say is a content decision, not a
+      staleness fix.</p>
+    </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>The honest empty card, the panel that knocks before entering, and a repo of its own.</h4>
       <p>Two operator rulings today, both on panel behavior. <b>F1 (empty card):</b> the no-plan screen
@@ -552,6 +699,23 @@
       (<code>bin/mirror-repo.sh</code>) with OCC as the one source. Walks: battle 83/83, plan lifecycle
       12/12, invite 5/5, all against real Chromium after the change.</p>
     </div></div>
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>The panel can never go blank again, and a 200 now names its process.</h4>
+      <p>Two failure classes closed together. A VS Code panel that framed the instrument blind: a dead
+      server, a dropped port-forward, or another project's instrument on the port all rendered as the
+      same blank square (reported three times across 2026-08-29/30). Panel and sidebar now render
+      a guard page (<code>vscode-ext/wrapper.js</code>) that probes the instrument's new
+      <code>/api/identity</code> before framing: an unreachable server gets a card naming the URL and
+      the fix, and a port serving a DIFFERENT project gets a card naming both roots — the port-thief
+      escape of 2026-08-28, now visible instead of silent. That probe caught its own false alarm on the
+      first walk: a webview-origin fetch is CORS-blocked from <code>/health</code>, so identity moved
+      to <code>/api/identity</code>, which answers CORS-open and carries nothing sensitive
+      (<code>/health</code> stays closed — it exposes the last thing typed). And <code>/health</code>
+      itself now carries <code>pid</code>, <code>version</code> and <code>startedAt</code>, so "is the
+      instrument up?" can be paired with the pid actually listening on the port — edge-walk E9
+      asserts that pairing forever. Extension 0.5.0, installed on both machines by
+      <code>build-vsix.sh</code>. Verified: <code>verification/2026-08-30-tellurion-panel-identity/</code>
+      (panel-walk 9/9, edge-walk 18/18, 217 assertions green across nine walks).</p></div></div>
     <div class="log-row"><div class="log-date">2026-08-29</div><div class="log-body">
       <h4>The plan lifecycle: three ways to a spine, editable in all of them, connected to the repo.</h4>
       <p>The operator's ruling (ADR-0134), built the same day. The empty state now offers
@@ -594,23 +758,6 @@
       occupies is still a rung. Every fix has a fail-first assertion in the new
       <code>verify/edge-walk.mjs</code> (15/15), and the full suite passes: 183 assertions across
       seven walks. Evidence: <code>verification/2026-08-29-tellurion-edge-cases/</code>.</p></div></div>
-    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
-      <h4>The panel can never go blank again, and a 200 now names its process.</h4>
-      <p>Two failure classes closed together. A VS Code panel that framed the instrument blind: a dead
-      server, a dropped port-forward, or another project's instrument on the port all rendered as the
-      same blank square (reported three times across 2026-08-29/30). Panel and sidebar now render
-      a guard page (<code>vscode-ext/wrapper.js</code>) that probes the instrument's new
-      <code>/api/identity</code> before framing: an unreachable server gets a card naming the URL and
-      the fix, and a port serving a DIFFERENT project gets a card naming both roots — the port-thief
-      escape of 2026-08-28, now visible instead of silent. That probe caught its own false alarm on the
-      first walk: a webview-origin fetch is CORS-blocked from <code>/health</code>, so identity moved
-      to <code>/api/identity</code>, which answers CORS-open and carries nothing sensitive
-      (<code>/health</code> stays closed — it exposes the last thing typed). And <code>/health</code>
-      itself now carries <code>pid</code>, <code>version</code> and <code>startedAt</code>, so "is the
-      instrument up?" can be paired with the pid actually listening on the port — edge-walk E9
-      asserts that pairing forever. Extension 0.5.0, installed on both machines by
-      <code>build-vsix.sh</code>. Verified: <code>verification/2026-08-30-tellurion-panel-identity/</code>
-      (panel-walk 9/9, edge-walk 18/18, 217 assertions green across nine walks).</p></div></div>
     <div class="log-row"><div class="log-date">2026-08-29</div><div class="log-body">
       <h4>The door out of VS Code actually opens, and the bookmark keeps its key.</h4>
       <p>Two refinements the same day, from using it. The dossier no longer pops on hover inside a
@@ -686,7 +833,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v1.1 &middot; updated 28 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v1.9 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 

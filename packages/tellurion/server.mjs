@@ -525,7 +525,12 @@ const server = http.createServer((req, res) => {
         pushWorld();
         // Say what tier it actually reached, so a request that changed nothing
         // can never come back looking like one that changed something.
-        const f = (world.stat.features || []).find((x) => x.id === 'step:' + String(want.step || ''));
+        // Custody is addressed to a feature now, and to a step for anything
+        // signed before that. The answer has to look up both or a successful
+        // acceptance comes back reporting tier:null, which reads as a no-op.
+        const wantId = String(want.step || '');
+        const f = (world.stat.features || []).find((x) => x.id === 'feat:' + wantId)
+          || (world.stat.features || []).find((x) => x.id === 'step:' + wantId);
         res.writeHead(200, { 'content-type': 'application/json' });
         res.end(JSON.stringify({ ok: true, step: String(want.step || ''), tier: f ? f.status : null, signedBy: f ? f.signedBy : null, accepted: acceptedPathFor(ROOT) }));
       } catch (e) {

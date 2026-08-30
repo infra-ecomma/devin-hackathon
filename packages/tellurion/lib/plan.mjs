@@ -52,7 +52,15 @@ export function normalisePlan(raw, projectName = '') {
         title: t,
         status: statusOf(s.status),
         note: clean(s.note, 400) || undefined,
-        produces: prod ? { kind: clean(prod.kind, 20) || 'feature', of: clean(prod.of || prod.product, 60) || undefined } : undefined,
+        // `of` is the product, `feature` is the part of it this step builds.
+        // `feature` is the join that makes the spine read as a product rather
+        // than as a worklog: without it every step is its own headline, which
+        // is what "weird steps in there" was looking at.
+        produces: prod ? {
+          kind: clean(prod.kind, 20) || 'feature',
+          of: clean(prod.of || prod.product, 60) || undefined,
+          feature: clean(prod.feature, 60) || undefined,
+        } : undefined,
       };
     });
     // A phase with every step done is done, whatever the file claims: the steps
@@ -102,7 +110,29 @@ export function normalisePlan(raw, projectName = '') {
     // `home` is the repo-relative path the product lives at. Attribution lights
     // the planet when work lands under it, which is the spine's connection to
     // the project itself (ADR-0134, T4). Optional; empty means name-matching only.
-    declared.set(id, { id, name, note: clean(o.note, 400) || undefined, home: clean(o.home, 200) || undefined, declared: true });
+    // A FEATURE is a part of the product. It is declared here, by name, so it
+    // can be listed before any work on it exists — which is the whole reason a
+    // plan is written ahead of the work. Steps point AT a feature; they are no
+    // longer silently relabelled as one (that was `features.push({ id: 'step:'
+    // + st.id })` in state.mjs, and it is why the spine printed verbs).
+    // Forgiving on purpose: a bare string is a feature name, same as everywhere
+    // else in this hand-edited file.
+    const feats = [];
+    const rawFeats = Array.isArray(o.features) ? o.features : [];
+    rawFeats.forEach((fr, k) => {
+      const f = typeof fr === 'string' ? { name: fr } : (fr && typeof fr === 'object' ? fr : {});
+      const fname = clean(f.name || f.title, 120);
+      if (!fname) return;
+      feats.push({
+        id: clean(f.id, 60) || slug(fname, k),
+        name: fname,
+        note: clean(f.note, 400) || undefined,
+        // A feature may carry its own status for a project that tracks it
+        // directly; with steps under it the steps decide, so this is a floor.
+        status: STATUSES.includes(String(f.status)) ? String(f.status) : undefined,
+      });
+    });
+    declared.set(id, { id, name, note: clean(o.note, 400) || undefined, home: clean(o.home, 200) || undefined, declared: true, features: feats });
   }
   const undeclared = new Map();
   for (const st of allSteps) {
@@ -117,9 +147,20 @@ export function normalisePlan(raw, projectName = '') {
   // carried SIX product planets against four in the file and nothing on screen
   // said which two were a typo. The reference survives; it is now marked.
   for (const [of, steps] of undeclared) {
-    declared.set(of, { id: of, name: of.replace(/-/g, ' '), declared: false, steps });
+    declared.set(of, { id: of, name: of.replace(/-/g, ' '), declared: false, steps, features: [] });
+  }
+  // Feature ids are unique among FEATURES. They deliberately do NOT share the
+  // step id space: a feature and the step that builds it are usually named after
+  // the same thing ("Legend" / "legend"), so sharing one space renamed perfectly
+  // good features to "legend-2" and reported it as an error on a correct file.
+  // Custody stays unambiguous because resolveTarget() in signoff.mjs looks a
+  // feature up FIRST, and a feature is the unit sign-off now addresses.
+  const featIds = new Set();
+  for (const pr of declared.values()) {
+    for (const f of (pr.features || [])) f.id = uniq(featIds, f.id, 'feature');
   }
   const products = [...declared.values()];
+  const allFeatures = products.flatMap((p) => p.features || []);
 
   return {
     project: clean(src.project || projectName, 120),
@@ -133,6 +174,7 @@ export function normalisePlan(raw, projectName = '') {
     phases,
     totals: {
       products: products.length,
+      features: allFeatures.length,
       phases: phases.length,
       phasesDone: phases.filter((p) => p.status === 'done').length,
       steps: allSteps.length,
