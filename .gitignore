@@ -31,3 +31,26 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Master Kit (reference mode — no kit files in project)
+.rag/
+.kit-meta.json
+.kit-feedback.json
+# Reference mode = ZERO local kit copy. These guard against the legacy
+# full-copy/full-mirror cascade ever being committed back into a consumer
+# (KF-KIT-SYNC-REFERENCE-MODE-NO-TEETH — Code-Red carried a 170MB tracked copy).
+Master-Starter-Kit/
+.claude/kit-mirror/
+.sync-temp-backup/
+# KF-hook-fire-logger-leaks-secrets: command/telemetry logs are runtime churn (a cmd
+# signature can carry an inline DATABASE_URL/KEK/PASSWORD) — never track them.
+dev_docs/hook-fire-log.jsonl
+dev_docs/*-log.jsonl
+
+# Claude / kit runtime state (not the settings/commands surface)
+.claude/.deferred-tools.json
+.claude/.detected-stack.json
+.claude/.env-readiness.json
+.gsd/
+.kit/
+.vscode/settings.json
