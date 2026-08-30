@@ -192,60 +192,6 @@
   ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--ink) 16%, transparent); border-radius: 3px; }
 </style>
 </head>
-<body>
-<div id="app">
-  <header id="topbar">
-    <div id="wordmark" class="display">TELLURION</div>
-    <div id="repoline" class="mono"></div>
-    <div id="skinControls">
-      <div class="seg" id="segStyle">
-        <button type="button" data-v="futuristic">FUTURISTIC</button>
-        <button type="button" data-v="rustic">RUSTIC</button>
-      </div>
-      <div class="seg" id="segTheme">
-        <button type="button" data-v="dark">DARK</button>
-        <button type="button" data-v="light">LIGHT</button>
-        <button type="button" data-v="auto">AUTO</button>
-      </div>
-    </div>
-  </header>
-  <div id="mid">
-    <aside id="rail">
-      <div id="railHead" class="display hidden">FLIGHT PLAN</div>
-      <div id="planProblems" class="mono"></div>
-      <div id="cards"></div>
-    </aside>
-    <main id="skyWrap"><canvas id="sky"></canvas></main>
-    <aside id="dock" class="hidden">
-      <div id="dockState" class="display"></div>
-      <div id="dockFeature"></div>
-      <div id="dockProduct" class="mono"></div>
-      <div class="receipt mono">
-        <div id="rExit"></div>
-        <div id="rSha" class="wrap"></div>
-        <div id="rCmd" class="wrap"></div>
-        <div id="rTime"></div>
-        <div id="rLog"></div>
-      </div>
-      <div class="dockBtns">
-        <button type="button" id="btnRerun" class="btn display">RE-RUN</button>
-        <button type="button" id="btnRevoke" class="btn display">REVOKE</button>
-      </div>
-    </aside>
-  </div>
-  <footer id="foot">
-    <div id="missionlog">
-      <div id="logHead" class="display">MISSION LOG</div>
-      <div id="logLines" class="mono"></div>
-    </div>
-    <div id="telemetry">
-      <span id="counts" class="mono"></span>
-      <span id="scanned" class="mono" title="refresh"></span>
-    </div>
-  </footer>
-</div>
-
-<script>
 (function () {
   "use strict";
   // Law of light: this webview renders only what the engine sent. It holds no

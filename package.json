@@ -6,12 +6,15 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "publisher": "tellurion",
+  "publisher": "tbk-labs",
+  "license": "MIT",
+  "icon": "media/tellurion-icon.png",
   "categories": [
     "Visualization",
     "Other"
   ],
   "activationEvents": [
+    "onCommand:tellurion.openSky",
     "onCommand:tellurion.openOrrery",
     "onCommand:tellurion.startInception",
     "onStartupFinished"
@@ -26,7 +29,7 @@
       },
       {
         "command": "tellurion.openOrrery",
-        "title": "Tellurion: Open Orrery",
+        "title": "Tellurion: Open the instrument",
         "icon": "$(symbol-class)"
       },
       {
@@ -48,6 +51,16 @@
         "command": "tellurion.switchTheme",
         "title": "Tellurion: Switch Theme",
         "icon": "$(color-mode)"
+      },
+      {
+        "command": "tellurion.enrichContext",
+        "title": "Tellurion: Enrich planet with Context.dev",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "tellurion.showEvents",
+        "title": "Tellurion: Show Convex events",
+        "icon": "$(history)"
       }
     ],
     "configuration": {
@@ -87,12 +100,17 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "npm run compile",
-    "build": "npm run compile"
+    "package": "npm run compile && npx @vscode/vsce package --no-dependencies",
+    "convex:dev": "convex dev",
+    "convex:codegen": "convex codegen"
+  },
+  "dependencies": {
+    "convex": "^1.45.0"
   },
   "devDependencies": {
-    "@types/vscode": "^1.85.0",
     "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
     "typescript": "^5.3.0"
   }
 }

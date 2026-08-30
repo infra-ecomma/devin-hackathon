@@ -168,7 +168,6 @@ export class TellurionPanel {
       this.postEvent("error", "no workspace folder open");
       return;
     }
-    // The webview is a trust boundary; a relative path must stay inside root.
     const abs = path.resolve(root, rel);
     if (abs !== root && !abs.startsWith(root + path.sep)) {
       this.postEvent("error", `path escapes the workspace: ${rel}`);

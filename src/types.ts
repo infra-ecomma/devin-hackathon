@@ -19,7 +19,7 @@ export interface FeaturePlan {
   id: string;             // stable slug, unique within the product
   name: string;           // noun phrase: what the product can now DO
   paths: string[];        // repo-relative path prefixes owned by this feature
-  check?: CheckSpec;      // the only thing that can flip this moon solid
+  check?: CheckSpec;     // the only thing that can flip this moon solid
 }
 
 export interface ProductPlan {
@@ -43,18 +43,18 @@ export interface EvidenceRecord {
   timestamp: string;      // ISO
   durationMs: number;
   logTail: string[];      // last lines of combined output, capped
-  consecutiveFailures?: number; // present on failing records: unbroken run of non-zero exits
+  consecutiveFailures?: number;
 }
 
 export interface FeatureView {
   id: string;
   name: string;
   state: FeatureState;
-  startedAt?: string;     // ISO of the earliest commit touching paths
+  startedAt?: string;      // ISO of the earliest commit touching paths
   evidence?: EvidenceRecord;
   behind?: number;        // commits touching paths after evidence.sha (stale only)
-  failingCount?: number;  // consecutive failing runs
-  dirtyFiles?: number;    // uncommitted files under paths, right now
+  failingCount?: number;
+  dirtyFiles?: number;
   hasCheck: boolean;
 }
 
@@ -62,14 +62,14 @@ export interface ProductView {
   id: string;
   name: string;
   category: ProductPlan["category"];
-  started: boolean;             // any feature started: only then is a planet drawn
+  started: boolean;
   startedAt?: string;
   features: FeatureView[];
   startedCount: number;
-  verifiedCount: number;        // verified at HEAD (stale does not count)
-  productVerified: boolean;     // ALL declared features verified AND walk exit 0 at HEAD
+  verifiedCount: number;
+  productVerified: boolean;
   walkEvidence?: EvidenceRecord;
-  orbitIndex: number;           // formation order among started products, stable
+  orbitIndex: number;
   dirtyFiles: number;
 }
 
@@ -78,19 +78,19 @@ export interface VentureState {
   branch: string;
   headSha: string;
   clean: boolean;
-  products: ProductView[];      // every declared product, drawn or not (started flags)
+  products: ProductView[];
   productsInSky: number;
   productsVerified: number;
   featuresInSky: number;
   scannedAt: string;
   planPath: string;
-  planProblems: string[];       // honest surface for a malformed plan; never invented data
+  planProblems: string[];
 }
 
 export interface ScanEvent {
-  at: string;                   // ISO
+  at: string;
   kind: "scan" | "check" | "verify" | "revoke" | "commit" | "error";
-  line: string;                 // rendered verbatim in the mission log
+  line: string;
 }
 
 // ---- Webview protocol ----------------------------------------------------
@@ -102,7 +102,7 @@ export type ToWebview =
   | { type: "state"; state: VentureState; style: SkinStyle; theme: "dark" | "light"; themeSetting: SkinTheme }
   | { type: "event"; event: ScanEvent }
   | { type: "skin"; style: SkinStyle; theme: "dark" | "light"; themeSetting: SkinTheme }
-  | { type: "checking"; target: string };   // measuring state while a check runs
+  | { type: "checking"; target: string };
 
 export type FromWebview =
   | { type: "ready" }
