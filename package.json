@@ -1,69 +1,34 @@
 {
   "name": "tellurion",
   "displayName": "Tellurion — Visual Project Orrery",
-  "description": "A VS Code extension for visual project planning with an astronomical orrery visualization.",
+  "description": "A VS Code extension that visualises your project as a living orrery: deliverables as planets, features as moons, and the plan as the spine.",
   "version": "0.1.0",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "publisher": "tellurion",
-  "categories": [
-    "Visualization",
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:tellurion.openOrrery",
-    "onCommand:tellurion.startInception",
-    "onStartupFinished"
-  ],
+  "engines": { "vscode": "^1.85.0" },
+  "publisher": "tbk-labs",
+  "license": "MIT",
+  "icon": "media/tellurion.svg",
+  "categories": ["Visualization", "Other"],
+  "activationEvents": ["onCommand:tellurion.openOrrery", "onCommand:tellurion.startInception", "onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "tellurion.openOrrery",
-        "title": "Tellurion: Open Orrery",
-        "icon": "$(symbol-class)"
-      },
-      {
-        "command": "tellurion.startInception",
-        "title": "Tellurion: Start Inception Workflow",
-        "icon": "$(play)"
-      },
-      {
-        "command": "tellurion.refreshScan",
-        "title": "Tellurion: Refresh Project Scan",
-        "icon": "$(refresh)"
-      }
+      { "command": "tellurion.openOrrery", "title": "Tellurion: Open the instrument", "icon": "$(symbol-class)" },
+      { "command": "tellurion.startInception", "title": "Tellurion: Start Inception", "icon": "$(play)" },
+      { "command": "tellurion.refreshScan", "title": "Tellurion: Refresh scan", "icon": "$(refresh)" }
     ],
     "keybindings": [
-      {
-        "command": "tellurion.openOrrery",
-        "key": "ctrl+shift+t",
-        "mac": "cmd+shift+t",
-        "when": "editorTextFocus"
-      }
-    ],
-    "views": {
-      "tellurion": [
-        {
-          "type": "webview",
-          "id": "tellurion.orreryPanel",
-          "name": "Tellurion Orrery",
-          "visibility": "visible"
-        }
-      ]
-    }
+      { "command": "tellurion.openOrrery", "key": "ctrl+shift+t", "mac": "cmd+shift+t" }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "npm run compile",
-    "build": "npm run compile"
+    "package": "npm run compile && npx @vscode/vsce package --no-dependencies"
   },
   "devDependencies": {
-    "@types/vscode": "^1.85.0",
     "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
     "typescript": "^5.3.0"
   }
 }
