@@ -32,8 +32,6 @@ services:
     networks:
       - coolify
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5432:5432"
 
 volumes:
   hackathon_db:
