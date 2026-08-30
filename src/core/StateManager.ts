@@ -18,6 +18,10 @@ export class StateManager {
     const s=this.load(),p=s.planets.find((x:any)=>x.id===planetId);
     if(p){p.verified=true;if(moonId&&p.moons){const m=p.moons.find((x:any)=>x.id===moonId);if(m)m.verified=true;}this.save(s);}
   }
+  setPlanetContext(planetId:string,url:string,markdown:string){
+    const s=this.load(),p=s.planets.find((x:any)=>x.id===planetId);
+    if(p){p.contextUrl=url;p.contextMarkdown=markdown;this.save(s);}
+  }
   advance(stepId:string){
     const s=this.load(),st=s.spine.find((x:any)=>x.id===stepId);if(!st)return;
     if(st.status==='pending'){st.status='active';st.progress=10;}

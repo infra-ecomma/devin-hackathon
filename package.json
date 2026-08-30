@@ -1,6 +1,6 @@
 {
   "name": "tellurion",
-  "displayName": "Tellurion \u2014 Visual Project Orrery",
+  "displayName": "Tellurion — Visual Project Orrery",
   "description": "A VS Code extension that visualises your project as a living orrery: deliverables as planets, features as moons, and the plan as the spine.",
   "version": "0.1.0",
   "engines": {
@@ -35,6 +35,16 @@
         "command": "tellurion.refreshScan",
         "title": "Tellurion: Refresh scan",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "tellurion.enrichContext",
+        "title": "Tellurion: Enrich planet with Context.dev",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "tellurion.showEvents",
+        "title": "Tellurion: Show Convex events",
+        "icon": "$(history)"
       }
     ],
     "keybindings": [
@@ -49,7 +59,12 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "npm run compile && npx @vscode/vsce package --no-dependencies"
+    "package": "npm run compile && npx @vscode/vsce package --no-dependencies",
+    "convex:dev": "convex dev",
+    "convex:codegen": "convex codegen"
+  },
+  "dependencies": {
+    "convex": "^1.45.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
