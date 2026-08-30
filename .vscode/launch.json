@@ -1,0 +1,35 @@
+{
+  // Launch configs for the Tellurion VS Code extension.
+  // "Run Extension" is the normal F5 target. If Electron's sandbox is refused
+  // (common under WSL2 / containers / locked-down desktops), use the second one.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "sourceMaps": true,
+      "preLaunchTask": "compile"
+    },
+    {
+      "name": "Run Extension (no sandbox, clean env)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--disable-extensions",
+        "--no-sandbox",
+        "--disable-gpu",
+        "${workspaceFolder}"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "sourceMaps": true,
+      "preLaunchTask": "compile"
+    }
+  ]
+}
