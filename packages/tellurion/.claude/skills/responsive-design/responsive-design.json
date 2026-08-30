@@ -1,0 +1,27 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "responsive-design",
+  "type": "skill",
+  "domain": "product",
+  "description": "Adapt designs across screen sizes, devices, and contexts — breakpoints, fluid layouts, touch targets, cross-device compatibility. Use when implementing responsive design, fixing mobile layouts, or ensuring cross-device quality. Directly addresses the responsive verification gap. Triggers on \"responsive\", \"mobile layout\", \"breakpoints\", \"cross-device\".",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "mobile layout",
+      "breakpoints",
+      "cross-device"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "responsive-design.docx"
+  ],
+  "wordCount": 1155,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

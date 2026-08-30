@@ -1,0 +1,28 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-engine",
+  "type": "workflow",
+  "domain": "orchestration",
+  "description": "Takes any design task — logo, interface, layout, image generation, review, export — and executes it through the full TBK Labs design skill stack with discipline. Scans installed skills, classifies the task, builds a category-appropriate chain, runs a brief first, generates multip.",
+  "triggers": {
+    "commands": [
+      "/design-engine"
+    ],
+    "keywords": [
+      "design X"
+    ]
+  },
+  "bundle": [
+    "INSTALL.md",
+    "README.md",
+    "WORKFLOW.md",
+    "design-engine.docx"
+  ],
+  "wordCount": 1339,
+  "score": 46,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-01",
+  "generatedBy": "kamini gen-json v1"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-enforcement",
+  "type": "hook",
+  "domain": "testing",
+  "description": "PostToolUse hook on Write/Edit/MultiEdit for `.tsx`/`.jsx`/`.html`/`.css` files. Catches 5 P1 (advisory) AI-design anti-patterns and 2 P0 (blocking) classification-compliance violations: generic grid-of-cards, indigo→purple gradients, uniform rounding, decorative shadows, hardcoded colors; KPI components must reference Classification Card metrics; generic prop types forbidden.",
+  "triggers": {
+    "commands": [],
+    "keywords": []
+  },
+  "bundle": [
+    "README.md",
+    "design-enforcement.docx",
+    "hook.sh"
+  ],
+  "wordCount": 553,
+  "score": 40,
+  "tier": "production",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-04-13",
+  "generatedBy": "kamini gen-json v1"
+}

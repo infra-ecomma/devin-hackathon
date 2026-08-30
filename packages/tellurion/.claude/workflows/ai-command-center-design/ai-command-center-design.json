@@ -1,0 +1,32 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "ai-command-center-design",
+  "type": "workflow",
+  "domain": "product",
+  "description": "Reference architecture for embedding an AI assistant in a dashboard — Claude Agent SDK with 12 PM tools, slide-out chat panel, SSE streaming, ChatMessage Prisma persistence. Triggers on: AI command center, embedded AI assistant, Claude Agent SDK in dashboard, AI chat panel, AI tool use design, agent SDK architecture.",
+  "triggers": {
+    "commands": [
+      "/ai-command-center"
+    ],
+    "keywords": [
+      "design AI agent console",
+      "embedded AI assistant",
+      "Claude Agent SDK in dashboard",
+      "AI chat panel",
+      "AI tool use design",
+      "agent SDK architecture"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "WORKFLOW.md",
+    "ai-command-center-design.docx"
+  ],
+  "wordCount": 796,
+  "score": 46,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-04-26",
+  "generatedBy": "kamini gen-json v1"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "web-accessibility",
+  "type": "skill",
+  "domain": "product",
+  "description": "WCAG 2.1 accessibility implementation — semantic HTML, keyboard navigation, ARIA attributes, color contrast, screen reader support, axe-core testing. Use when building accessible UI, fixing a11y issues, or ensuring compliance. Triggers on \"accessibility\", \"a11y\", \"WCAG\", \"screen reader\", \"keyboard navigation\", \"ARIA\".",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "test accessibility",
+      "audit wcag",
+      "check a11y",
+      "a11y",
+      "WCAG",
+      "screen reader",
+      "keyboard navigation",
+      "ARIA"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "web-accessibility.docx"
+  ],
+  "wordCount": 912,
+  "score": 46,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

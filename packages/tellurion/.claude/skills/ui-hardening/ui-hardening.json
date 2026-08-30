@@ -1,0 +1,29 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "ui-hardening",
+  "type": "skill",
+  "domain": "security",
+  "description": "Harden UI for production — text overflow, i18n (RTL, CJK, translation expansion), error states per HTTP status, edge cases (1000+ items, rapid clicks, offline, slow networks). Use before launch or during hardening steps. Triggers on \"harden\", \"i18n\", \"edge cases\", \"text overflow\", \"production ready\".",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "harden UI",
+      "i18n",
+      "edge cases",
+      "text overflow",
+      "production ready"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "ui-hardening.docx"
+  ],
+  "wordCount": 969,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-18",
+  "generatedBy": "kamini gen-json v1"
+}

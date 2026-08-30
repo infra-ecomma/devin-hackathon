@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/design-qa/hook.sh",
+            "statusMessage": "Design QA (SVG validity, CSS tokens, reduced-motion)...",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/design-enforcement/hook.sh",
+            "statusMessage": "Design enforcement (anti-pattern scan)...",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/proof-artifact-check/hook.sh",
+            "statusMessage": "Checking proof artifacts on commit...",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

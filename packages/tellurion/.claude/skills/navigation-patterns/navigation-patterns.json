@@ -1,0 +1,30 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "navigation-patterns",
+  "type": "skill",
+  "domain": "product",
+  "description": "Mobile navigation patterns — tab bar vs drawer vs stack, deep linking, modal flows, gesture-based nav (iOS swipe-back, Android system back), per-platform conventions. React Navigation reference. Triggers on: mobile navigation, tab bar, drawer navigation, stack navigator, deep linking, React Navigation, iOS swipe back.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "tab bar",
+      "drawer navigation",
+      "stack navigator",
+      "deep linking",
+      "React Navigation",
+      "iOS swipe back"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "navigation-patterns.docx"
+  ],
+  "wordCount": 558,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

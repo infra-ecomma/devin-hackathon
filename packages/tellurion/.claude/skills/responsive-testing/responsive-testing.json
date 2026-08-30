@@ -1,0 +1,30 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "responsive-testing",
+  "type": "skill",
+  "domain": "testing",
+  "description": "Use when a page needs to be verified across screen sizes before it ships, to catch horizontal scroll, tiny touch targets, overlapping or lost content, and broken tables. Provides a copy-per-page manual test plan across four breakpoints (mobile 375, tablet 768, laptop 1024, desktop 1440) with DevTools and Playwright setup, per-breakpoint pass/fail checklists, common responsive layout patterns (stack-to-grid, sidebar, responsive table/form/nav), a bug-cause-fix table, an automated Playwright sweep asserting no horizontal scroll and no console errors, and per-breakpoint accessibility concerns. Triggers on: responsive testing, breakpoints, mobile/tablet/desktop layout, viewport testing, horizontal scroll, touch target size, test across screen sizes, /responsive-testing.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "responsive testing",
+      "breakpoint testing",
+      "responsive template",
+      "375 768 1024 1440",
+      "mobile tablet laptop desktop testing",
+      "viewport testing"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "responsive-testing.docx"
+  ],
+  "wordCount": 639,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-04-26",
+  "generatedBy": "kamini gen-json v1"
+}

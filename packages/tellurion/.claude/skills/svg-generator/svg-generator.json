@@ -1,0 +1,25 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "svg-generator",
+  "type": "skill",
+  "domain": "product",
+  "description": "Builds precise, production-quality SVG files programmatically from geometric primitives — no guessing, no pixel drift. It constructs SVGs from circles, rectangles, paths, and text-to-path conversion, manages color systems via CSS custom properties, exports to multiple formats (SVG, PNG at 7 sizes, favicon, social OG image), and optimizes the final output. Reach for it when you need a logo, icon, brand mark, or any vector graphic that must render identically at any size. The output is a set of optimized SVG and PNG files ready for production use.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "SVG"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "svg-generator.docx"
+  ],
+  "wordCount": 385,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

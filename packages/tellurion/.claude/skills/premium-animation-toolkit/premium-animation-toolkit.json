@@ -1,0 +1,34 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "premium-animation-toolkit",
+  "type": "skill",
+  "domain": "marketing",
+  "description": "Reference for Phase 5 (BUILD) when creating WOW-factor landing pages. This document covers the full ecosystem beyond GSAP — CSS-only techniques, component libraries, Awwwards criteria, and micro-interaction patterns. Use it when adding premium animation or motion to a marketing page. Triggers on: premium animation, motion design, scroll animation, micro-interactions.",
+  "triggers": {
+    "commands": [],
+    "keywords": [
+      "premium animation toolkit",
+      "Awwwards 10/10 criteria",
+      "GSAP ScrollTrigger Lenis",
+      "CSS scroll-driven animations",
+      "animation-timeline view",
+      "Three.js Spline Lottie Particles Barba",
+      "signature WOW moment",
+      "60fps animations",
+      "prefers-reduced-motion",
+      "Core Web Vitals LCP CLS INP"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "premium-animation-toolkit.docx"
+  ],
+  "wordCount": 938,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-05-14",
+  "generatedBy": "kamini gen-json v1"
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "product-ux-audit",
+  "type": "workflow",
+  "domain": "audits",
+  "description": "Replaces single-pass auditing with a ten-phase pipeline that fixes three failure modes: miscalibration (product type determines severity), shallow discovery (four parallel Explore agents), missing 'so what' (Day-1/7/30 retention narrative). Output: dated `ux-audit-YYYY-MM-DD.md`.",
+  "triggers": {
+    "commands": [
+      "/product-ux-audit"
+    ],
+    "keywords": [
+      "audit this product"
+    ]
+  },
+  "bundle": [
+    "INSTALL.md",
+    "README.md",
+    "WORKFLOW.md",
+    "product-ux-audit.docx",
+    "research-memo-skill-vs-workflow.md",
+    "theory-bank.md"
+  ],
+  "wordCount": 2224,
+  "score": 48,
+  "tier": "curated",
+  "version": "1.0",
+  "provenance": "unverified",
+  "updated": "2026-04-26",
+  "generatedBy": "kamini gen-json v1"
+}

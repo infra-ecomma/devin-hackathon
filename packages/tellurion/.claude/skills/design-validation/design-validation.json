@@ -1,0 +1,36 @@
+{
+  "schema": "kamini.primitive/v1",
+  "name": "design-validation",
+  "type": "skill",
+  "domain": "testing",
+  "description": "Final validation before handoff — the terminal skill in the design pipeline. Cross-browser rendering verification, responsive testing at 5 breakpoints (375/768/1024/1280/1440px), dark mode verification, interaction and keyboard testing, handoff documentation generation, and design diff for redesigns. Uses Playwright (if available) for automated multi-viewport screenshots and interaction testing, or browser tools for manual verification. Produces a validation report and developer handoff document; blocking failures loop back to code-generation. Triggers on: validate the design, cross-browser test, responsive test, handoff documentation, design diff, before/after comparison, final check, ready to ship, QA the UI, verify the output, /design-validation.",
+  "triggers": {
+    "commands": [
+      "/design-validation"
+    ],
+    "keywords": [
+      "validate the design",
+      "cross-browser test",
+      "responsive test",
+      "handoff documentation",
+      "design diff",
+      "before/after comparison",
+      "final check",
+      "ready to ship",
+      "QA the UI",
+      "verify the output"
+    ]
+  },
+  "bundle": [
+    "README.md",
+    "SKILL.md",
+    "design-validation.docx"
+  ],
+  "wordCount": 1673,
+  "score": 44,
+  "tier": "curated",
+  "version": "1.1",
+  "provenance": "unverified",
+  "updated": "2026-07-03",
+  "generatedBy": "kamini gen-json v1"
+}
