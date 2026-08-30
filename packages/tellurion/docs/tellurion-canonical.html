@@ -218,7 +218,7 @@
     <svg viewBox="-18 -4 82 92" role="img" aria-label="TBK Labs"><rect x="20" y="0" width="16" height="80" fill="#0F1722" transform="skewX(-25)"/><rect x="45" y="0" width="16" height="80" fill="#0077FF" transform="skewX(-25)"/><rect x="70" y="45" width="16" height="25" fill="#0077FF" transform="skewX(-25)"/></svg>
     <span class="logo-word"><b>TBK</b>&nbsp;<i>Labs</i></span>
   </div>
-  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.6</div>
+  <div class="head-meta">Tellurion &middot; Owner: Fable<br/>Updated 30 Aug 2026 &middot; v1.7</div>
 </header>
 
 <div class="title-block">
@@ -242,10 +242,10 @@
 <!-- KPI row. 3-5 numbers that are TRUE and READ FROM A SOURCE this session.
      Delete it entirely rather than filling it with numbers you cannot cite. -->
 <div class="wrap"><div class="evid">
-  <div class="cell"><div class="n">31</div><div class="k">planets on the OCC plate &middot; live scan 2026-08-28</div></div>
-  <div class="cell"><div class="n">70</div><div class="k">milestones on the spine &middot; world-static.json</div></div>
   <div class="cell"><div class="n ok">0</div><div class="k">writes to anything it draws &middot; read-only by construction</div></div>
-  <div class="cell"><div class="n warn">2</div><div class="k">typo products found on this repo&rsquo;s own plate &middot; now drawn as ghosts</div></div>
+  <div class="cell"><div class="n">3</div><div class="k">read-only feeds &middot; transcript tail, directory watcher, git poll</div></div>
+  <div class="cell"><div class="n">2</div><div class="k">modes &middot; the whole estate, or one repo as the hub</div></div>
+  <div class="cell"><div class="n">3</div><div class="k">sign-off tiers &middot; claimed, verified, accepted &mdash; only the third counts</div></div>
 </div></div>
 
 <!-- ============================ TABS ============================
@@ -353,11 +353,11 @@
   rather than re-fetching it.</p>
 
   <div class="kicker">Boot, measured</div>
-  <p class="prose">On Forge on 2026-08-28 the OCC instance scanned <b>15,143 files in 85ms</b> and
-  watches <b>3,250 directories</b>, resolving to 31 planets, 86 features, 60 tools, 13 processes, 15
-  workflows and 70 milestones. The static graph it ships with
-  (<code>data/world-static.json</code>, generated 2026-08-24) holds 25 planets, 61 features, 60 tools,
-  13 processes, 15 workflows and 70 milestones.</p>
+  <p class="prose">The scan is a boot-time pass over the watched tree rather than a background job, and
+  it is quick enough that starting the instrument is not a wait: on Forge a tree of roughly 17,000 files
+  resolves in <b>under 100ms</b>, with the per-directory watchers established in the same pass. What it
+  resolves <i>to</i> &mdash; how many products, features and milestones appear &mdash; is a property of the
+  repository on the plate rather than of the instrument, so no such count is quoted here.</p>
 
   <div class="kicker">Two modes</div>
   <table>
@@ -378,7 +378,7 @@
 
   <div class="kicker">What it draws, and what it leaves out</div>
   <h3 class="claim">The bench appears only where a project has used it.</h3>
-  <p class="prose">The standing kit is 60 tools, 13 processes and 15 workflows, and it used to be
+  <p class="prose">The standing kit is the tools, processes and workflows the operator carries between projects, and it used to be
   painted on every project from the first second whether or not that project had ever touched one of
   them, so a plate spent most of its space on things the operator had never used. Usage is recorded
   per project in <code>.tellurion/usage.json</code> so it survives a restart, and a
@@ -431,7 +431,7 @@
       <tr><td><b>The orrery</b></td><td><code>live-artifact/public/orrery.js</code></td><td>Draws the plate: hub, product planets, feature moons, the milestone rim, and the standing belt.</td></tr>
       <tr><td><b>The spine</b></td><td><code>live-artifact/public/spine.js</code></td><td>Draws the build record and owns the sign-off vocabulary: open, claimed, verified, accepted.</td></tr>
       <tr><td><b>Attribution</b></td><td><code>live-artifact/lib/attribute.mjs</code></td><td>Turns a raw pulse into a body on the plate: path prefix to planet, skill to comet, command token to belt tool, commit subject to product.</td></tr>
-      <tr><td><b>The graph</b></td><td><code>live-artifact/data/world-static.json</code></td><td>The mined snapshot, generated 2026-08-24: 25 planets, 61 features, 60 tools, 13 processes, 15 workflows, 70 milestones.</td></tr>
+      <tr><td><b>The graph</b></td><td><code>live-artifact/data/world-static.json</code></td><td>The mined snapshot the instrument ships with, so a fresh boot has an estate to draw before it scans anything. Its contents are whatever the recon found in the repo it was run against.</td></tr>
       <tr><td><b>The baker</b></td><td><code>live-artifact/bin/build-static.mjs</code></td><td>Bakes the whole instrument into one self-contained 211,181-byte file for publishing.</td></tr>
       <tr><td><b>The walk</b></td><td><code>live-artifact/verify/walk.mjs</code></td><td>The acceptance walk, run in a real browser against a running server in demo mode. <code>totalFails</code> must be 0.</td></tr>
       <tr><td><b>Supervision</b></td><td><code>live-artifact/systemd/</code></td><td>Two user units: <code>tellurion.service</code> on 8769 for this repo, <code>tellurion-fleet-deck.service</code> on 8768.</td></tr>
@@ -448,9 +448,9 @@
     <li><b>accepted</b> — the operator accepted it. Only this tier counts a plan step as done.</li>
   </ul>
 
-  <div class="honest"><b>What this document does not claim.</b> The 31-planet figure is a live scan of
-  this repo on 2026-08-28 and will differ from the 25 in the shipped static graph, which is a
-  snapshot generated 2026-08-24 and refreshed by re-running the recon rather than automatically. The
+  <div class="honest"><b>What this document does not claim.</b> No count of products, features or
+  milestones appears anywhere in this document, deliberately: those belong to whichever repository the
+  instrument is pointed at, they move on every scan, and a figure from one project claims nothing. The
   journey mockup is a mockup: its ten frames are drawn by their own renderer, not by the instrument.
   And project mode's reducer does not yet obey the model ratified on the same day, as stated on the
   model tab.</div>
@@ -472,7 +472,7 @@
       <tr><td><b>Product</b></td><td>a planet</td><td>a named surface a person opens</td><td>Stations, Creative Library, Voice</td></tr>
       <tr><td><b>Feature</b></td><td>a moon on its planet</td><td>something that surface can now DO</td><td>forks a conversation at any reply into its own window</td></tr>
       <tr><td><b>Milestone</b></td><td>a tick on the rim</td><td>earned by the features under it, never declared</td><td>First install on Legion</td></tr>
-      <tr><td><b>Bench</b></td><td>the outer belt</td><td>standing tools, processes and workflows, identical on every project</td><td>60 tools, 13 processes, 15 workflows</td></tr>
+      <tr><td><b>Bench</b></td><td>the outer belt</td><td>standing tools, processes and workflows, identical on every project</td><td>the same kit it carries on every other project</td></tr>
     </tbody>
   </table>
 
@@ -483,7 +483,7 @@
   </ul>
   <p class="prose">Naming follows from this. A feature is written as what the product can now do
   ("accepts a dropped file and keeps it with its origin"), never as a user action ("drop a file").
-  That is already the shape of the <code>plain</code> field on all 61 features in the static graph,
+  That is already the shape of the <code>plain</code> field on every feature in the shipped graph,
   so the rule describes the data rather than being imposed on it.</p>
 
   <div class="kicker">The spine is the plan, led by product</div>
@@ -568,6 +568,22 @@
   thing this section exists to make impossible.</p>
 
   <div class="log">
+    <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
+      <h4>Project numbers came out of a document about the product.</h4>
+      <p>Operator ruling: the counts on this page were sample data from whichever repository the instrument
+      happened to be watching, and a canonical document describes the product rather than one repo on its
+      plate. &ldquo;31 planets&rdquo; also has no fixed value &mdash; it moves with the repo, the mode, whether
+      a plan is declared and the hour you scanned, and the instrument&rsquo;s own header counted 14 products
+      against those 31 planets. The KPI row&rsquo;s three project cards are replaced by properties that hold on
+      every project: no writes, three read-only feeds, two modes, three sign-off tiers. The boot paragraph keeps
+      the scan speed, which belongs to the instrument, and drops the entity counts, which belonged to the repo.
+      The shipped graph&rsquo;s inventory, the standing kit&rsquo;s totals and the feature count are out of the
+      components table, the model table and the naming rule; the honesty block states the principle instead of
+      reconciling two figures. <b>What stays:</b> the defect accounts on the model tab, where a number is
+      evidence a guard fired rather than a claim about scale, and every dated row below, which records what was
+      true on its day. The template&rsquo;s KPI guidance asked only that a number be true and cited &mdash; which
+      these were. It never asked whether the number was about the product, and that is the gap this closes.</p>
+    </div></div>
     <div class="log-row"><div class="log-date">2026-08-30</div><div class="log-body">
       <h4>Bodies exist only once work starts, verification light gets two levels, and the instrument gets four skins.</h4>
       <p>Two operator rulings from the reimagining session, both recorded on the model tab. <b>The
@@ -757,7 +773,7 @@
 
 <footer>
   <b>TBK Labs</b> &middot; One lab. Many products.<br/>
-  Tellurion &middot; canonical HTML &middot; v1.6 &middot; updated 30 Aug 2026 &middot; sourced from
+  Tellurion &middot; canonical HTML &middot; v1.7 &middot; updated 30 Aug 2026 &middot; sourced from
   live-artifact/docs/PRODUCT-SPEC.md, data/world-static.json and the running instances on Forge &middot; owner Fable
 </footer>
 

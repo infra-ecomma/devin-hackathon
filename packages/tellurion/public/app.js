@@ -92,14 +92,20 @@ function fillCensus() {
   // than remove it.
   const real = s.planets.filter(p => p.declared !== false);
   const flag = real.filter(p => p.tier === 'flagship').length;
-  $('cnProducts').textContent = flag;
-  $('cnFeatures').textContent = s.features.length;
+  // WHEN A PLAN EXISTS, THE BAR COUNTS THE PLAN (decision D5, 2026-08-30).
+  // It used to count everything the instrument had discovered anywhere, so the
+  // bar read "14 products, 86 features" beside a spine reading 21/25: one screen,
+  // two answers to the same question, three inches apart. Products, features and
+  // steps are the three the plan actually declares.
+  const t = (world.plan && world.plan.exists && !world.plan.error && world.plan.totals) || null;
+  $('cnProducts').textContent = t ? t.products : flag;
+  $('cnFeatures').textContent = t ? t.features : s.features.length;
   // projects, tools, processes and workflows are no longer in the bar: they are
   // not this project, and they are what pushed it into the drive gauge
-  // Count what the spine will actually DRAW. The chat's to-do rows are dropped
-  // by spine.js once a plan exists, so this used to print "3 milestones" against
-  // a panel showing none and a plate drawing none.
-  $('cnMilestones').textContent = s.milestones.filter(m => m.entity !== 'plan').length;
+  // Steps are the third figure: they are the work under the features, and the
+  // one thing the plan declares that the other two do not already say. The chat's
+  // to-do rows are not the plan and are excluded wherever they are counted.
+  $('cnSteps').textContent = t ? t.steps : s.milestones.filter(m => m.entity !== 'plan').length;
 }
 
 function buildKey() {
@@ -335,8 +341,18 @@ function showDossierFor(id) {
 // only as a field in a JSON snapshot. It is also what a judge's receipt is
 // matched against, so showing it is what makes that inference checkable.
 function workBlock(f) {
-  const id = String(f.step || f.id).replace(/^step:/, '');
-  const w = (world.stepWork || {})[id];
+  // A feature's work is the work of every step under it. Work is recorded
+  // against the step that was in hand, so a feature has none of its own and this
+  // block would have gone silent on every body the plate draws once features
+  // stopped being steps.
+  const ids = Array.isArray(f.steps) && f.steps.length
+    ? f.steps.map((s) => s.id)
+    : [String(f.step || f.id).replace(/^(step|feat):/, '')];
+  const sw = world.stepWork || {};
+  const w = ids.length === 1 ? sw[ids[0]] : {
+    paths: ids.flatMap((i) => (sw[i] && sw[i].paths) || []),
+    commits: ids.flatMap((i) => (sw[i] && sw[i].commits) || []),
+  };
   const notes = [];
   if (w && w.paths && w.paths.length) {
     const shown = w.paths.slice(-4).reverse();
@@ -355,7 +371,7 @@ function workBlock(f) {
   if (f.verdictVia === 'sentinel-receipt' && f.verdictMatched && f.verdictMatched.length) {
     notes.push(`<div class="do-item"><span class="di-dot pink"></span><span class="di-txt">judged from ${esc(f.verdictMatched.slice(0, 3).join(', '))}</span></div>`);
   }
-  if (!notes.length && f.inHand) notes.push('<div class="do-item ghost"><span class="di-txt">nothing recorded against this step yet</span></div>');
+  if (!notes.length && f.inHand) notes.push('<div class="do-item ghost"><span class="di-txt">nothing recorded against this yet</span></div>');
   return notes.join('');
 }
 
@@ -366,10 +382,10 @@ function workBlock(f) {
 // answers "no" teaches you to stop pressing it.
 const acceptControl = (f) => {
   if (f.status === 'verified' || f.staleAccept) {
-    return `<button class="do-act" data-accept="${esc(String(f.step || f.id).replace(/^step:/, ''))}">${f.staleAccept ? 'Accept this version' : 'Accept this'}</button><span class="do-act-say"></span>`;
+    return `<button class="do-act" data-accept="${esc(String(f.step || f.id).replace(/^(step|feat):/, ''))}">${f.staleAccept ? 'Accept this version' : 'Accept this'}</button><span class="do-act-say"></span>`;
   }
   if (f.status === 'fully-verified') {
-    return `<button class="do-act undo" data-unaccept="${esc(String(f.step || f.id).replace(/^step:/, ''))}">Take my acceptance back</button><span class="do-act-say"></span>`;
+    return `<button class="do-act undo" data-unaccept="${esc(String(f.step || f.id).replace(/^(step|feat):/, ''))}">Take my acceptance back</button><span class="do-act-say"></span>`;
   }
   if (f.status === 'claimed') return '<div class="do-act-note">A judge has to pass this before you can accept it. The ladder is climbed in order.</div>';
   return '';

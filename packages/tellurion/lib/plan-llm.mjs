@@ -78,8 +78,9 @@ function runHarness(prompt, cwd, { settleWhen = null, graceMs = 10_000 } = {}) {
 const SCHEMA_NOTE = `The plan file schema, exactly:
 {
   "project": "<repo name>",
-  "products": [{ "id": "<kebab>", "name": "<plain name>", "note": "<what it is, one line>", "home": "<repo-relative path where it lives>" }],
-  "phases": [{ "id": "<kebab>", "title": "<phase title>", "steps": [{ "id": "<kebab>", "title": "<what is or was done>", "status": "planned|active|done", "produces": { "of": "<product id>" } }] }]
+  "products": [{ "id": "<kebab>", "name": "<plain name>", "note": "<what it is, one line>", "home": "<repo-relative path where it lives>",
+                 "features": [{ "id": "<kebab>", "name": "<the part of the product, a noun>", "note": "<one line>" }] }],
+  "phases": [{ "id": "<kebab>", "title": "<phase title>", "steps": [{ "id": "<kebab>", "title": "<what is or was done>", "status": "planned|active|done", "produces": { "of": "<product id>", "feature": "<feature id>" } }] }]
 }`;
 
 let running = false; // one draft at a time per server; a second click gets told
@@ -99,10 +100,15 @@ If .tellurion/plan.json already exists, read it too: it is the operator's previo
 ${SCHEMA_NOTE}
 
 Rules:
-- Products are the things this project is building or maintaining. 2 to 8 of them. Give each a "home": the repo-relative directory or file where it lives. Verify each home exists before you write it; if no path honestly fits, omit "home".
+- Products are the things this project is building or maintaining. Give each a "home": the repo-relative directory or file where it lives. Verify each home exists before you write it; if no path honestly fits, omit "home".
+- FEATURES are the parts a product is made of, and they are what the instrument leads with, so they carry the most weight here. A feature is a PART you could draw a box around and point at: the plan spine, the live bridge, the render farm, the dispatch rail.
+- THE TEST, and it is stricter than "use a noun": the name must read naturally after the word "the". "The render farm" works. "The project discovery" does not, because that is an activity, not a part. An activity noun built out of a step's verb ("Discover every project" becoming "Project discovery") is still that step wearing a costume, and it will read as a worklog on the screen exactly as the raw verb did. When a name fails the test, ask what THING does the work and name that instead: not "project discovery" but "the project index".
+- A feature normally gathers SEVERAL steps. One feature per step means the layer is carrying no information: either the features are too small or the steps are written at capability size rather than work size. Prefer fewer, larger features and let each one hold the steps that build it.
+- Declare a feature for work that has not started yet, wherever the repo's evidence says it is intended. A plan exists to say what the product WILL have; a feature with no steps under it is normal and correct.
 - 2 to 6 phases, 3 to 12 steps each, describing real work — past, current, and planned — in the order a person would tell the story.
 - status "done" only where the repo's own evidence says it happened (docs, commits, working code); "active" for clearly in-flight work; otherwise "planned".
-- Every step that produces part of a product names that product's id in produces.of.
+- Every step names the product it builds in produces.of AND the feature it builds in produces.feature. A step whose feature you genuinely cannot place may omit "feature"; it is then shown separately as unplaced, so use that rather than inventing a feature to hold it.
+- How many products and how many features is entirely up to the repo. Do not aim for a number.
 
 Write the finished plan as JSON to the file .tellurion/plan.json in this repo (create the directory). Then validate it parses (for example with node -e 'JSON.parse(require("fs").readFileSync(".tellurion/plan.json","utf8"))') and fix it if not. The moment the file validates, reply with one short paragraph summarising what you wrote and STOP — the write is the work; do not keep exploring afterwards.`;
     // Settle when a NEW parseable plan with real steps is on disk — the file is
@@ -118,7 +124,11 @@ Write the finished plan as JSON to the file .tellurion/plan.json in this repo (c
       if (!now || now === before) return false;
       try {
         const j = JSON.parse(now);
-        return Array.isArray(j.phases) && j.phases.some((ph) => Array.isArray(ph.steps) && ph.steps.length);
+        // A plan with steps but no features is the old shape, and settling on it
+        // would stop the agent before it wrote the half the spine leads with.
+        const hasSteps = Array.isArray(j.phases) && j.phases.some((ph) => Array.isArray(ph.steps) && ph.steps.length);
+        const hasFeats = Array.isArray(j.products) && j.products.some((p) => Array.isArray(p.features) && p.features.length);
+        return hasSteps && hasFeats;
       } catch { return false; }
     };
     try {

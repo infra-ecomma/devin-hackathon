@@ -204,7 +204,7 @@ export function applyPlan(world, plan, signoffs = null) {
     // A body whose declaration is gone is not evidence of anything.
     world.planDrivesGraph = false;
     world.stat.planets = (world.stat.planets || []).filter((x) => !String(x.id).startsWith('plan:'));
-    world.stat.features = (world.stat.features || []).filter((x) => !String(x.id).startsWith('step:'));
+    world.stat.features = (world.stat.features || []).filter((x) => !String(x.id).startsWith('step:') && !String(x.id).startsWith('feat:'));
     return world;
   }
 
@@ -228,64 +228,115 @@ export function applyPlan(world, plan, signoffs = null) {
   }));
   world.stat.planets = planets.concat(keep);
 
+  // FEATURES COME FROM THE PLAN, NOT FROM THE STEPS.
+  // This block used to be `feats.push({ id: 'step:' + st.id, name: st.title })`:
+  // every plan step was relabelled a feature, so "feature" was a display label
+  // for "step" and nothing else. A step is a unit of work and reads as a verb
+  // ("Resolve a project to its git root"); a feature is a part of the product
+  // and reads as a noun ("Project discovery"). Printing the first where the
+  // second belongs is what made the spine read as a worklog rather than as a
+  // product. A feature is now DECLARED on its product, so it exists before any
+  // step targets it, which is what lets the spine show work not yet started.
   const feats = [];
+  const loose = new Map(); // product id -> steps that name no feature
+
+  // Per-step custody stays STEP-addressed. The nested view still shows who
+  // signed each piece of work, and every sign-off already on disk keeps working.
+  const stepRow = (ph, st) => {
+    const v = signoffs && signoffs.verdicts ? signoffs.verdicts.get(st.id) : null;
+    const a = signoffs && signoffs.accepted ? signoffs.accepted.get(st.id) : null;
+    const wd = signoffs && signoffs.withdrawn ? signoffs.withdrawn.get(st.id) : null;
+    const t = tierFor(st.status, v, a, st, wd);
+    return {
+      id: st.id, title: st.title, status: t.tier, planStatus: st.status,
+      signedBy: t.by || undefined, inHand: st.status === 'active' || undefined,
+      staleVerdict: t.staleVerdict, staleAccept: t.staleAccept,
+      failedBy: t.failedBy, failedNote: t.failedNote,
+      verdictVia: v && v.via, verdictMatched: v && v.matched, phase: ph.id,
+    };
+  };
+
+  const stepsOfFeature = new Map();
   for (const ph of plan.phases) {
     for (const st of ph.steps) {
-      // A step that names no product used to get no body at all, so it was outside
-      // the ladder entirely: nothing could carry its tier, /api/accept answered
-      // tier:null, and the strip and the spine counted two different totals for
-      // one plan. Where the phase around it plainly belongs to one product, the
-      // step joins it. `produces` stays the explicit way to say so.
+      // A step that names no product joins the one its phase plainly belongs to.
       const owner = (st.produces && st.produces.of) || phaseOwnerOf(plan, ph);
       if (!owner) continue;
-      // The tier is decided by the chain of custody, never by this file alone:
-      // the plan can say "the builder claims it", and only a judge's verdict and
-      // the operator's acceptance can carry it higher.
-      const v = signoffs && signoffs.verdicts ? signoffs.verdicts.get(st.id) : null;
-      const a = signoffs && signoffs.accepted ? signoffs.accepted.get(st.id) : null;
-      const wd = signoffs && signoffs.withdrawn ? signoffs.withdrawn.get(st.id) : null;
-      const t = tierFor(st.status, v, a, st, wd);
+      const row = stepRow(ph, st);
+      row.product = owner;
+      const fid = st.produces && st.produces.feature;
+      if (fid) {
+        if (!stepsOfFeature.has(fid)) stepsOfFeature.set(fid, []);
+        stepsOfFeature.get(fid).push(row);
+      } else {
+        if (!loose.has(owner)) loose.set(owner, []);
+        loose.get(owner).push(row);
+      }
+    }
+  }
+
+  // Custody is addressed to the FEATURE (decision D3, 2026-08-30: "has to be
+  // feature ... a visual cue that something has been verified is a key
+  // highlight of this project"). Every sign-off already on disk is keyed by
+  // STEP id, so rather than voiding them, a feature with no verdict of its own
+  // INHERITS one when every step under it was passed. The inherited row carries
+  // no fingerprint, which tiers.mjs already honours as predating the scheme, so
+  // nothing signed before this change is lost.
+  const rollup = (map, steps) => {
+    if (!map || !steps.length) return null;
+    const rows = steps.map((x) => map.get(x.id));
+    if (rows.some((r) => !r)) return null;                       // not every step was signed
+    const bad = rows.find((r) => r.pass === false);
+    if (bad) return { ...bad, inherited: true };                 // one rejection sinks the feature
+    const by = [...new Set(rows.map((r) => r.by).filter(Boolean))].join(', ');
+    const at = rows.map((r) => r.at).filter(Boolean).sort().pop();
+    return { by: by || 'the judge', pass: true, at, inherited: true };
+  };
+
+  for (const pr of plan.products) {
+    for (const f of (pr.features || [])) {
+      const steps = stepsOfFeature.get(f.id) || [];
+      // The builder claims a feature when the work under it is done. A feature
+      // with no steps yet has only its own declared status to go on.
+      const claimed = steps.length ? steps.every((x) => x.planStatus === 'done') : f.status === 'done';
+      const key = { id: f.id, title: f.name };
+      const sg = signoffs || {};
+      const v = (sg.verdicts && sg.verdicts.get(f.id)) || rollup(sg.verdicts, steps);
+      const a = (sg.accepted && sg.accepted.get(f.id)) || rollup(sg.accepted, steps);
+      const wd = sg.withdrawn ? sg.withdrawn.get(f.id) : null;
+      const t = tierFor(claimed ? 'done' : 'planned', v, a, key, wd);
       feats.push({
-        id: 'step:' + st.id,
-        parent: 'plan:' + owner,
-        name: st.title,
-        title: st.title,
-        status: t.tier,
-        signedBy: t.by || undefined,
-        // The step in hand. NOT a tier: the ladder records who signed, and
-        // nobody has signed this. It is a different axis and it needs its own
-        // mark, because until now the one step actually being worked on was
-        // drawn exactly like a step nobody had touched.
-        inHand: st.status === 'active' || undefined,
+        id: 'feat:' + f.id, feature: f.id, parent: 'plan:' + pr.id,
+        name: f.name, title: f.name, plain: f.note || f.name,
+        status: t.tier, signedBy: t.by || undefined,
+        // In hand is a different axis from the ladder: it says work is happening
+        // right now, which no sign-off can express.
+        inHand: steps.some((x) => x.planStatus === 'active') || undefined,
         staleVerdict: t.staleVerdict, staleAccept: t.staleAccept,
         failedBy: t.failedBy, failedNote: t.failedNote,
-        // how the verdict came to exist, so a judge's name can be checked
         verdictVia: v && v.via, verdictMatched: v && v.matched,
-        phase: ph.id,
-        step: st.id,
+        inherited: (v && v.inherited) || undefined,
+        steps, stepsDone: steps.filter((x) => x.planStatus === 'done').length,
       });
     }
   }
-  const kept = (world.stat.features || []).filter((f) => !String(f.id).startsWith('step:'));
+
+  // Steps naming a product but no feature are NOT promoted into features: that
+  // promotion is the bug this change removes. They hang off the product so no
+  // work is lost and the gap stays visible instead of being disguised.
+  for (const pl of planets) {
+    pl.loose = loose.get(String(pl.id).slice('plan:'.length)) || [];
+  }
+
+  const kept = (world.stat.features || []).filter((f) => !String(f.id).startsWith('step:') && !String(f.id).startsWith('feat:'));
   world.stat.features = feats.concat(kept);
 
-  // A product with every producing step done is claimed whole, not live: live
-  // is a statement about something running, which a plan cannot assert.
   // A product is only as far along as its LEAST advanced feature. One unproven
-  // moon is enough to keep the whole product short of the tier above it, which
-  // is the point: a product is not finished while a part of it is unexamined.
-  //
-  // "Its features" means every step in a phase that produces it, INCLUDING the
-  // steps that declare no `produces` of their own. Counting only the producing
-  // ones let a product read fully-verified while most of the work under it had
-  // not been started, because unfinished steps tend to be the ones nobody has
-  // bothered to wire to a product yet.
-  // Every step that belongs to a product now has a feature, so its tier is
-  // already in `feats` and there is nothing left to fold in separately.
+  // part is enough to hold the whole product short of the tier above it: a
+  // product is not finished while a piece of it is unexamined.
   for (const pl of planets) {
-    // An undeclared product keeps its dormant ghost form. Rolling its steps up
-    // into a tier would hand a typo the same "claimed" badge a real product
-    // earns, which is the whole thing the ghost exists to prevent.
+    // An undeclared product keeps its dormant ghost form. Rolling its work up
+    // into a tier would hand a typo the same badge a real product earns.
     if (pl.declared === false) continue;
     const mine = feats.filter((f) => f.parent === pl.id).map((f) => f.status);
     if (!mine.length) { pl.status = 'building'; continue; }
