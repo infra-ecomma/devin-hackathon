@@ -3,5 +3,13 @@
   "kitVersion": "4.5.0",
   "connectedAt": "2026-08-30T07:10:51Z",
   "mode": "reference",
-  "lastVersionCheck": "2026-08-30T07:10:51Z"
+  "lastVersionCheck": "2026-09-29T17:42:25Z",
+  "wiringMeasured": {
+    "hooksTotal": 35,
+    "viaMasterKitPath": 35,
+    "viaAbsoluteClonePath": 0,
+    "viaRelativeEmbeddedKit": 0,
+    "allHookScriptsResolve": true,
+    "measured_at": "2026-09-29T17:42:25Z"
+  }
 }

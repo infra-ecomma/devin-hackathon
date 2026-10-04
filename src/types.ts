@@ -115,3 +115,16 @@ export type FromWebview =
 
 export const DEFAULT_STYLE: SkinStyle = "rustic";
 export const DEFAULT_THEME: SkinTheme = "light";
+
+// Legacy types — used by ContextDevClient for URL guessing
+export interface Planet {
+  id: string; name: string; description: string; color: string;
+  orbitRadius: number; speed: number; angle?: number; size: number;
+  verified: boolean; moons?: Moon[]; _x?: number; _y?: number;
+  contextUrl?: string; contextMarkdown?: string;
+}
+
+export interface Moon {
+  id: string; name: string; color: string;
+  orbitR: number; speed: number; angle?: number; size: number; verified: boolean;
+}
